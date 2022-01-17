@@ -19,21 +19,23 @@ public class ColorSensorSubsystem extends SubsystemBase {
     }
 
     public boolean isRed() {
-        if (inRange() && getColor().red> getColor().blue) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        // if (inRange() && getColor().red > getColor().blue) { // if in the defined range (defined in settings.constants and red > blue)
+        //     return true;
+        // }
+        // else {
+        //     return false;
+        // }
+        return inRange() && getColor().red > getColor().blue;
     }
 
     public boolean isBlue() {
-        if (inRange()) {
-            return !isRed();
-        }
-        else {
-            return false;
-        }
+        // if (inRange()) {
+        //     return !isRed();
+        // }
+        // else {
+        //     return false;
+        // }
+        return inRange() && !isRed();
     }
 
     private double getProximity() {
@@ -41,7 +43,7 @@ public class ColorSensorSubsystem extends SubsystemBase {
     }
 
     private boolean inRange() {
-        if (getProximity()> Constants.Sensors.ColorRange) {
+        if (getProximity() > Constants.Sensors.ColorRange) {
             return true;
         }
         else {
