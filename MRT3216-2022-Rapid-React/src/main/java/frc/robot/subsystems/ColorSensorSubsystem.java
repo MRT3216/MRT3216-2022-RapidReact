@@ -19,19 +19,19 @@ public class ColorSensorSubsystem extends SubsystemBase {
     }
 
     public boolean isRed() {
-        return inRange() && getColor().red> getColor().blue;
+        return inRange() && getColor().red > getColor().blue; // if in range && red > blue
     }
 
     public boolean isBlue() {
-        return inRange() && !isRed();
+        return inRange() && !isRed(); // if in range && not red
     }
 
     private double getProximity() {
-        return colorSens.getProximity();
+        return colorSens.getProximity(); // get proximity
     }
 
     private boolean inRange() {
-        return getProximity()> Constants.Sensors.ColorRange;
+        return getProximity() > Constants.Sensors.ColorRange; // prox > wanted range
     }
 
 }
