@@ -7,6 +7,9 @@
 
 package frc.robot.settings;
 
+import com.revrobotics.ColorSensorV3;
+import edu.wpi.first.wpilibj.I2C;
+
 /**
  * Add your docs here.
  */
@@ -44,6 +47,10 @@ public class RobotMap {
         public static class PNEUMATICS {
             public static final int INTAKE_FORWARD = 0;
             public static final int INTAKE_REVERSE = 1;
+        }
+
+        public static class SENSORS {
+            public static final I2C.Port colorSensor = I2C.Port.kOnboard;
         }
     }
 

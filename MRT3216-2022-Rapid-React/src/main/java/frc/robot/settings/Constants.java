@@ -116,6 +116,10 @@ public class Constants {
         public static final String NTtable = "limelight";
     }
 
+    public static final class Sensors {
+        public static final double ColorRange = 100;
+    }
+
     public static final class Directories {
         public static final String deployDirectory = Filesystem.getDeployDirectory().getAbsolutePath();
         public static final String pathsDirectory = deployDirectory + "/paths/";
