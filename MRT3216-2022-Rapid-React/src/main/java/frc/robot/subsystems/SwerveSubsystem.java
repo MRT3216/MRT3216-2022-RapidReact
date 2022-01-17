@@ -37,7 +37,9 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.settings.RobotMap;
 
 public class SwerveSubsystem extends SubsystemBase {
         /**
@@ -94,8 +96,8 @@ public class SwerveSubsystem extends SubsystemBase {
         // FIXME Remove if you are using a Pigeon
         // private final PigeonIMU m_pigeon = new PigeonIMU(DRIVETRAIN_PIGEON_ID);
         // FIXME Uncomment if you are using a NavX
-        private final AHRS m_navx = new AHRS(SPI.Port.kMXP, (byte) 200); // NavX
-        // connected over MXP
+        private final AHRS m_navx = new AHRS(RobotMap.ROBOT.SENSORS.navx, (byte) 200); // NavX
+        // connected over I2C
 
         // private final ADIS16470_IMU gyro = new ADIS16470_IMU();
 
@@ -171,6 +173,7 @@ public class SwerveSubsystem extends SubsystemBase {
                                 Mk3SwerveModuleHelper.GearRatio.STANDARD, RIGHT_REAR_DRIVE, RIGHT_REAR_ANGLE,
                                 RIGHT_REAR_CANCODER, RIGHT_REAR_STEER_OFFSET);
 
+
         }
 
         /**
@@ -193,13 +196,13 @@ public class SwerveSubsystem extends SubsystemBase {
                 // FIXME Uncomment if you are using a NavX
                  if (m_navx.isMagnetometerCalibrated()) {
                  // We will only get valid fused headings if the magnetometer is calibrated
+                 SmartDashboard.putNumber("navx", m_navx.getFusedHeading());
                  return Rotation2d.fromDegrees(m_navx.getFusedHeading());
                  }
                 //
                 // // We have to invert the angle of the NavX so that rotating the robot
                 // counter-clockwise makes the angle increase.
                 return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
-
                 // FIXME Is this right?
                 //return Rotation2d.fromDegrees(gyro.getAngle());
         }
