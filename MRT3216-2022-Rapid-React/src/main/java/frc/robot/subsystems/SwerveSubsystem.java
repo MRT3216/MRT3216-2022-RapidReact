@@ -67,7 +67,7 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0
             * SdsModuleConfigurations.MK3_STANDARD.getDriveReduction()
-            * SdsModuleConfigurations.MK3_STANDARD.getWheelDiameter() * Math.PI;
+            * SdsModuleConfigurations.MK3_STANDARD.getWheelDiameter() * Math.PI * .25;
 
     /**
      * The maximum angular velocity of the robot in radians per second.
@@ -143,8 +143,13 @@ public class SwerveSubsystem extends SubsystemBase {
                 Mk3SwerveModuleHelper.GearRatio.STANDARD, RIGHT_REAR_DRIVE, RIGHT_REAR_ANGLE,
                 RIGHT_REAR_CANCODER, RIGHT_REAR_STEER_OFFSET);
 
-        m_swerveModules = new SwerveModule[] { m_frontLeftModule, m_frontRightModule, m_backLeftModule,
+        m_swerveModules = new SwerveModule[] { m_frontLeftModule, m_frontRightModule,
+                m_backLeftModule,
                 m_backRightModule };
+
+                tab.addNumber("Gyroscope Angle", () -> getGyroscopeRotation().getDegrees());
+                tab.addNumber("Pose X", () -> m_odometry.getPoseMeters().getX());
+                tab.addNumber("Pose Y", () -> m_odometry.getPoseMeters().getY());
     }
 
     /**
@@ -203,5 +208,22 @@ public class SwerveSubsystem extends SubsystemBase {
                     states[i].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
                     states[i].angle.getRadians());
         }
+
+        var gyroAngle = this.getGyroscopeRotation();
+
+        // Update the pose
+        Pose2d pose = m_odometry.update(gyroAngle, getState(m_frontLeftModule), getState(m_frontRightModule),
+                getState(m_backLeftModule), getState(m_backRightModule));
+
+        System.out.println(pose);
+    }
+
+    /**
+     * Returns the current state of the module.
+     *
+     * @return The current state of the module.
+     */
+    public SwerveModuleState getState(SwerveModule module) {
+        return new SwerveModuleState(module.getDriveVelocity(), Rotation2d.fromDegrees(module.getSteerAngle()));
     }
 }
