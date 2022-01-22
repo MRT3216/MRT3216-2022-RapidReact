@@ -147,9 +147,9 @@ public class SwerveSubsystem extends SubsystemBase {
                 m_backLeftModule,
                 m_backRightModule };
 
-                tab.addNumber("Gyroscope Angle", () -> getGyroscopeRotation().getDegrees());
-                tab.addNumber("Pose X", () -> m_odometry.getPoseMeters().getX());
-                tab.addNumber("Pose Y", () -> m_odometry.getPoseMeters().getY());
+        // tab.addNumber("Gyroscope Angle", () -> (360 - m_navx.getYaw()));
+        // tab.addNumber("Pose X", () -> m_odometry.getPoseMeters().getX());
+        // tab.addNumber("Pose Y", () -> m_odometry.getPoseMeters().getY());
     }
 
     /**
@@ -174,8 +174,6 @@ public class SwerveSubsystem extends SubsystemBase {
     public Rotation2d getGyroscopeRotation() {
         // // We have to invert the angle of the NavX so that rotating the robot
         // counter-clockwise makes the angle increase.
-        SmartDashboard.putNumber("Gyroscope Rotation", 360 - m_navx.getYaw());
-        System.out.println("Gyroscope rotation " + (360 - m_navx.getYaw()));
         return Rotation2d.fromDegrees(360 - m_navx.getYaw());
     }
 
@@ -195,7 +193,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public void drive(ChassisSpeeds chassisSpeeds) {
         m_chassisSpeeds = chassisSpeeds;
-        System.out.println(chassisSpeeds);
     }
 
     @Override
@@ -212,10 +209,8 @@ public class SwerveSubsystem extends SubsystemBase {
         var gyroAngle = this.getGyroscopeRotation();
 
         // Update the pose
-        Pose2d pose = m_odometry.update(gyroAngle, getState(m_frontLeftModule), getState(m_frontRightModule),
+        m_odometry.update(gyroAngle, getState(m_frontLeftModule), getState(m_frontRightModule),
                 getState(m_backLeftModule), getState(m_backRightModule));
-
-        System.out.println(pose);
     }
 
     /**
