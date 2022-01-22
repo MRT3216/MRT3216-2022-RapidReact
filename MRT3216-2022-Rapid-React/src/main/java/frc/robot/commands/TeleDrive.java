@@ -41,12 +41,6 @@ public class TeleDrive extends CommandBase {
 
     @Override
     public void execute() {
-        /*
-         * double x = OIUtils.applyDeadband(xSpeed.getAsDouble(),
-         * Constants.OI.kJoystickDeadband); double y =
-         * OIUtils.applyDeadband(ySpeed.getAsDouble(), Constants.OI.kJoystickDeadband);
-         * double r = OIUtils.applyDeadband(ySpeed.getAsDouble(),
-         * Constants.OI.kJoystickDeadband);        */
         swerveSubsystem.drive(ChassisSpeeds.fromFieldRelativeSpeeds(this.translationXSupplier.getAsDouble(),
                 this.translationYSupplier.getAsDouble(), this.rotationSupplier.getAsDouble(),
                 this.swerveSubsystem.getGyroscopeRotation()));

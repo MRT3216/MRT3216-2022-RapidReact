@@ -28,10 +28,12 @@ import com.swervedrivespecialties.swervelib.Mk3SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -87,6 +89,8 @@ public class SwerveSubsystem extends SubsystemBase {
             // Back right
             new Translation2d(-TRACKWIDTH_METERS / 2.0, -WHEELBASE_METERS / 2.0));
 
+    private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, new Rotation2d());
+
     // connected over I2C
     private final AHRS m_navx = new AHRS(RobotMap.ROBOT.SENSORS.navx, (byte) 200); // NavX
 
@@ -95,6 +99,7 @@ public class SwerveSubsystem extends SubsystemBase {
     private final SwerveModule m_frontRightModule;
     private final SwerveModule m_backLeftModule;
     private final SwerveModule m_backRightModule;
+    private final SwerveModule[] m_swerveModules;
 
     private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
@@ -137,6 +142,9 @@ public class SwerveSubsystem extends SubsystemBase {
                         0),
                 Mk3SwerveModuleHelper.GearRatio.STANDARD, RIGHT_REAR_DRIVE, RIGHT_REAR_ANGLE,
                 RIGHT_REAR_CANCODER, RIGHT_REAR_STEER_OFFSET);
+
+        m_swerveModules = new SwerveModule[] { m_frontLeftModule, m_frontRightModule, m_backLeftModule,
+                m_backRightModule };
     }
 
     /**
@@ -144,7 +152,10 @@ public class SwerveSubsystem extends SubsystemBase {
      * robot is currently facing to the 'forwards' direction.
      */
     public void zeroGyroscope() {
+        System.out.println("Zeroing gyroscope...");
         m_navx.zeroYaw();
+        // Reset the odometry with new 0 heading but same position.
+        m_odometry.resetPosition(m_odometry.getPoseMeters(), new Rotation2d());
     }
 
     /**
@@ -159,7 +170,22 @@ public class SwerveSubsystem extends SubsystemBase {
         // // We have to invert the angle of the NavX so that rotating the robot
         // counter-clockwise makes the angle increase.
         SmartDashboard.putNumber("Gyroscope Rotation", 360 - m_navx.getYaw());
+        System.out.println("Gyroscope rotation " + (360 - m_navx.getYaw()));
         return Rotation2d.fromDegrees(360 - m_navx.getYaw());
+    }
+
+    public Pose2d getCurrentRobotPose() {
+        return m_odometry.getPoseMeters();
+    }
+
+    public void setCurrentRobotPose(Pose2d pose) {
+        m_odometry.resetPosition(pose, getGyroscopeRotation());
+    }
+
+    public void stop() {
+        for (int i = 0; i < m_swerveModules.length; i++) {
+            m_swerveModules[i].set(0, m_swerveModules[i].getSteerAngle());
+        }
     }
 
     public void drive(ChassisSpeeds chassisSpeeds) {
