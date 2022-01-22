@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj.Filesystem;
 
 public class Constants {
     public static final class Drivetrain {
-        public static final double LEFT_FRONT_STEER_OFFSET = -Math.toRadians(239.4 + 180); // TODO: set these values
-        public static final double RIGHT_FRONT_STEER_OFFSET = -Math.toRadians(278.1 + 180); // TODO: set these values
+        public static final double LEFT_FRONT_STEER_OFFSET = -Math.toRadians(239.4 - 180); // TODO: set these values
+        public static final double RIGHT_FRONT_STEER_OFFSET = -Math.toRadians(278.1 - 180); // TODO: set these values
         public static final double LEFT_REAR_STEER_OFFSET = -Math.toRadians(119.0 + 180); // TODO: set these values
         public static final double RIGHT_REAR_STEER_OFFSET = -Math.toRadians(43 + 180); // TODO: set these values
 

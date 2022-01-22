@@ -32,7 +32,7 @@ public class RobotContainer implements Loggable {
     // region Fields
 
     private static RobotContainer instance;
-    public SwerveSubsystem driveSystem;
+    private SwerveSubsystem driveSystem;
 
     private CompressorSubsystem compressorSystem;
     private Gamepad controller;
@@ -77,15 +77,6 @@ public class RobotContainer implements Loggable {
      */
     private void configureButtonBindings() {
         if (driveSystem != null && controller != null) {
-            // Set the default drive command to split-stick arcade drive
-            /*
-             * driveSystem.setDefaultCommand(
-             * new TeleDrive(
-             * driveSystem,
-             * () -> controller.getLeftY(),
-             * () -> controller.getLeftX(),
-             * () -> controller.getRightX(), true));
-             */
             driveSystem.setDefaultCommand(new TeleDrive(
                     driveSystem,
                     () -> OIUtils.modifyAxis(controller.getLeftY()) * SwerveSubsystem.MAX_VELOCITY_METERS_PER_SECOND,

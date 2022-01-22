@@ -33,6 +33,8 @@ public class Robot extends TimedRobot {
         autoChooser = AutoChooser.getInstance();
         // autoChooser.readTrajectories();
         autoChooser.populateAutoChooser();
+        robotContainer.getDriveSystem().calibrateGyroscope();
+        robotContainer.getDriveSystem().zeroGyroscope();
     }
 
     /**
