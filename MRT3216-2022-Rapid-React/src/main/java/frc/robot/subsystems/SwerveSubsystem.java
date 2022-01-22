@@ -33,7 +33,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -173,7 +172,6 @@ public class SwerveSubsystem extends SubsystemBase {
                                 Mk3SwerveModuleHelper.GearRatio.STANDARD, RIGHT_REAR_DRIVE, RIGHT_REAR_ANGLE,
                                 RIGHT_REAR_CANCODER, RIGHT_REAR_STEER_OFFSET);
 
-
         }
 
         /**
@@ -186,7 +184,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
                 // FIXME Uncomment if you are using a NavX
                 m_navx.zeroYaw();
-                //gyro.reset();
+                // gyro.reset();
         }
 
         public Rotation2d getGyroscopeRotation() {
@@ -194,17 +192,17 @@ public class SwerveSubsystem extends SubsystemBase {
                 // return Rotation2d.fromDegrees(m_pigeon.getFusedHeading());
 
                 // FIXME Uncomment if you are using a NavX
-                 if (m_navx.isMagnetometerCalibrated()) {
-                 // We will only get valid fused headings if the magnetometer is calibrated
-                 SmartDashboard.putNumber("navx", m_navx.getFusedHeading());
-                 return Rotation2d.fromDegrees(m_navx.getFusedHeading());
-                 }
+                if (m_navx.isMagnetometerCalibrated()) {
+                        // We will only get valid fused headings if the magnetometer is calibrated
+                        SmartDashboard.putNumber("navx", m_navx.getFusedHeading());
+                        return Rotation2d.fromDegrees(m_navx.getFusedHeading());
+                }
                 //
                 // // We have to invert the angle of the NavX so that rotating the robot
                 // counter-clockwise makes the angle increase.
                 return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
                 // FIXME Is this right?
-                //return Rotation2d.fromDegrees(gyro.getAngle());
+                // return Rotation2d.fromDegrees(gyro.getAngle());
         }
 
         public void drive(ChassisSpeeds chassisSpeeds) {
