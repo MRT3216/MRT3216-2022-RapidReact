@@ -79,8 +79,8 @@ public class RobotContainer implements Loggable {
         if (driveSystem != null && controller != null) {
             driveSystem.setDefaultCommand(new TeleDrive(
                     driveSystem,
-                    () -> OIUtils.modifyAxis(controller.getLeftY()) * SwerveSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-                    () -> OIUtils.modifyAxis(controller.getLeftX()) * SwerveSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+                    () -> OIUtils.modifyAxis(-controller.getLeftY()) * SwerveSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+                    () -> OIUtils.modifyAxis(-controller.getLeftX()) * SwerveSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
                     () -> OIUtils.modifyAxis(controller.getRightX())
                             * SwerveSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
                     true));
