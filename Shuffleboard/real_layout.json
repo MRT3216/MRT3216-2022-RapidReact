@@ -1,0 +1,177 @@
+{
+  "tabPane": [
+    {
+      "title": "Driver",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "3,3": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Basic FMS Info",
+              "_source0": "network_table:///FMSInfo",
+              "_title": "FMS Info"
+            }
+          },
+          "2,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///FMSInfo/IsRedAlliance",
+              "_title": "Alliance",
+              "Colors/Color when true": "#FF0000FF",
+              "Colors/Color when false": "#0000FFFF"
+            }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///chameleon-vision/PS Eye/targetPitch",
+              "_title": "Target Pitch"
+            }
+          },
+          "7,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///chameleon-vision/PS Eye/targetYaw",
+              "_title": "Target Yaw"
+            }
+          },
+          "1,0": {
+            "size": [
+              2,
+              3
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///chameleon-vision/PS Eye/isValid",
+              "_title": "Target Found",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "6,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Voltage View",
+              "_source0": "network_table:///Shuffleboard/RobotContainer/PDB/Voltage",
+              "_title": "Voltage",
+              "Range/Min": 6.0,
+              "Range/Max": 13.0,
+              "Range/Center": 6.0,
+              "Visuals/Orientation": "HORIZONTAL",
+              "Visuals/Number of tick marks": 5
+            }
+          },
+          "6,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/RobotContainer/Hood Angle",
+              "_title": "Hood Angle"
+            }
+          },
+          "6,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///Shuffleboard/RobotContainer/LED Ring",
+              "_title": "LED Ring"
+            }
+          },
+          "7,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///Shuffleboard/RobotContainer/LED Brightness Level",
+              "_title": "Brightness",
+              "Slider Settings/Min": 0.0,
+              "Slider Settings/Max": 1.0,
+              "Slider Settings/Block increment": 0.25,
+              "Visuals/Display value": true
+            }
+          },
+          "1,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/RobotContainer/Pitch Adjustment",
+              "_title": "Pitch Adjustment"
+            }
+          },
+          "7,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[0]",
+              "_title": "Autonomous"
+            }
+          },
+          "3,0": {
+            "size": [
+              3,
+              3
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://USB Camera-B4.09.24.1",
+              "_title": "USB Camera-B4.09.24.1",
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": false,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
+            }
+          }
+        }
+      }
+    }
+  ],
+  "windowGeometry": {
+    "x": 2711.0,
+    "y": 309.0,
+    "width": 1366.0,
+    "height": 716.0
+  }
+}

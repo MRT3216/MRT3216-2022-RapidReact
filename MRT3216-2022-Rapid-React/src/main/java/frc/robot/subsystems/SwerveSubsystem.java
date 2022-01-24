@@ -38,11 +38,13 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.settings.RobotMap;
+import io.github.oblarg.oblog.Loggable;
+import io.github.oblarg.oblog.annotations.Config;
+import io.github.oblarg.oblog.annotations.Log;
 
-public class SwerveSubsystem extends SubsystemBase {
+public class SwerveSubsystem extends SubsystemBase implements Loggable {
     /**
      * The maximum voltage that will be delivered to the drive motors.
      * <p>
@@ -50,7 +52,6 @@ public class SwerveSubsystem extends SubsystemBase {
      * useful during initial testing of the robot.
      */
     public static final double MAX_VOLTAGE = 12.0;
-    // FIXME Measure the drivetrain's maximum velocity or calculate the theoretical.
     // The formula for calculating the theoretical maximum velocity is:
     // <Motor free speed RPM> / 60 * <Drive reduction> * <Wheel diameter meters> *
     // pi
@@ -67,7 +68,7 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0
             * SdsModuleConfigurations.MK3_STANDARD.getDriveReduction()
-            * SdsModuleConfigurations.MK3_STANDARD.getWheelDiameter() * Math.PI * .25;
+            * SdsModuleConfigurations.MK3_STANDARD.getWheelDiameter() * Math.PI;
 
     /**
      * The maximum angular velocity of the robot in radians per second.
@@ -104,7 +105,6 @@ public class SwerveSubsystem extends SubsystemBase {
     private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
     public SwerveSubsystem() {
-        System.out.println("Max velocity: " + MAX_VELOCITY_METERS_PER_SECOND);
         ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
         m_frontLeftModule = Mk3SwerveModuleHelper.createFalcon500(
@@ -146,10 +146,6 @@ public class SwerveSubsystem extends SubsystemBase {
         m_swerveModules = new SwerveModule[] { m_frontLeftModule, m_frontRightModule,
                 m_backLeftModule,
                 m_backRightModule };
-
-        // tab.addNumber("Gyroscope Angle", () -> (360 - m_navx.getYaw()));
-        // tab.addNumber("Pose X", () -> m_odometry.getPoseMeters().getX());
-        // tab.addNumber("Pose Y", () -> m_odometry.getPoseMeters().getY());
     }
 
     /**
@@ -157,7 +153,6 @@ public class SwerveSubsystem extends SubsystemBase {
      * robot is currently facing to the 'forwards' direction.
      */
     public void zeroGyroscope() {
-        System.out.println("Zeroing gyroscope...");
         m_navx.zeroYaw();
         // Reset the odometry with new 0 heading but same position.
         m_odometry.resetPosition(m_odometry.getPoseMeters(), new Rotation2d());
@@ -219,6 +214,93 @@ public class SwerveSubsystem extends SubsystemBase {
      * @return The current state of the module.
      */
     public SwerveModuleState getState(SwerveModule module) {
-        return new SwerveModuleState(module.getDriveVelocity(), Rotation2d.fromDegrees(module.getSteerAngle()));
+        return new SwerveModuleState(module.getDriveVelocity(), new Rotation2d(module.getSteerAngle()));
     }
+
+    // region Logging
+
+    @Log.Gyro(name = "Robot Angle", rowIndex = 2, columnIndex = 5)
+    private AHRS getGyro() {
+        return m_navx;
+    }
+
+    @Log.NumberBar(name = "FL Velocity", min = -5, max = 5, rowIndex = 2, columnIndex = 4, height = 1, width = 1)
+    public double getFrontLeftSpeed() {
+        return m_frontLeftModule.getDriveVelocity();
+    }
+
+    @Log.Dial(name = "FL Angle", min = -90, max = 90, rowIndex = 2, columnIndex = 3, height = 1, width = 1)
+    public double getFrontLeftAngle() {
+        return Math.IEEEremainder(m_frontLeftModule.getSteerAngle(), 180);
+    }
+
+    @Log.NumberBar(name = "FR Velocity", min = -5, max = 5, rowIndex = 2, columnIndex = 7, height = 1, width = 1)
+    public double getFrontRightSpeed() {
+        return m_frontRightModule.getDriveVelocity();
+    }
+
+    @Log.Dial(name = "FR Angle", min = -90, max = 90, rowIndex = 2, columnIndex = 8, height = 1, width = 1)
+    public double getFrontRightAngle() {
+        return Math.IEEEremainder(m_frontRightModule.getSteerAngle(), 180);
+    }
+
+    @Log.NumberBar(name = "BL Velocity", min = -5, max = 5, rowIndex = 3, columnIndex = 4, height = 1, width = 1)
+    public double getBackLeftSpeed() {
+        return m_backLeftModule.getDriveVelocity();
+    }
+
+    @Log.Dial(name = "BL Angle", min = -90, max = 90, rowIndex = 3, columnIndex = 3, height = 1, width = 1)
+    public double getBackLeftAngle() {
+        return Math.IEEEremainder(m_backLeftModule.getSteerAngle(), 180);
+    }
+
+    @Log.NumberBar(name = "BR Velocity", min = -5, max = 5, rowIndex = 3, columnIndex = 7, height = 1, width = 1)
+    public double getBackRightSpeed() {
+        return m_backRightModule.getDriveVelocity();
+    }
+
+    @Log.Dial(name = "BR Angle", min = -90, max = 90, rowIndex = 3, columnIndex = 8, height = 1, width = 1)
+    public double getBackRightAngle() {
+        return Math.IEEEremainder(m_backRightModule.getSteerAngle(), 180);
+    }
+
+    @Log(rowIndex = 0, columnIndex = 5, height = 1, width = 1)
+    public double getXPos() {
+        return m_odometry.getPoseMeters().getX();
+        
+    }
+
+    @Log(rowIndex = 0, columnIndex = 6, height = 1, width = 1)
+    public double getYPos() {
+        return m_odometry.getPoseMeters().getY();
+    }
+
+    @Log.BooleanBox(rowIndex = 1, columnIndex = 5)
+    public boolean getGyroInterference() {
+        return this.m_navx.isMagneticDisturbance();
+    }
+
+    @Config.ToggleButton(name = "ResetGyroAndOdometry", defaultValue = false, rowIndex = 3, columnIndex = 0, height = 1, width = 2)
+    public void resetGyroAndOdometry(boolean _input) {
+        if (_input) {
+            this.zeroGyroscope();
+            _input = false;
+        }
+    }
+
+    /*
+     * @Config.ToggleButton(name = "RE-Zero Swerve Angle", defaultValue = false,
+     * rowIndex = 4, columnIndex = 0, height = 1, width = 2)
+     * public void reZeroSwerveDrive(boolean _input) {
+     * if (_input) {
+     * SwerveMap.FrontRightSwerveModule.REzeroSwerveAngle();
+     * SwerveMap.BackRightSwerveModule.REzeroSwerveAngle();
+     * SwerveMap.FrontLeftSwerveModule.REzeroSwerveAngle();
+     * SwerveMap.BackLeftSwerveModule.REzeroSwerveAngle();
+     * _input = false;
+     * }
+     * }
+     */
+
+    // endregion
 }

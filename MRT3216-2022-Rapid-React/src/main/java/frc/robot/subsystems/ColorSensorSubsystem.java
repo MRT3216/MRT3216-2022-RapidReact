@@ -5,8 +5,9 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.settings.Constants;
 import frc.robot.settings.RobotMap;
+import io.github.oblarg.oblog.Loggable;
 
-public class ColorSensorSubsystem extends SubsystemBase {
+public class ColorSensorSubsystem extends SubsystemBase implements Loggable {
     private ColorSensorV3 colorSens = new ColorSensorV3(RobotMap.ROBOT.SENSORS.colorSensor);
 
     public ColorSensorSubsystem() {
