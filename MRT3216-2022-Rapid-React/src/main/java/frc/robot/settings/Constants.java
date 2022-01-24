@@ -7,22 +7,64 @@
 
 package frc.robot.settings;
 
+import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
+
 import edu.wpi.first.wpilibj.Filesystem;
 
 public class Constants {
     public static final class Drivetrain {
-        public static final double LEFT_FRONT_STEER_OFFSET = -Math.toRadians(239.4 - 180); // TODO: set these values
-        public static final double RIGHT_FRONT_STEER_OFFSET = -Math.toRadians(278.1 - 180); // TODO: set these values
-        public static final double LEFT_REAR_STEER_OFFSET = -Math.toRadians(119.0 + 180); // TODO: set these values
-        public static final double RIGHT_REAR_STEER_OFFSET = -Math.toRadians(43 + 180); // TODO: set these values
+        public static final double LEFT_FRONT_STEER_OFFSET = -Math.toRadians(239.4); // TODO: set these values
+        public static final double RIGHT_FRONT_STEER_OFFSET = -Math.toRadians(278.1); // TODO: set these values
+        public static final double LEFT_REAR_STEER_OFFSET = -Math.toRadians(119.0); // TODO: set these values
+        public static final double RIGHT_REAR_STEER_OFFSET = -Math.toRadians(43); // TODO: set these values
 
         public static final double WHEELBASE_METERS = 0.7; // TODO: check this value
         public static final double TRACKWIDTH_METERS = 0.53; // TODO check this value
+
+        /**
+         * The maximum voltage that will be delivered to the drive motors.
+         * <p>
+         * This can be reduced to cap the robot's maximum speed. Typically, this is
+         * useful during initial testing of the robot.
+         */
+        public static final double MAX_VOLTAGE = 3.0;
+        // The formula for calculating the theoretical maximum velocity is:
+        // <Motor free speed RPM> / 60 * <Drive reduction> * <Wheel diameter meters> *
+        // pi
+        // By default this value is setup for a Mk3 standard module using Falcon500s to
+        // drive.
+        // An example of this constant for a Mk4 L2 module with NEOs to drive is:
+        // 5880.0 / 60.0 / SdsModuleConfigurations.MK4_L2.getDriveReduction() *
+        // SdsModuleConfigurations.MK4_L2.getWheelDiameter() * Math.PI
+        /**
+         * The maximum velocity of the robot in meters per second.
+         * <p>
+         * This is a measure of how fast the robot should be able to drive in a straight
+         * line.
+         */
+        public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0
+                * SdsModuleConfigurations.MK3_STANDARD.getDriveReduction()
+                * SdsModuleConfigurations.MK3_STANDARD.getWheelDiameter() * Math.PI;
+
+        /**
+         * The maximum angular velocity of the robot in radians per second.
+         * <p>
+         * This is a measure of how fast the robot can rotate in place.
+         */
+        // Here we calculate the theoretical maximum angular velocity. You can also
+        // replace this with a measured amount.
+        public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = MAX_VELOCITY_METERS_PER_SECOND
+                / Math.hypot(TRACKWIDTH_METERS / 2.0, WHEELBASE_METERS / 2.0);
+
+        public static final double MAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_PER_SECOND = Math.PI;
     }
 
     public static final class Auto {
         public static double delayTime = 1;
         public static double driveTime = 1;
+        // TODO: Tune these values
+        public final static Gains kAutoPositionGains = new Gains(.69, 0, 0);
+        public final static Gains kAutoThetaGains = new Gains(.69, 0, 0);
     }
 
     public static final class OI {

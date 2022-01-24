@@ -25,7 +25,6 @@ import static frc.robot.settings.RobotMap.ROBOT.DRIVETRAIN.RIGHT_REAR_DRIVE;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.swervedrivespecialties.swervelib.Mk3SwerveModuleHelper;
-import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -39,47 +38,13 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.settings.Constants.Drivetrain;
 import frc.robot.settings.RobotMap;
 import io.github.oblarg.oblog.Loggable;
 import io.github.oblarg.oblog.annotations.Config;
-import io.github.oblarg.oblog.annotations.Log;
+import io.github.oblarg.oblog.annotations.Log;;
 
 public class SwerveSubsystem extends SubsystemBase implements Loggable {
-    /**
-     * The maximum voltage that will be delivered to the drive motors.
-     * <p>
-     * This can be reduced to cap the robot's maximum speed. Typically, this is
-     * useful during initial testing of the robot.
-     */
-    public static final double MAX_VOLTAGE = 12.0;
-    // The formula for calculating the theoretical maximum velocity is:
-    // <Motor free speed RPM> / 60 * <Drive reduction> * <Wheel diameter meters> *
-    // pi
-    // By default this value is setup for a Mk3 standard module using Falcon500s to
-    // drive.
-    // An example of this constant for a Mk4 L2 module with NEOs to drive is:
-    // 5880.0 / 60.0 / SdsModuleConfigurations.MK4_L2.getDriveReduction() *
-    // SdsModuleConfigurations.MK4_L2.getWheelDiameter() * Math.PI
-    /**
-     * The maximum velocity of the robot in meters per second.
-     * <p>
-     * This is a measure of how fast the robot should be able to drive in a straight
-     * line.
-     */
-    public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0
-            * SdsModuleConfigurations.MK3_STANDARD.getDriveReduction()
-            * SdsModuleConfigurations.MK3_STANDARD.getWheelDiameter() * Math.PI;
-
-    /**
-     * The maximum angular velocity of the robot in radians per second.
-     * <p>
-     * This is a measure of how fast the robot can rotate in place.
-     */
-    // Here we calculate the theoretical maximum angular velocity. You can also
-    // replace this with a measured amount.
-    public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = MAX_VELOCITY_METERS_PER_SECOND
-            / Math.hypot(TRACKWIDTH_METERS / 2.0, WHEELBASE_METERS / 2.0);
-
     private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
             // Front left
             new Translation2d(TRACKWIDTH_METERS / 2.0, WHEELBASE_METERS / 2.0),
@@ -153,9 +118,15 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
      * robot is currently facing to the 'forwards' direction.
      */
     public void zeroGyroscope() {
+        System.out.println("Zeroing Gyroscope");
         m_navx.zeroYaw();
         // Reset the odometry with new 0 heading but same position.
         m_odometry.resetPosition(m_odometry.getPoseMeters(), new Rotation2d());
+    }
+
+    public void resetXYPosition() {
+        // Reset the odometry with new 0 heading and zero Position.
+        m_odometry.resetPosition(new Pose2d(), new Rotation2d());
     }
 
     /**
@@ -193,11 +164,11 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
     @Override
     public void periodic() {
         SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
-        SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
+        SwerveDriveKinematics.desaturateWheelSpeeds(states, Drivetrain.MAX_VELOCITY_METERS_PER_SECOND);
 
         for (int i = 0; i < m_swerveModules.length; i++) {
             m_swerveModules[i].set(
-                    states[i].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
+                    states[i].speedMetersPerSecond / Drivetrain.MAX_VELOCITY_METERS_PER_SECOND * Drivetrain.MAX_VOLTAGE,
                     states[i].angle.getRadians());
         }
 
@@ -219,71 +190,93 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
 
     // region Logging
 
-    @Log.Gyro(name = "Robot Angle", rowIndex = 2, columnIndex = 5)
+    @Log.Gyro(name = "Robot Angle", rowIndex = 0, columnIndex = 5)
     private AHRS getGyro() {
         return m_navx;
     }
 
-    @Log.NumberBar(name = "FL Velocity", min = -5, max = 5, rowIndex = 2, columnIndex = 4, height = 1, width = 1)
+    @Log.NumberBar(name = "FL Velocity", min = -5, max = 5, rowIndex = 0, columnIndex = 4, height = 1, width = 1)
     public double getFrontLeftSpeed() {
         return m_frontLeftModule.getDriveVelocity();
     }
 
-    @Log.Dial(name = "FL Angle", min = -90, max = 90, rowIndex = 2, columnIndex = 3, height = 1, width = 1)
+    @Log.Dial(name = "FL Angle", min = -90, max = 90, rowIndex = 0, columnIndex = 3, height = 1, width = 1)
     public double getFrontLeftAngle() {
-        return Math.IEEEremainder(m_frontLeftModule.getSteerAngle(), 180);
+        return Math.IEEEremainder(Math.toDegrees(m_frontLeftModule.getSteerAngle()), 180);
     }
 
-    @Log.NumberBar(name = "FR Velocity", min = -5, max = 5, rowIndex = 2, columnIndex = 7, height = 1, width = 1)
+    @Log.NumberBar(name = "FR Velocity", min = -5, max = 5, rowIndex = 0, columnIndex = 7, height = 1, width = 1)
     public double getFrontRightSpeed() {
         return m_frontRightModule.getDriveVelocity();
     }
 
-    @Log.Dial(name = "FR Angle", min = -90, max = 90, rowIndex = 2, columnIndex = 8, height = 1, width = 1)
+    @Log.Dial(name = "FR Angle", min = -90, max = 90, rowIndex = 0, columnIndex = 8, height = 1, width = 1)
     public double getFrontRightAngle() {
-        return Math.IEEEremainder(m_frontRightModule.getSteerAngle(), 180);
+        return Math.IEEEremainder(Math.toDegrees(m_frontRightModule.getSteerAngle()), 180);
     }
 
-    @Log.NumberBar(name = "BL Velocity", min = -5, max = 5, rowIndex = 3, columnIndex = 4, height = 1, width = 1)
+    @Log.NumberBar(name = "BL Velocity", min = -5, max = 5, rowIndex = 1, columnIndex = 4, height = 1, width = 1)
     public double getBackLeftSpeed() {
         return m_backLeftModule.getDriveVelocity();
     }
 
-    @Log.Dial(name = "BL Angle", min = -90, max = 90, rowIndex = 3, columnIndex = 3, height = 1, width = 1)
+    @Log.Dial(name = "BL Angle", min = -90, max = 90, rowIndex = 1, columnIndex = 3, height = 1, width = 1)
     public double getBackLeftAngle() {
-        return Math.IEEEremainder(m_backLeftModule.getSteerAngle(), 180);
+        return Math.IEEEremainder(Math.toDegrees(m_backLeftModule.getSteerAngle()), 180);
     }
 
-    @Log.NumberBar(name = "BR Velocity", min = -5, max = 5, rowIndex = 3, columnIndex = 7, height = 1, width = 1)
+    @Log.NumberBar(name = "BR Velocity", min = -5, max = 5, rowIndex = 1, columnIndex = 7, height = 1, width = 1)
     public double getBackRightSpeed() {
         return m_backRightModule.getDriveVelocity();
     }
 
-    @Log.Dial(name = "BR Angle", min = -90, max = 90, rowIndex = 3, columnIndex = 8, height = 1, width = 1)
+    @Log.Dial(name = "BR Angle", min = -90, max = 90, rowIndex = 1, columnIndex = 8, height = 1, width = 1)
     public double getBackRightAngle() {
-        return Math.IEEEremainder(m_backRightModule.getSteerAngle(), 180);
+        return Math.IEEEremainder(Math.toDegrees(m_backRightModule.getSteerAngle()), 180);
     }
 
-    @Log(rowIndex = 0, columnIndex = 5, height = 1, width = 1)
+    @Log(rowIndex = 2, columnIndex = 5, height = 1, width = 1)
     public double getXPos() {
         return m_odometry.getPoseMeters().getX();
-        
     }
 
-    @Log(rowIndex = 0, columnIndex = 6, height = 1, width = 1)
+    @Log(rowIndex = 2, columnIndex = 6, height = 1, width = 1)
     public double getYPos() {
         return m_odometry.getPoseMeters().getY();
     }
 
-    @Log.BooleanBox(rowIndex = 1, columnIndex = 5)
+    @Log(rowIndex = 3, columnIndex = 5, height = 1, width = 1)
+    public double getRobotXVelocity() {
+        return m_chassisSpeeds.vxMetersPerSecond;
+    }
+
+    @Log(rowIndex = 3, columnIndex = 6, height = 1, width = 1)
+    public double getRobotYVelocity() {
+        return m_chassisSpeeds.vyMetersPerSecond;
+    }
+
+    @Log(rowIndex = 3, columnIndex = 7, height = 1, width = 1)
+    public double getRobotThetaVelocity() {
+        return m_chassisSpeeds.omegaRadiansPerSecond;
+    }
+
+    @Log.BooleanBox(rowIndex = 1, columnIndex = 1)
     public boolean getGyroInterference() {
         return this.m_navx.isMagneticDisturbance();
     }
 
-    @Config.ToggleButton(name = "ResetGyroAndOdometry", defaultValue = false, rowIndex = 3, columnIndex = 0, height = 1, width = 2)
+    @Config.ToggleButton(name = "ResetGyroAndOdometry", defaultValue = false, rowIndex = 2, columnIndex = 0, height = 1, width = 2)
     public void resetGyroAndOdometry(boolean _input) {
         if (_input) {
             this.zeroGyroscope();
+            _input = false;
+        }
+    }
+
+    @Config.ToggleButton(name = "ResetPosition", defaultValue = false, rowIndex = 3, columnIndex = 0, height = 1, width = 2)
+    public void resetPosition(boolean _input) {
+        if (_input) {
+            this.resetXYPosition();
             _input = false;
         }
     }

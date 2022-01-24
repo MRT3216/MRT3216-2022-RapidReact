@@ -75,7 +75,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        robotContainer.initSubsystems();
+        // robotContainer.initSubsystems();
         m_autonomousCommand = robotContainer.getAutonomousCommand();
         if (robotContainer.getDriveSystem() != null) {
             // FIXME Do we need this???
@@ -102,8 +102,6 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
-
-        robotContainer.getDriveSystem().zeroGyroscope();
     }
 
     /** This function is called periodically during operator control. */

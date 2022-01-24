@@ -13,6 +13,8 @@ import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.settings.Constants.Auto;
+import frc.robot.settings.Constants.Drivetrain;
 import frc.robot.subsystems.SwerveSubsystem;
 
 /* Abstract class to drive trajectories with a swerve drive robot */
@@ -30,13 +32,17 @@ public abstract class DriveTrajectory extends CommandBase {
         this.trajectory = trajectory;
 
         this.timer = new Timer();
-        controller = new HolonomicDriveController(new PIDController(0.4, 0, 0), // x controller
-                new PIDController(0.4, 0, 0), // y controller
-                new ProfiledPIDController(1, 0, 0, // Theta controller
-                        new TrapezoidProfile.Constraints(SwerveSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
-                                Math.PI))); // Max angular acceleration
+        controller = new HolonomicDriveController(
+                new PIDController(Auto.kAutoPositionGains.kP, Auto.kAutoPositionGains.kI, Auto.kAutoPositionGains.kD), // x
+                                                                                                                       // controller
+                new PIDController(Auto.kAutoPositionGains.kP, Auto.kAutoPositionGains.kI, Auto.kAutoPositionGains.kD), // y
+                                                                                                                       // controller
+                new ProfiledPIDController(Auto.kAutoThetaGains.kP, Auto.kAutoThetaGains.kI, Auto.kAutoThetaGains.kD, // Theta
+                                                                                                                     // controller
+                        new TrapezoidProfile.Constraints(Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
+                                Drivetrain.MAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_PER_SECOND))); // Max angular
+                                                                                                      // acceleration
         addRequirements(swerveSubsystem);
-
     }
 
     // Called when the command is initially scheduled.

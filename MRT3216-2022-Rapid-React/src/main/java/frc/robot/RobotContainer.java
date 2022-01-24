@@ -9,6 +9,7 @@ import frc.robot.OI.Gamepad;
 import frc.robot.OI.OIUtils;
 import frc.robot.commands.TeleDrive;
 import frc.robot.settings.Constants;
+import frc.robot.settings.Constants.Drivetrain;
 import frc.robot.settings.RobotMap;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -78,10 +79,10 @@ public class RobotContainer implements Loggable {
         if (driveSystem != null && controller != null) {
             driveSystem.setDefaultCommand(new TeleDrive(
                     driveSystem,
-                    () -> OIUtils.modifyAxis(controller.getLeftY()) * SwerveSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-                    () -> OIUtils.modifyAxis(controller.getLeftX()) * SwerveSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-                    () -> OIUtils.modifyAxis(controller.getRightX())
-                            * SwerveSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
+                    () -> OIUtils.modifyAxis(-controller.getLeftY()) * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
+                    () -> OIUtils.modifyAxis(-controller.getLeftX()) * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
+                    () -> OIUtils.modifyAxis(-controller.getRightX())
+                            * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
                     true));
         }
     }
