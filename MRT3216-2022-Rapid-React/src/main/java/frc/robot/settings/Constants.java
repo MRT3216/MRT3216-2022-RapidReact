@@ -27,7 +27,7 @@ public class Constants {
          * This can be reduced to cap the robot's maximum speed. Typically, this is
          * useful during initial testing of the robot.
          */
-        public static final double MAX_VOLTAGE = 3.0;
+        public static final double MAX_VOLTAGE = 12.0;
         // The formula for calculating the theoretical maximum velocity is:
         // <Motor free speed RPM> / 60 * <Drive reduction> * <Wheel diameter meters> *
         // pi
@@ -64,7 +64,7 @@ public class Constants {
         public static double driveTime = 1;
         // TODO: Tune these values
         public final static Gains kAutoPositionGains = new Gains(.69, 0, 0);
-        public final static Gains kAutoThetaGains = new Gains(.69, 0, 0);
+        public final static Gains kAutoThetaGains = new Gains(1.7, 0, 0);
     }
 
     public static final class OI {

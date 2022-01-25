@@ -73,7 +73,7 @@ public class AutoChooser {
         chooser = new SendableChooser<>();
         chooser.setDefaultOption("Do Nothing", new WaitCommand(0));
         chooser.addOption("Straight, Holonomic Trajectory",
-                new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Straight", 2, 1)));
+                new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Straight", 1, .5)));
         chooser.addOption("Square Path, Holonomic Trajectory",
                 new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Square 1", 2, 1)));
         chooser.addOption("Square Path, Constant Heading", new DriveConstantHeadingTrajectory(swerveSystem,
