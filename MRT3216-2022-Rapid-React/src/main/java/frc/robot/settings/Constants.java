@@ -64,7 +64,7 @@ public class Constants {
         public static double driveTime = 1;
         // TODO: Tune these values
         public final static Gains kAutoPositionGains = new Gains(.69, 0, 0);
-        public final static Gains kAutoThetaGains = new Gains(1.7, 0, 0);
+        public final static Gains kAutoThetaGains = new Gains(2, 0, 0);
     }
 
     public static final class OI {

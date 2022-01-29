@@ -69,6 +69,8 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
 
     private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
+    private double thetaP;
+
     public SwerveSubsystem() {
         ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
@@ -279,6 +281,15 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
             this.resetXYPosition();
             _input = false;
         }
+    }
+
+    @Config.NumberSlider(name = "Theta P", defaultValue = 2, rowIndex = 2, columnIndex = 4, height=1, width=1)
+    public void setThetaP(double thetaP){
+        this.thetaP = thetaP;
+    }
+
+    public double getThetaP(){
+        return this.thetaP;
     }
 
     /*

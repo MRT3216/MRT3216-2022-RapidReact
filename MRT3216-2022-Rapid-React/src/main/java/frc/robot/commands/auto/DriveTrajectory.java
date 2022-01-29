@@ -37,7 +37,7 @@ public abstract class DriveTrajectory extends CommandBase {
                                                                                                                        // controller
                 new PIDController(Auto.kAutoPositionGains.kP, Auto.kAutoPositionGains.kI, Auto.kAutoPositionGains.kD), // y
                                                                                                                        // controller
-                new ProfiledPIDController(Auto.kAutoThetaGains.kP, Auto.kAutoThetaGains.kI, Auto.kAutoThetaGains.kD, // Theta
+                new ProfiledPIDController(swerveSubsystem.getThetaP(), Auto.kAutoThetaGains.kI, Auto.kAutoThetaGains.kD, // Theta
                                                                                                                      // controller
                         new TrapezoidProfile.Constraints(Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
                                 Drivetrain.MAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_PER_SECOND))); // Max angular

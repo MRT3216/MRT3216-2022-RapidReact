@@ -38,6 +38,8 @@ public class AutoChooser {
     private LimelightSubsystem limelightSystem;
 
     private AutoChooser() {
+        chooser = new SendableChooser<>();
+        chooser.setDefaultOption("Do Nothing", new WaitCommand(0));
         this.robotContainer = RobotContainer.getInstance();
         this.swerveSystem = robotContainer.getDriveSystem();
         this.limelightSystem = LimelightSubsystem.getInstance();
@@ -70,8 +72,8 @@ public class AutoChooser {
     }
 
     public void populateAutoChooser() {
-        chooser = new SendableChooser<>();
-        chooser.setDefaultOption("Do Nothing", new WaitCommand(0));
+        chooser.addOption("Crazy, Holonomic Trajectory",
+                new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Crazy", 2, 1)));
         chooser.addOption("Straight, Holonomic Trajectory",
                 new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Straight", 1, .5)));
         chooser.addOption("Square Path, Holonomic Trajectory",
