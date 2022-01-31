@@ -38,7 +38,7 @@ public abstract class DriveTrajectory extends CommandBase {
                 new PIDController(Auto.kAutoPositionGains.kP, Auto.kAutoPositionGains.kI, Auto.kAutoPositionGains.kD), // y
                                                                                                                        // controller
                 new ProfiledPIDController(swerveSubsystem.getThetaP(), Auto.kAutoThetaGains.kI, Auto.kAutoThetaGains.kD, // Theta
-                                                                                                                     // controller
+                        // controller
                         new TrapezoidProfile.Constraints(Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
                                 Drivetrain.MAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_PER_SECOND))); // Max angular
                                                                                                       // acceleration
@@ -55,7 +55,6 @@ public abstract class DriveTrajectory extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-
         var goal = trajectory.sample(timer.get());
         var adjustedSpeeds = controller.calculate(swerveSubsystem.getCurrentRobotPose(), goal, getHeading(goal));
 

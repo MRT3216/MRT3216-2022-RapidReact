@@ -8,15 +8,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.OI.Gamepad;
 import frc.robot.OI.OIUtils;
 import frc.robot.commands.TeleDrive;
-import frc.robot.settings.Constants;
 import frc.robot.settings.Constants.Drivetrain;
 import frc.robot.settings.RobotMap;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
-import io.github.oblarg.oblog.Loggable;
 import io.github.oblarg.oblog.Logger;
-import io.github.oblarg.oblog.annotations.Config;
 
 // endregion
 
@@ -27,7 +24,7 @@ import io.github.oblarg.oblog.annotations.Config;
  * scheduler calls). Instead, the structure of the robot (including subsystems,
  * commands, and button mappings) should be declared here.
  */
-public class RobotContainer implements Loggable {
+public class RobotContainer {
     // region Fields
 
     private static RobotContainer instance;
@@ -94,16 +91,6 @@ public class RobotContainer implements Loggable {
      */
     public Command getAutonomousCommand() {
         return AutoChooser.getInstance().getAutoCommand();
-    }
-
-    @Config(name = "F Intake Speed", defaultValueNumeric = 0.55, rowIndex = 0, columnIndex = 3)
-    private void setForwardIntakeSpeed(final double speed) {
-        Constants.Intake.kForwardIntakeSpeed = speed;
-    }
-
-    @Config(name = "R Intake Speed", defaultValueNumeric = 0.55, rowIndex = 1, columnIndex = 3)
-    private void setReverseIntakeSpeed(final double speed) {
-        Constants.Intake.kReverseIntakeSpeed = speed;
     }
 
     public static RobotContainer getInstance() {

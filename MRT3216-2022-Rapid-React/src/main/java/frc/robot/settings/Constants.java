@@ -63,8 +63,8 @@ public class Constants {
         public static double delayTime = 1;
         public static double driveTime = 1;
         // TODO: Tune these values
-        public final static Gains kAutoPositionGains = new Gains(.69, 0, 0);
-        public final static Gains kAutoThetaGains = new Gains(2, 0, 0);
+        public static final Gains kAutoPositionGains = new Gains(.69, 0, 0);
+        public static final Gains kAutoThetaGains = new Gains(2, 0, 0);
     }
 
     public static final class OI {
@@ -108,7 +108,7 @@ public class Constants {
             // Derivative gain
             public static final double kD = .01;
 
-            public final static Gains kShooterGains = new Gains(kP, kI, kD, 1023.0 / 20660.0, 300, 1.00);
+            public static final Gains kShooterGains = new Gains(kP, kI, kD, 1023.0 / 20660.0, 300, 1.00);
 
             /**
              * Which PID slot to pull gains from. Starting 2018, you can choose from 0,1,2
@@ -165,5 +165,9 @@ public class Constants {
     public static final class Directories {
         public static final String deployDirectory = Filesystem.getDeployDirectory().getAbsolutePath();
         public static final String pathsDirectory = deployDirectory + "/paths/";
+    }
+
+    public static final class Limelight {
+        
     }
 }

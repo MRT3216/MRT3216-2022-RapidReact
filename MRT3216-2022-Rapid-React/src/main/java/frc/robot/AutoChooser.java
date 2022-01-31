@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.auto.DriveConstantHeadingTrajectory;
 import frc.robot.commands.auto.DriveDifferentialTrajectory;
 import frc.robot.commands.auto.DriveHolonomicTrajectory;
+import frc.robot.commands.auto.DriveSupplyHeadingTrajectory;
 import frc.robot.settings.Constants.Directories;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -71,21 +72,40 @@ public class AutoChooser {
         }
     }
 
-    public void populateAutoChooser() {
-        chooser.addOption("Crazy, Holonomic Trajectory",
-                new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Crazy", 2, 1)));
-        chooser.addOption("Straight, Holonomic Trajectory",
-                new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Straight", 1, .5)));
-        chooser.addOption("Square Path, Holonomic Trajectory",
-                new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Square 1", 2, 1)));
-        chooser.addOption("Square Path, Constant Heading", new DriveConstantHeadingTrajectory(swerveSystem,
-                PathPlanner.loadPath("Square 1", 2, 1), Rotation2d.fromDegrees(45)));
-        chooser.addOption("Bounce Path, Differential Trajectory",
-                new DriveDifferentialTrajectory(swerveSystem, PathPlanner.loadPath("Bounce 1", 2, 1)));
+    public void populateAutoChooser() {/*
+                                        * chooser.addOption("Crazy, Holonomic Trajectory",
+                                        * new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Crazy", 2,
+                                        * 1)));
+                                        * chooser.addOption("Straight, Holonomic Trajectory",
+                                        * new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Straight",
+                                        * 1, .5)));
+                                        * chooser.addOption("Square Path, Holonomic Trajectory",
+                                        * new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Square 1",
+                                        * 2, 1)));
+                                        * chooser.addOption("Square Path, Constant Heading", new
+                                        * DriveConstantHeadingTrajectory(swerveSystem,
+                                        * PathPlanner.loadPath("Square 1", 2, 1), Rotation2d.fromDegrees(45)));
+                                        * chooser.addOption("Bounce Path, Differential Trajectory",
+                                        * new DriveDifferentialTrajectory(swerveSystem,
+                                        * PathPlanner.loadPath("Bounce 1", 2, 1)));
+                                        */
         chooser.addOption("Bounce Path, Holonomic Trajectory",
                 new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Bounce 1", 2, 1)));
         chooser.addOption("Bounce Path, Constant Heading", new DriveConstantHeadingTrajectory(swerveSystem,
                 PathPlanner.loadPath("Bounce 1", 2, 1), Rotation2d.fromDegrees(45)));
+        /*
+         * chooser.addOption("Crazy, Targetted",
+         * new DriveSupplyHeadingTrajectory(swerveSystem, PathPlanner.loadPath("Crazy",
+         * 2, 1),
+         * () -> (limelightSystem.hasTarget() ? limelightSystem.getHorizontalOffset()
+         * : swerveSystem.getGyroscopeRotation().getDegrees())));
+         */
+        chooser.addOption("Side 2 Side, Holonomic",
+                new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Side", 2, 1)));
+        chooser.addOption("Side 2 Side, Targetted",
+                new DriveSupplyHeadingTrajectory(swerveSystem, PathPlanner.loadPath("Side", 2, 1),
+                        () -> (limelightSystem.hasTarget() ? limelightSystem.getHorizontalOffset()
+                                : swerveSystem.getGyroscopeRotation().getDegrees())));
 
         SmartDashboard.putData(chooser);
     }
