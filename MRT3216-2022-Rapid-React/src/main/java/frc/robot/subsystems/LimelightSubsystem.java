@@ -3,8 +3,11 @@ package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.settings.Constants.Limelight;
+import io.github.oblarg.oblog.Loggable;
+import io.github.oblarg.oblog.annotations.Log;
 
-public class LimelightSubsystem extends SubsystemBase {
+public class LimelightSubsystem extends SubsystemBase implements Loggable {
 	private static LimelightSubsystem instance;
 	private final NetworkTable limelightNT;
 
@@ -29,8 +32,9 @@ public class LimelightSubsystem extends SubsystemBase {
 	 * 
 	 * @return horizontal offset to target (-27 degrees to 27 degrees)
 	 */
+	@Log.NumberBar(name = "tx", rowIndex = 1, columnIndex = 1, height = 1, width = 1)
 	public double getHorizontalOffset() {
-		return limelightNT.getEntry("tx").getDouble(0.0);
+		return -limelightNT.getEntry("tx").getDouble(0.0);
 	}
 
 	/**
@@ -38,6 +42,7 @@ public class LimelightSubsystem extends SubsystemBase {
 	 * 
 	 * @return vertical offset to target (-20.5 degrees to 20.5 degrees)
 	 */
+	@Log.NumberBar(name = "ty", rowIndex = 1, columnIndex = 2, height = 1, width = 1)
 	public double getVerticalOffset() {
 		return limelightNT.getEntry("ty").getDouble(0.0);
 	}
@@ -64,7 +69,7 @@ public class LimelightSubsystem extends SubsystemBase {
 			return true;
 		} catch (Exception e) {
 			return false;
-		}
+		}		
 	}
 
 	// modes:

@@ -10,6 +10,9 @@ import java.nio.file.Path;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+import com.pathplanner.lib.PathPlanner;
+
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -17,7 +20,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.auto.DriveConstantHeadingTrajectory;
+import frc.robot.commands.auto.DriveDifferentialTrajectory;
+import frc.robot.commands.auto.DriveHolonomicTrajectory;
+import frc.robot.commands.auto.DriveSupplyHeadingTrajectory;
 import frc.robot.settings.Constants.Directories;
+import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 
 /** Add your docs here. */
 public class AutoChooser {
@@ -26,9 +35,15 @@ public class AutoChooser {
     private Dictionary<String, Trajectory> trajectories;
     private SendableChooser<Command> chooser;
     private RobotContainer robotContainer;
+    private SwerveSubsystem swerveSystem;
+    private LimelightSubsystem limelightSystem;
 
     private AutoChooser() {
+        chooser = new SendableChooser<>();
+        chooser.setDefaultOption("Do Nothing", new WaitCommand(0));
         this.robotContainer = RobotContainer.getInstance();
+        this.swerveSystem = robotContainer.getDriveSystem();
+        this.limelightSystem = LimelightSubsystem.getInstance();
     }
 
     public static AutoChooser getInstance() {
@@ -57,41 +72,43 @@ public class AutoChooser {
         }
     }
 
-    public void populateAutoChooser() {
-        chooser = new SendableChooser<>();
-        chooser.setDefaultOption("Do Nothing", new WaitCommand(0));
-        // TODO: Fill this in with proper options
+    public void populateAutoChooser() {/*
+                                        * chooser.addOption("Crazy, Holonomic Trajectory",
+                                        * new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Crazy", 2,
+                                        * 1)));
+                                        * chooser.addOption("Straight, Holonomic Trajectory",
+                                        * new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Straight",
+                                        * 1, .5)));
+                                        * chooser.addOption("Square Path, Holonomic Trajectory",
+                                        * new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Square 1",
+                                        * 2, 1)));
+                                        * chooser.addOption("Square Path, Constant Heading", new
+                                        * DriveConstantHeadingTrajectory(swerveSystem,
+                                        * PathPlanner.loadPath("Square 1", 2, 1), Rotation2d.fromDegrees(45)));
+                                        * chooser.addOption("Bounce Path, Differential Trajectory",
+                                        * new DriveDifferentialTrajectory(swerveSystem,
+                                        * PathPlanner.loadPath("Bounce 1", 2, 1)));
+                                        */
+        chooser.addOption("Bounce Path, Holonomic Trajectory",
+                new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Bounce 1", 2, 1)));
+        chooser.addOption("Bounce Path, Constant Heading", new DriveConstantHeadingTrajectory(swerveSystem,
+                PathPlanner.loadPath("Bounce 1", 2, 1), Rotation2d.fromDegrees(45)));
         /*
-         * chooser.addOption("Auto Drive and Shoot", new
-         * WaitCommand(robotContainer.getAutoDelayTime()).andThen( new
-         * AutoDriveForTime(driveSystem, robotContainer.getAutoDriveTime()).andThen(new
-         * WaitCommand(1), new AutoAimAndShoot(neopixelRingSystem, visionLightsSystem,
-         * driveSystem, hoodSystem, () -> ntController.getYaw(), () ->
-         * ntController.getPitch(), () -> ntController.isValidTarget(), shooterSystem,
-         * indexerSystem, hopperSystem, intakeSystem))));
+         * chooser.addOption("Crazy, Targetted",
+         * new DriveSupplyHeadingTrajectory(swerveSystem, PathPlanner.loadPath("Crazy",
+         * 2, 1),
+         * () -> (limelightSystem.hasTarget() ? limelightSystem.getHorizontalOffset()
+         * : swerveSystem.getGyroscopeRotation().getDegrees())));
          */
+        chooser.addOption("Side 2 Side, Holonomic",
+                new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Side", 2, 1)));
+        chooser.addOption("Side 2 Side, Targetted",
+                new DriveSupplyHeadingTrajectory(swerveSystem, PathPlanner.loadPath("Side", 2, 1),
+                        () -> (limelightSystem.hasTarget() ? limelightSystem.getHorizontalOffset()
+                                : swerveSystem.getGyroscopeRotation().getDegrees())));
+
         SmartDashboard.putData(chooser);
     }
-    /*
-     * public Command generateAutoPath(String trajName) { final Trajectory
-     * trajectory = trajectories.get(trajName);
-     * 
-     * // RamseteCommand ramseteCommand = new RamseteCommand(trajectory,
-     * driveSystem::getPose, // new RamseteController(Auto.kRamseteB,
-     * Auto.kRamseteZeta), // new
-     * SimpleMotorFeedforward(Drive.ksVolts.getAsDouble(),
-     * Drive.kvVoltSecondsPerMeter.getAsDouble(), //
-     * Drive.kaVoltSecondsSquaredPerMeter.getAsDouble()), // Drive.kDriveKinematics,
-     * driveSystem::getWheelSpeeds, // new
-     * PIDController(Drive.kPDriveVel.getAsDouble(), 0, 0), // new
-     * PIDController(Drive.kPDriveVel.getAsDouble(), 0, 0), // // RamseteCommand
-     * passes volts to the callback // driveSystem::tankDriveVolts, driveSystem);
-     * 
-     * // // Run path following command // return new ShiftTransmission(driveSystem,
-     * !Constants.IS_LOW_GEAR) // .andThen(() ->
-     * driveSystem.resetOdometry(trajectory.getInitialPose())).andThen(
-     * ramseteCommand); }
-     */
 
     public Command getAutoCommand() {
         return chooser.getSelected();

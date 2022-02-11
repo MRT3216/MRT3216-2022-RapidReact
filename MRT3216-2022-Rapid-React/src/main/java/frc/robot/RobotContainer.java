@@ -3,21 +3,17 @@ package frc.robot;
 // region Imports
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.OI.Gamepad;
 import frc.robot.OI.OIUtils;
 import frc.robot.commands.TeleDrive;
-import frc.robot.settings.Constants;
+import frc.robot.settings.Constants.Drivetrain;
 import frc.robot.settings.RobotMap;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
-import io.github.oblarg.oblog.Loggable;
 import io.github.oblarg.oblog.Logger;
-import io.github.oblarg.oblog.annotations.Config;
-import io.github.oblarg.oblog.annotations.Log;
 
 // endregion
 
@@ -28,20 +24,17 @@ import io.github.oblarg.oblog.annotations.Log;
  * scheduler calls). Instead, the structure of the robot (including subsystems,
  * commands, and button mappings) should be declared here.
  */
-public class RobotContainer implements Loggable {
+public class RobotContainer {
     // region Fields
 
     private static RobotContainer instance;
-    public SwerveSubsystem driveSystem;
+    private SwerveSubsystem driveSystem;
 
     private CompressorSubsystem compressorSystem;
     private Gamepad controller;
     private LimelightSubsystem limelightSystem;
 
     // region Oblog Logging and Config
-
-    @Log.PowerDistribution(name = "PDB", rowIndex = 2, columnIndex = 4, height = 4)
-    private final PowerDistribution pdb;
 
     // endregion
     // endregion
@@ -50,13 +43,12 @@ public class RobotContainer implements Loggable {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     private RobotContainer() {
-        this.controller = new Gamepad(RobotMap.DRIVE_STATION.USB_XBOX_CONTROLLER);
-        this.driveSystem = new SwerveSubsystem();
-
-        this.pdb = new PowerDistribution();
-        this.limelightSystem = LimelightSubsystem.getInstance();
 
         this.initSubsystems();
+
+        // The first argument is the root container
+        // The second argument is whether logging and config should be given separate
+        // tabs
         Logger.configureLoggingAndConfig(this, false);
 
         // Configure the button bindings
@@ -64,9 +56,14 @@ public class RobotContainer implements Loggable {
     }
 
     public void initSubsystems() {
+        this.controller = new Gamepad(RobotMap.DRIVE_STATION.USB_XBOX_CONTROLLER);
+        this.driveSystem = new SwerveSubsystem();
+
         if (compressorSystem != null) {
             compressorSystem.start();
         }
+
+        this.limelightSystem = LimelightSubsystem.getInstance();
     }
 
     /**
@@ -77,21 +74,12 @@ public class RobotContainer implements Loggable {
      */
     private void configureButtonBindings() {
         if (driveSystem != null && controller != null) {
-            // Set the default drive command to split-stick arcade drive
-            /*
-             * driveSystem.setDefaultCommand(
-             * new TeleDrive(
-             * driveSystem,
-             * () -> controller.getLeftY(),
-             * () -> controller.getLeftX(),
-             * () -> controller.getRightX(), true));
-             */
             driveSystem.setDefaultCommand(new TeleDrive(
                     driveSystem,
-                    () -> OIUtils.modifyAxis(controller.getLeftY()) * SwerveSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-                    () -> OIUtils.modifyAxis(controller.getLeftX()) * SwerveSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-                    () -> OIUtils.modifyAxis(controller.getRightX())
-                            * SwerveSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
+                    () -> OIUtils.modifyAxis(-controller.getLeftY()) * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
+                    () -> OIUtils.modifyAxis(-controller.getLeftX()) * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
+                    () -> OIUtils.modifyAxis(-controller.getRightX())
+                            * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
                     true));
         }
     }
@@ -103,26 +91,6 @@ public class RobotContainer implements Loggable {
      */
     public Command getAutonomousCommand() {
         return AutoChooser.getInstance().getAutoCommand();
-    }
-
-    @Config(name = "Auto Drive Time", defaultValueNumeric = 1, rowIndex = 0, columnIndex = 4)
-    private void setAutoDriveTime(final double driveTime) {
-        Constants.Auto.driveTime = driveTime;
-    }
-
-    @Config(name = "Auto Delay", defaultValueNumeric = 0, rowIndex = 0, columnIndex = 5)
-    private void setAutoDelayTime(final double driveTime) {
-        Constants.Auto.delayTime = driveTime;
-    }
-
-    @Config(name = "F Intake Speed", defaultValueNumeric = 0.55, rowIndex = 0, columnIndex = 3)
-    private void setForwardIntakeSpeed(final double speed) {
-        Constants.Intake.kForwardIntakeSpeed = speed;
-    }
-
-    @Config(name = "R Intake Speed", defaultValueNumeric = 0.55, rowIndex = 1, columnIndex = 3)
-    private void setReverseIntakeSpeed(final double speed) {
-        Constants.Intake.kReverseIntakeSpeed = speed;
     }
 
     public static RobotContainer getInstance() {

@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import io.github.oblarg.oblog.Logger;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -31,8 +32,9 @@ public class Robot extends TimedRobot {
         // autonomous chooser on the dashboard.
         robotContainer = RobotContainer.getInstance();
         autoChooser = AutoChooser.getInstance();
-        //autoChooser.readTrajectories();
         autoChooser.populateAutoChooser();
+        robotContainer.getDriveSystem().calibrateGyroscope();
+        robotContainer.getDriveSystem().zeroGyroscope();
     }
 
     /**
@@ -54,11 +56,14 @@ public class Robot extends TimedRobot {
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
+        // Updates the values of oblog
+        Logger.updateEntries();
     }
 
     /** This function is called once each time the robot enters Disabled mode. */
     @Override
     public void disabledInit() {
+        AutoChooser.getInstance().populateAutoChooser();
     }
 
     @Override
@@ -71,7 +76,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        robotContainer.initSubsystems();
+        // robotContainer.initSubsystems();
         m_autonomousCommand = robotContainer.getAutonomousCommand();
         if (robotContainer.getDriveSystem() != null) {
             // FIXME Do we need this???

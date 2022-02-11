@@ -7,7 +7,6 @@
 
 package frc.robot.settings;
 
-import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.I2C;
 
 /**
@@ -16,18 +15,18 @@ import edu.wpi.first.wpilibj.I2C;
 public class RobotMap {
     public final static class ROBOT {
         public static class DRIVETRAIN {
-            public static final int LEFT_FRONT_DRIVE =  1;
+            public static final int LEFT_FRONT_DRIVE = 1;
             public static final int LEFT_FRONT_ANGLE = 2;
-            public static final int RIGHT_FRONT_DRIVE =  3;
+            public static final int RIGHT_FRONT_DRIVE = 3;
             public static final int RIGHT_FRONT_ANGLE = 4;
-            public static final int LEFT_REAR_DRIVE =  5;
+            public static final int LEFT_REAR_DRIVE = 5;
             public static final int LEFT_REAR_ANGLE = 6;
-            public static final int RIGHT_REAR_DRIVE =  7;
+            public static final int RIGHT_REAR_DRIVE = 7;
             public static final int RIGHT_REAR_ANGLE = 8;
-            public static final int LEFT_FRONT_CANCODER =  15;
-            public static final int RIGHT_FRONT_CANCODER =  16;
-            public static final int LEFT_REAR_CANCODER =  17;
-            public static final int RIGHT_REAR_CANCODER =  18;
+            public static final int LEFT_FRONT_CANCODER = 15;
+            public static final int RIGHT_FRONT_CANCODER = 16;
+            public static final int LEFT_REAR_CANCODER = 17;
+            public static final int RIGHT_REAR_CANCODER = 18;
         }
 
         public static class SHOOTER {
@@ -51,6 +50,7 @@ public class RobotMap {
 
         public static class SENSORS {
             public static final I2C.Port colorSensor = I2C.Port.kOnboard;
+            public static final I2C.Port navx = I2C.Port.kOnboard;
         }
     }
 

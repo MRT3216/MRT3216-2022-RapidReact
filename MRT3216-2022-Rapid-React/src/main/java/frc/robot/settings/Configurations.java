@@ -64,7 +64,8 @@ public class Configurations {
     public TalonFXConfiguration getRightFlywheelMotorConfiguration() {
         if (rightFlywheelMotorConfiguration == null) {
             rightFlywheelMotorConfiguration = new TalonFXConfiguration();
-            rightFlywheelMotorConfiguration.voltageCompSaturation = Flywheel.kVoltageCompSaturation;;
+            rightFlywheelMotorConfiguration.voltageCompSaturation = Flywheel.kVoltageCompSaturation;
+            ;
             rightFlywheelMotorConfiguration.slot2.kF = Flywheel.kShooterGains.kF;
             rightFlywheelMotorConfiguration.slot2.kP = Flywheel.kShooterGains.kP;
             rightFlywheelMotorConfiguration.slot2.kI = Flywheel.kShooterGains.kI;

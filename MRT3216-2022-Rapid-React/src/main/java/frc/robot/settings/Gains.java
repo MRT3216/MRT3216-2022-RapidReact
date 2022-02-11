@@ -19,4 +19,8 @@ public class Gains {
         kIzone = _kIzone;
         kPeakOutput = _kPeakOutput;
     }
+
+    public Gains(double _kP, double _kI, double _kDt) {
+        this(_kP, _kI, _kDt, 0, 0, 0);
+    }
 }
