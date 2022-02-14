@@ -53,6 +53,7 @@ public class RobotMap {
             public static final int trayColor = 0;
             public static final int shooterColor = 1;
             public static final int navx = 2;
+            public static final int breakBeam = 0;
 
         }
     }
