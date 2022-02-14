@@ -22,6 +22,8 @@ import static frc.robot.settings.RobotMap.ROBOT.DRIVETRAIN.RIGHT_FRONT_DRIVE;
 import static frc.robot.settings.RobotMap.ROBOT.DRIVETRAIN.RIGHT_REAR_ANGLE;
 import static frc.robot.settings.RobotMap.ROBOT.DRIVETRAIN.RIGHT_REAR_CANCODER;
 import static frc.robot.settings.RobotMap.ROBOT.DRIVETRAIN.RIGHT_REAR_DRIVE;
+import static frc.robot.settings.RobotMap.ROBOT.SENSORS.navx;
+import static frc.robot.subsystems.muxSubsystem.*;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.swervedrivespecialties.swervelib.Mk3SwerveModuleHelper;
@@ -55,7 +57,8 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
     private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, new Rotation2d());
 
     // connected over I2C
-    private final AHRS m_navx = new AHRS(RobotMap.ROBOT.SENSORS.navx, (byte) 200); // NavX
+    private final AHRS m_navx;
+    muxSubsystem mux = new muxSubsystem();
 
     // These are our modules. We initialize them in the constructor.
     private final SwerveModule m_frontLeftModule;
@@ -69,6 +72,32 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
     private double thetaP;
 
     public SwerveSubsystem() {
+        mux.setIndex(navx);
+        m_navx = new AHRS(mux.getPort(), (byte) 200) {
+            @Override
+            public void zeroYaw() {
+                mux.setIndex(navx);
+                super.zeroYaw();
+            }
+
+            @Override
+            public void calibrate() {
+                mux.setIndex(navx);
+                super.calibrate();
+            }
+
+            @Override
+            public float getYaw() {
+                mux.setIndex(navx);
+                return super.getYaw();
+            }
+
+            @Override
+            public boolean isMagneticDisturbance() {
+                mux.setIndex(navx);
+                return super.isMagneticDisturbance();
+            }
+        }; // NavX
         // ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
         m_frontLeftModule = Mk3SwerveModuleHelper.createFalcon500(
@@ -118,6 +147,7 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
      */
     public void zeroGyroscope() {
         System.out.println("Zeroing Gyroscope");
+        mux.setIndex(navx);
         m_navx.zeroYaw();
         // Reset the odometry with new 0 heading but same position.
         m_odometry.resetPosition(m_odometry.getPoseMeters(), new Rotation2d());
@@ -133,12 +163,14 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
      * it takes some time to run.
      */
     public void calibrateGyroscope() {
+        mux.setIndex(navx);
         m_navx.calibrate();
     }
 
     public Rotation2d getGyroscopeRotation() {
         // // We have to invert the angle of the NavX so that rotating the robot
         // counter-clockwise makes the angle increase.
+        mux.setIndex(navx);
         return Rotation2d.fromDegrees(360 - m_navx.getYaw());
     }
 
@@ -191,6 +223,7 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
 
     @Log.Gyro(name = "Robot Angle", rowIndex = 0, columnIndex = 5)
     private AHRS getGyro() {
+        mux.setIndex(navx);
         return m_navx;
     }
 
@@ -261,6 +294,7 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
 
     @Log.BooleanBox(rowIndex = 1, columnIndex = 1)
     public boolean getGyroInterference() {
+        mux.setIndex(navx);
         return this.m_navx.isMagneticDisturbance();
     }
 

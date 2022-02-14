@@ -49,8 +49,11 @@ public class RobotMap {
         }
 
         public static class SENSORS {
-            public static final I2C.Port colorSensor = I2C.Port.kOnboard;
-            public static final I2C.Port navx = I2C.Port.kOnboard;
+            public static final I2C.Port muxPort = I2C.Port.kMXP;
+            public static final int trayColor = 0;
+            public static final int shooterColor = 1;
+            public static final int navx = 2;
+
         }
     }
 
