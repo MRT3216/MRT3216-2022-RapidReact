@@ -34,13 +34,12 @@ public class RobotMap {
             public static final int RIGHT_FLYWHEEL = 10;
             public static final int LEFT_INDEXER = 11;
             public static final int RIGHT_INDEXER = 12;
-            public static final int HOPPER = 13;
-            public static final int INTAKE = 14;
             public static final int HOOD_PWM_PORT = 1;
         }
 
         public static class INTAKE {
             public static final int INTAKE = 14;
+            public static final int HOPPER = 13;
         }
 
         public static class PNEUMATICS {
@@ -49,11 +48,11 @@ public class RobotMap {
         }
 
         public static class SENSORS {
-            public static final I2C.Port muxPort = I2C.Port.kMXP;
-            public static final int trayColor = 0;
-            public static final int shooterColor = 1;
-            public static final int navx = 2;
-            public static final int breakBeam = 0;
+            public static final I2C.Port MUX_PORT = I2C.Port.kMXP;
+            public static final int TRAY_COLOR = 0;
+            public static final int SHOOTER_COLOR = 1;
+            public static final int NAVX = 2;
+            public static final int BREAK_BEAM = 0;
 
         }
     }

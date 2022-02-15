@@ -8,7 +8,7 @@ import frc.robot.settings.*;
 public class muxSubsystem extends SubsystemBase{
     private final int muxAddress;
     private final I2C mux;
-    private final I2C.Port port = RobotMap.ROBOT.SENSORS.muxPort;
+    private final I2C.Port port = RobotMap.ROBOT.SENSORS.MUX_PORT;
 
 
     public muxSubsystem (int addr) {
