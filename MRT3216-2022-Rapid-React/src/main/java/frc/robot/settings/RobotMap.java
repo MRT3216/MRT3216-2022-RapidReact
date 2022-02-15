@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.I2C;
 /**
  * Add your docs here.
  */
+//todo fix all can values in this class
 public class RobotMap {
     public final static class ROBOT {
         public static class DRIVETRAIN {
@@ -35,6 +36,8 @@ public class RobotMap {
             public static final int LEFT_INDEXER = 11;
             public static final int RIGHT_INDEXER = 12;
             public static final int HOOD_PWM_PORT = 1;
+            //todo change this to the correct CAN value
+            public static final int HOPPER_MOTOR = -1;
         }
 
         public static class INTAKE {

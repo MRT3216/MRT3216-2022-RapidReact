@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.shooter;
 
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -24,6 +24,7 @@ public class IntakeSubsystem extends SubsystemBase {
             motor.set(-1 * Constants.Intake.kReverseIntakeSpeed);
         }
     }
+
 
     public void setOff() {
         motor.set(0);
