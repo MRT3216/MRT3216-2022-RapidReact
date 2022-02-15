@@ -147,7 +147,6 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
      */
     public void zeroGyroscope() {
         System.out.println("Zeroing Gyroscope");
-        mux.setIndex(navx);
         m_navx.zeroYaw();
         // Reset the odometry with new 0 heading but same position.
         m_odometry.resetPosition(m_odometry.getPoseMeters(), new Rotation2d());
@@ -163,14 +162,12 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
      * it takes some time to run.
      */
     public void calibrateGyroscope() {
-        mux.setIndex(navx);
         m_navx.calibrate();
     }
 
     public Rotation2d getGyroscopeRotation() {
         // // We have to invert the angle of the NavX so that rotating the robot
         // counter-clockwise makes the angle increase.
-        mux.setIndex(navx);
         return Rotation2d.fromDegrees(360 - m_navx.getYaw());
     }
 
@@ -223,7 +220,6 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
 
     @Log.Gyro(name = "Robot Angle", rowIndex = 0, columnIndex = 5)
     private AHRS getGyro() {
-        mux.setIndex(navx);
         return m_navx;
     }
 
@@ -294,7 +290,6 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
 
     @Log.BooleanBox(rowIndex = 1, columnIndex = 1)
     public boolean getGyroInterference() {
-        mux.setIndex(navx);
         return this.m_navx.isMagneticDisturbance();
     }
 
