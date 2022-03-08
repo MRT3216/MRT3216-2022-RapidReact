@@ -7,11 +7,16 @@
 
 package frc.robot.settings;
 
+import com.revrobotics.CANSparkMaxLowLevel;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 
 import edu.wpi.first.wpilibj.Filesystem;
 
 public class Constants {
+    public static CANSparkMaxLowLevel.MotorType kBrushed = CANSparkMaxLowLevel.MotorType.kBrushed;
+    public static CANSparkMaxLowLevel.MotorType kBrusheless = CANSparkMaxLowLevel.MotorType.kBrushless;
+
+
     public static final class Drivetrain {
         public static final double LEFT_FRONT_STEER_OFFSET = -Math.toRadians(239.4); // TODO: set these values
         public static final double RIGHT_FRONT_STEER_OFFSET = -Math.toRadians(278.1); // TODO: set these values
@@ -20,6 +25,8 @@ public class Constants {
 
         public static final double WHEELBASE_METERS = 0.7; // TODO: check this value
         public static final double TRACKWIDTH_METERS = 0.53; // TODO check this value
+
+
 
         /**
          * The maximum voltage that will be delivered to the drive motors.
@@ -161,6 +168,8 @@ public class Constants {
 
     public static final class Sensors {
         public static final double ColorRange = 100;
+
+
     }
 
     public static final class Directories {

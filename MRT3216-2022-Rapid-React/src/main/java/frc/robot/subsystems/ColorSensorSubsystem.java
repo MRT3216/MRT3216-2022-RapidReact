@@ -1,24 +1,30 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.ColorSensorV3;
-import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.settings.Constants;
-import frc.robot.settings.RobotMap;
-import io.github.oblarg.oblog.Loggable;
+import com.revrobotics.*;
+import edu.wpi.first.wpilibj.util.*;
+import edu.wpi.first.wpilibj2.command.*;
+import frc.robot.settings.*;
+import io.github.oblarg.oblog.*;
 
 public class ColorSensorSubsystem extends SubsystemBase implements Loggable {
-    private ColorSensorV3 colorSens = new ColorSensorV3(RobotMap.ROBOT.SENSORS.colorSensor);
 
-    public ColorSensorSubsystem() {
+    private ColorSensorV3 sensor;
+    private muxSubsystem mux = new muxSubsystem();
+    private int sensIndex;
+
+    public ColorSensorSubsystem(int sensIndex) {
+        this.sensIndex = sensIndex;
+        this.mux.setIndex(this.sensIndex);
+        sensor = new ColorSensorV3(mux.getPort());
     }
 
     private Color getColor() {
-        // Weirdly, this "getColor" is actually returning a stabilized color value, not
+        // Weirdly, this "getColor" is actually returning a stabilized color value (by a couple ms), not
         // the raw input, as with
         // .getRawColor - this is perfect for our use though, as we're just looking for
         // the "average" color
-        return colorSens.getColor();
+        mux.setIndex(this.sensIndex);
+        return sensor.getColor();
     }
 
     public boolean isRed() {
@@ -30,7 +36,8 @@ public class ColorSensorSubsystem extends SubsystemBase implements Loggable {
     }
 
     private double getProximity() {
-        return colorSens.getProximity(); // get proximity
+        mux.setIndex(this.sensIndex);
+        return sensor.getProximity(); // get proximity
     }
 
     private boolean inRange() {
