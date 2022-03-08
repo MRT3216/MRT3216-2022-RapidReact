@@ -68,7 +68,8 @@ public class Constants {
     }
 
     public static final class OI {
-        public static final double kJoystickDeadband = 0.075;
+        public static final double kJoystickDeadband = 0.05;
+        public static final double kExpoConstant = 50;
     }
 
     public static final class Intake {

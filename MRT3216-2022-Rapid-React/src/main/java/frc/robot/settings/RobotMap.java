@@ -36,7 +36,7 @@ public class RobotMap {
             public static final int RIGHT_INDEXER = 12;
             public static final int HOPPER = 13;
             public static final int INTAKE = 14;
-            public static final int HOOD_PWM_PORT = 1;
+            public static final int HOOD_PWM_PORT = 9;
         }
 
         public static class INTAKE {

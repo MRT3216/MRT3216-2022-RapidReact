@@ -81,6 +81,14 @@ public class RobotContainer {
                     () -> OIUtils.modifyAxis(-controller.getRightX())
                             * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
                     true));
+
+            controller.A.whenPressed(new Runnable() {
+                @Override
+                public void run() {
+                    RobotContainer.getInstance().getDriveSystem().resetGyroAndOdometry(true);
+                }
+
+            }, driveSystem);
         }
     }
 
