@@ -317,19 +317,5 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
         return this.thetaP;
     }
 
-    /*
-     * @Config.ToggleButton(name = "RE-Zero Swerve Angle", defaultValue = false,
-     * rowIndex = 4, columnIndex = 0, height = 1, width = 2)
-     * public void reZeroSwerveDrive(boolean _input) {
-     * if (_input) {
-     * SwerveMap.FrontRightSwerveModule.REzeroSwerveAngle();
-     * SwerveMap.BackRightSwerveModule.REzeroSwerveAngle();
-     * SwerveMap.FrontLeftSwerveModule.REzeroSwerveAngle();
-     * SwerveMap.BackLeftSwerveModule.REzeroSwerveAngle();
-     * _input = false;
-     * }
-     * }
-     */
-
     // endregion
 }

@@ -35,6 +35,10 @@ public class RobotMap {
             public static final int RIGHT_FLYWHEEL = 10;
             public static final int LEFT_INDEXER = 11;
             public static final int RIGHT_INDEXER = 12;
+
+            public static final int HOPPER = 13;
+            public static final int INTAKE = 14;
+            public static final int HOOD_PWM_PORT = 9;
             public static final int HOOD_PWM_PORT = 1;
             //todo change this to the correct CAN value
             public static final int HOPPER_MOTOR = -1;

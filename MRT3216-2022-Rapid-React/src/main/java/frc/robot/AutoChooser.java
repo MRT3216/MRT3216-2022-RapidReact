@@ -89,6 +89,13 @@ public class AutoChooser {
                                         * new DriveDifferentialTrajectory(swerveSystem,
                                         * PathPlanner.loadPath("Bounce 1", 2, 1)));
                                         */
+        chooser.addOption("3, Holonomic Trajectory",
+                new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("3", 2, 1))
+                        .andThen(new DriveConstantHeadingTrajectory(swerveSystem, PathPlanner.loadPath("2", 2, 1),
+                                Rotation2d.fromDegrees(60))));
+        chooser.addOption("2, Holonomic Trajectory",
+                new DriveConstantHeadingTrajectory(swerveSystem, PathPlanner.loadPath("2", 2, 1),
+                        Rotation2d.fromDegrees(60)));
         chooser.addOption("Bounce Path, Holonomic Trajectory",
                 new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Bounce 1", 2, 1)));
         chooser.addOption("Bounce Path, Constant Heading", new DriveConstantHeadingTrajectory(swerveSystem,
