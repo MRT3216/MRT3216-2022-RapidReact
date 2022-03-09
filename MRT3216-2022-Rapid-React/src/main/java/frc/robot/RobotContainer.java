@@ -10,7 +10,6 @@ import frc.robot.OI.OIUtils;
 import frc.robot.commands.TeleDrive;
 import frc.robot.settings.Constants.Drivetrain;
 import frc.robot.settings.RobotMap;
-import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import io.github.oblarg.oblog.Logger;
@@ -30,7 +29,6 @@ public class RobotContainer {
     private static RobotContainer instance;
     private SwerveSubsystem driveSystem;
 
-    private CompressorSubsystem compressorSystem;
     private Gamepad controller;
     private LimelightSubsystem limelightSystem;
 
@@ -58,10 +56,6 @@ public class RobotContainer {
     public void initSubsystems() {
         this.controller = new Gamepad(RobotMap.DRIVE_STATION.USB_XBOX_CONTROLLER);
         this.driveSystem = new SwerveSubsystem();
-
-        if (compressorSystem != null) {
-            compressorSystem.start();
-        }
 
         this.limelightSystem = LimelightSubsystem.getInstance();
     }
