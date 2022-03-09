@@ -79,7 +79,7 @@ public class Robot extends TimedRobot {
         // robotContainer.initSubsystems();
         m_autonomousCommand = robotContainer.getAutonomousCommand();
         if (robotContainer.getDriveSystem() != null) {
-            // FIXME Do we need this???
+            // TODO: Do we need this???
             // robotContainer.getDriveSystem().resetDriveEncoders();
 
             // schedule the autonomous command

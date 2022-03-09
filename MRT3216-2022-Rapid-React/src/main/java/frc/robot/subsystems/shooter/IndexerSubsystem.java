@@ -6,10 +6,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.settings.Constants;
 import frc.robot.settings.RobotMap;
 
-public class IntakeSubsystem extends SubsystemBase {
+public class IndexerSubsystem extends SubsystemBase {
     private final CANSparkMax motor;
 
-    public IntakeSubsystem() {
+    public IndexerSubsystem() {
         motor = new CANSparkMax(RobotMap.ROBOT.INTAKE.INTAKE_MOTOR, Constants.kBrusheless);
         motor.setInverted(false);
     }

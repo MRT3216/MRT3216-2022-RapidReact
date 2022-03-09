@@ -12,46 +12,47 @@ import edu.wpi.first.wpilibj.I2C;
 /**
  * Add your docs here.
  */
-//todo fix all can values in this class
+// todo fix all can values in this class
 public class RobotMap {
     public final static class ROBOT {
         public static class DRIVETRAIN {
-            public static final int LEFT_FRONT_DRIVE = 1;
-            public static final int LEFT_FRONT_ANGLE = 2;
-            public static final int RIGHT_FRONT_DRIVE = 3;
-            public static final int RIGHT_FRONT_ANGLE = 4;
-            public static final int LEFT_REAR_DRIVE = 5;
-            public static final int LEFT_REAR_ANGLE = 6;
-            public static final int RIGHT_REAR_DRIVE = 7;
-            public static final int RIGHT_REAR_ANGLE = 8;
-            public static final int LEFT_FRONT_CANCODER = 15;
-            public static final int RIGHT_FRONT_CANCODER = 16;
-            public static final int LEFT_REAR_CANCODER = 17;
-            public static final int RIGHT_REAR_CANCODER = 18;
-        }
-
-        public static class SHOOTER {
-            public static final int LEFT_FLYWHEEL = 9;
-            public static final int RIGHT_FLYWHEEL = 10;
-            public static final int LEFT_INDEXER = 11;
-            public static final int RIGHT_INDEXER = 12;
-
-            public static final int HOPPER = 13;
-            public static final int INTAKE = 14;
-            public static final int HOOD_PWM_PORT = 9;
-            public static final int HOOD_PWM_PORT = 1;
-            //todo change this to the correct CAN value
-            public static final int HOPPER_MOTOR = -1;
+            // All Falcon 500/TalonFX
+            public static final int LEFT_FRONT_DRIVE = 3;
+            public static final int LEFT_FRONT_ANGLE = 4;
+            public static final int LEFT_FRONT_CANCODER = 5;
+            public static final int RIGHT_FRONT_DRIVE = 6;
+            public static final int RIGHT_FRONT_ANGLE = 7;
+            public static final int RIGHT_FRONT_CANCODER = 8;
+            public static final int LEFT_REAR_DRIVE = 9;
+            public static final int LEFT_REAR_ANGLE = 10;
+            public static final int LEFT_REAR_CANCODER = 11;
+            public static final int RIGHT_REAR_DRIVE = 12;
+            public static final int RIGHT_REAR_ANGLE = 13;
+            public static final int RIGHT_REAR_CANCODER = 14;
         }
 
         public static class INTAKE {
-            public static final int INTAKE_MOTOR = 14;
-            public static final int HOPPER = 13;
+            // NEO/SparkMax
+            public static final int INTAKE_MOTOR = 18;
         }
 
-        public static class PNEUMATICS {
-            public static final int INTAKE_FORWARD = 0;
-            public static final int INTAKE_REVERSE = 1;
+        public static class SHOOTER {
+            // Falcon 500/TalonFX
+            public static final int HOPPER_MOTOR = 15;
+            // Falcon 500/TalonFX
+            public static final int INDEXER_MOTOR = 16;
+            // Falcon 500/TalonFX
+            public static final int FLYWHEEL_MOTOR = 17;
+            // NEO/SparkMaxx
+            public static final int HOOD_MOTOR = 19;
+            public static final int HOOD_ENCODER_PWM_PORT = 1;
+        }
+
+        public static class CLIMBER {
+            // NEO/SparkMax
+            public static final int LEFT_MOTOR = 20;
+            // NEO/SparkMax
+            public static final int RIGHT_MOTOR = 21;
         }
 
         public static class SENSORS {
@@ -60,7 +61,6 @@ public class RobotMap {
             public static final int SHOOTER_COLOR = 1;
             public static final int NAVX = 2;
             public static final int BREAK_BEAM = 0;
-
         }
     }
 

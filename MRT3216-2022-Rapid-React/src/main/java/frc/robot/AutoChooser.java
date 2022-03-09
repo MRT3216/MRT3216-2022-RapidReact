@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.auto.DriveConstantHeadingTrajectory;
-import frc.robot.commands.auto.DriveDifferentialTrajectory;
 import frc.robot.commands.auto.DriveHolonomicTrajectory;
 import frc.robot.commands.auto.DriveSupplyHeadingTrajectory;
 import frc.robot.settings.Constants.Directories;

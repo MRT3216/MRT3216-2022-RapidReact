@@ -8,8 +8,7 @@ import frc.robot.settings.Constants.Shooter.Flywheel;
 public class Configurations {
     private TalonFXConfiguration hopperMotorConfiguration;
     private TalonFXConfiguration intakeMotorConfiguration;
-    private TalonFXConfiguration leftFlywheelMotorConfiguration;
-    private TalonFXConfiguration rightFlywheelMotorConfiguration;
+    private TalonFXConfiguration flywheelMotorConfiguration;
     private TalonFXConfiguration swerveDriveMotorConfiguration;
     private TalonFXConfiguration swerveAngleMotorConfiguration;
     private static Configurations instance;
@@ -41,43 +40,24 @@ public class Configurations {
         return intakeMotorConfiguration;
     }
 
-    public TalonFXConfiguration getLeftFlywheelMotorConfiguration() {
-        if (leftFlywheelMotorConfiguration == null) {
-            leftFlywheelMotorConfiguration = new TalonFXConfiguration();
-            leftFlywheelMotorConfiguration.voltageCompSaturation = Flywheel.kVoltageCompSaturation;
-            leftFlywheelMotorConfiguration.slot2.kF = Flywheel.kShooterGains.kF;
-            leftFlywheelMotorConfiguration.slot2.kP = Flywheel.kShooterGains.kP;
-            leftFlywheelMotorConfiguration.slot2.kI = Flywheel.kShooterGains.kI;
-            leftFlywheelMotorConfiguration.slot2.kD = Flywheel.kShooterGains.kD;
-            leftFlywheelMotorConfiguration.slot2.integralZone = Flywheel.kShooterGains.kIzone;
-            leftFlywheelMotorConfiguration.slot2.closedLoopPeakOutput = Flywheel.kShooterGains.kPeakOutput;
-            leftFlywheelMotorConfiguration.closedloopRamp = Flywheel.RAMP_RATE;
-            leftFlywheelMotorConfiguration.neutralDeadband = Flywheel.kNeutralDeadband;
-            leftFlywheelMotorConfiguration.slot0.closedLoopPeriod = Flywheel.closedLoopTimeMs;
-            leftFlywheelMotorConfiguration.primaryPID.selectedFeedbackSensor = TalonFXFeedbackDevice.IntegratedSensor
+    public TalonFXConfiguration getFlywheelMotorConfiguration() {
+        if (flywheelMotorConfiguration == null) {
+            flywheelMotorConfiguration = new TalonFXConfiguration();
+            flywheelMotorConfiguration.voltageCompSaturation = Flywheel.kVoltageCompSaturation;
+            flywheelMotorConfiguration.slot2.kF = Flywheel.kShooterGains.kF;
+            flywheelMotorConfiguration.slot2.kP = Flywheel.kShooterGains.kP;
+            flywheelMotorConfiguration.slot2.kI = Flywheel.kShooterGains.kI;
+            flywheelMotorConfiguration.slot2.kD = Flywheel.kShooterGains.kD;
+            flywheelMotorConfiguration.slot2.integralZone = Flywheel.kShooterGains.kIzone;
+            flywheelMotorConfiguration.slot2.closedLoopPeakOutput = Flywheel.kShooterGains.kPeakOutput;
+            flywheelMotorConfiguration.closedloopRamp = Flywheel.RAMP_RATE;
+            flywheelMotorConfiguration.neutralDeadband = Flywheel.kNeutralDeadband;
+            flywheelMotorConfiguration.slot0.closedLoopPeriod = Flywheel.closedLoopTimeMs;
+            flywheelMotorConfiguration.primaryPID.selectedFeedbackSensor = TalonFXFeedbackDevice.IntegratedSensor
                     .toFeedbackDevice();
         }
 
-        return leftFlywheelMotorConfiguration;
-    }
-
-    public TalonFXConfiguration getRightFlywheelMotorConfiguration() {
-        if (rightFlywheelMotorConfiguration == null) {
-            rightFlywheelMotorConfiguration = new TalonFXConfiguration();
-            rightFlywheelMotorConfiguration.voltageCompSaturation = Flywheel.kVoltageCompSaturation;
-            ;
-            rightFlywheelMotorConfiguration.slot2.kF = Flywheel.kShooterGains.kF;
-            rightFlywheelMotorConfiguration.slot2.kP = Flywheel.kShooterGains.kP;
-            rightFlywheelMotorConfiguration.slot2.kI = Flywheel.kShooterGains.kI;
-            rightFlywheelMotorConfiguration.slot2.kD = Flywheel.kShooterGains.kD;
-            rightFlywheelMotorConfiguration.slot2.integralZone = Flywheel.kShooterGains.kIzone;
-            rightFlywheelMotorConfiguration.slot2.closedLoopPeakOutput = Flywheel.kShooterGains.kPeakOutput;
-            rightFlywheelMotorConfiguration.closedloopRamp = Flywheel.RAMP_RATE;
-            rightFlywheelMotorConfiguration.neutralDeadband = Flywheel.kNeutralDeadband;
-            rightFlywheelMotorConfiguration.slot0.closedLoopPeriod = Flywheel.closedLoopTimeMs;
-        }
-
-        return rightFlywheelMotorConfiguration;
+        return flywheelMotorConfiguration;
     }
 
     public TalonFXConfiguration getSwerveDriveMotorConfiguration() {

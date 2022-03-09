@@ -21,8 +21,9 @@ public class OIUtils {
        value = deadband(value, OI.kJoystickDeadband);
 
         // Square the axis
-        value = Math.copySign(value * value, value);
-
+        //value = Math.copySign(value * value, value);
+        value = expo(value);
+    
         return value;
     }
 
