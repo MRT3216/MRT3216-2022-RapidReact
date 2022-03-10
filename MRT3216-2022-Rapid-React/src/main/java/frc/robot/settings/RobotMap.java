@@ -6,13 +6,11 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.settings;
-
 import edu.wpi.first.wpilibj.I2C;
 
 /**
  * Add your docs here.
  */
-// todo fix all can values in this class
 public final class RobotMap {
     public final static class ROBOT {
         public static class DRIVETRAIN {
