@@ -18,13 +18,13 @@ public final class Constants {
 
 
     public static final class Drivetrain {
-        public static final double LEFT_FRONT_STEER_OFFSET = -Math.toRadians(239.4); // TODO: set these values
-        public static final double RIGHT_FRONT_STEER_OFFSET = -Math.toRadians(278.1); // TODO: set these values
-        public static final double LEFT_REAR_STEER_OFFSET = -Math.toRadians(119.0); // TODO: set these values
-        public static final double RIGHT_REAR_STEER_OFFSET = -Math.toRadians(43); // TODO: set these values
+        public static final double LEFT_FRONT_STEER_OFFSET = -Math.toRadians(0); // TODO: set these values
+        public static final double RIGHT_FRONT_STEER_OFFSET = -Math.toRadians(0); // TODO: set these values
+        public static final double LEFT_REAR_STEER_OFFSET = -Math.toRadians(0); // TODO: set these values
+        public static final double RIGHT_REAR_STEER_OFFSET = -Math.toRadians(0); // TODO: set these values
 
-        public static final double WHEELBASE_METERS = 0.7; // TODO: check this value
-        public static final double TRACKWIDTH_METERS = 0.53; // TODO check this value
+        public static final double WHEELBASE_METERS = 0.5461; // TODO: check this value
+        public static final double TRACKWIDTH_METERS = 0.5588; // TODO check this value
 
 
 

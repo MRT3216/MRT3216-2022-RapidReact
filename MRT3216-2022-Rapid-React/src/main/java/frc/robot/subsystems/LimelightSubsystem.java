@@ -3,11 +3,9 @@ package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.settings.Constants.Limelight;
-import io.github.oblarg.oblog.Loggable;
 import io.github.oblarg.oblog.annotations.Log;
 
-public class LimelightSubsystem extends SubsystemBase implements Loggable {
+public class LimelightSubsystem extends SubsystemBase {
 	private static LimelightSubsystem instance;
 	private final NetworkTable limelightNT;
 
@@ -69,7 +67,7 @@ public class LimelightSubsystem extends SubsystemBase implements Loggable {
 			return true;
 		} catch (Exception e) {
 			return false;
-		}		
+		}
 	}
 
 	// modes:

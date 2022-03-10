@@ -28,8 +28,8 @@ public class OIUtils {
     }
 
     public static double expo(double value) {
-        double adjValue = (1 - (100 - OI.kExpoConstant) / 100) * Math.pow(value, 3)
-                + value * ((100 - OI.kExpoConstant) / 100);
+        double adjValue = (1 - ((100 - OI.kExpoConstant) / 100)) * Math.pow(value, 3)
+                + (value * ((100 - OI.kExpoConstant) / 100));
 
         return adjValue;
     }

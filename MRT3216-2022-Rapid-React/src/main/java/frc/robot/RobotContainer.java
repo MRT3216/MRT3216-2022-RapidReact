@@ -3,16 +3,16 @@ package frc.robot;
 // region Imports
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.OI.Gamepad;
-import frc.robot.OI.OIUtils;
-import frc.robot.commands.TeleDrive;
-import frc.robot.settings.Constants.Drivetrain;
+import frc.robot.settings.RobotMap;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import io.github.oblarg.oblog.Logger;
-import frc.robot.settings.RobotMap;
+import io.github.oblarg.oblog.annotations.Log;
+
 // endregion
 
 /**
@@ -31,9 +31,13 @@ public class RobotContainer {
     private Gamepad controller;
     private LimelightSubsystem limelightSystem;
 
+    // endregion
+
     // region Oblog Logging and Config
 
-    // endregion
+    @Log.PowerDistribution(name = "PDH", rowIndex = 2, columnIndex = 4, height = 4)
+    private PowerDistribution pdh;
+
     // endregion
 
     /**
@@ -55,7 +59,7 @@ public class RobotContainer {
     public void initSubsystems() {
         this.controller = new Gamepad(RobotMap.DRIVE_STATION.USB_XBOX_CONTROLLER);
         this.driveSystem = new SwerveSubsystem();
-
+        this.pdh = new PowerDistribution();
         this.limelightSystem = LimelightSubsystem.getInstance();
     }
 
@@ -67,7 +71,7 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         if (driveSystem != null && controller != null) {
-            driveSystem.setDefaultCommand(new TeleDrive(
+            driveSystem.setDefaultCommand(new TeleDrive(\
                     driveSystem,
                     () -> OIUtils.modifyAxis(-controller.getLeftY()) * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
                     () -> OIUtils.modifyAxis(-controller.getLeftX()) * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,

@@ -35,6 +35,9 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.settings.Constants.Drivetrain;
 import io.github.oblarg.oblog.Loggable;
@@ -96,13 +99,13 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
                 return super.isMagneticDisturbance();
             }
         }; // NavX
-        // ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
+        ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
         m_frontLeftModule = Mk3SwerveModuleHelper.createFalcon500(
                 // This parameter is optional, but will allow you to see the current state of
                 // the module on the dashboard.
-                // tab.getLayout("Front Left Module", BuiltInLayouts.kList).withSize(2,
-                // 4).withPosition(0, 0),
+                tab.getLayout("Front Left Module", BuiltInLayouts.kList).withSize(2,
+                        4).withPosition(0, 0),
                 // This can either be STANDARD or FAST depending on your gear configuration
                 Mk3SwerveModuleHelper.GearRatio.STANDARD,
                 // This is the ID of the drive motor
@@ -117,20 +120,20 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
 
         // We will do the same for the other modules
         m_frontRightModule = Mk3SwerveModuleHelper.createFalcon500(
-                // tab.getLayout("Front Right Module", BuiltInLayouts.kList).withSize(2,
-                // 4).withPosition(2,0),
+                tab.getLayout("Front Right Module", BuiltInLayouts.kList).withSize(2,
+                        4).withPosition(2, 0),
                 Mk3SwerveModuleHelper.GearRatio.STANDARD, RIGHT_FRONT_DRIVE, RIGHT_FRONT_ANGLE,
                 RIGHT_FRONT_CANCODER, RIGHT_FRONT_STEER_OFFSET);
 
         m_backLeftModule = Mk3SwerveModuleHelper.createFalcon500(
-                // tab.getLayout("Back Left Module", BuiltInLayouts.kList).withSize(2,
-                // 4).withPosition(4,0),
+                tab.getLayout("Back Left Module", BuiltInLayouts.kList).withSize(2,
+                        4).withPosition(4, 0),
                 Mk3SwerveModuleHelper.GearRatio.STANDARD, LEFT_REAR_DRIVE, LEFT_REAR_ANGLE,
                 LEFT_REAR_CANCODER, LEFT_REAR_STEER_OFFSET);
 
         m_backRightModule = Mk3SwerveModuleHelper.createFalcon500(
-                // tab.getLayout("Back Right Module", BuiltInLayouts.kList).withSize(2,
-                // 4).withPosition(6,0),
+                tab.getLayout("Back Right Module", BuiltInLayouts.kList).withSize(2,
+                        4).withPosition(6, 0),
                 Mk3SwerveModuleHelper.GearRatio.STANDARD, RIGHT_REAR_DRIVE, RIGHT_REAR_ANGLE,
                 RIGHT_REAR_CANCODER, RIGHT_REAR_STEER_OFFSET);
 
@@ -261,32 +264,32 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
         return Math.IEEEremainder(Math.toDegrees(m_backRightModule.getSteerAngle()), 180);
     }
 
-    @Log(rowIndex = 2, columnIndex = 5, height = 1, width = 1)
+    @Log(name = "y-Position", rowIndex = 2, columnIndex = 5, height = 1, width = 1)
     public double getXPos() {
         return m_odometry.getPoseMeters().getX();
     }
 
-    @Log(rowIndex = 2, columnIndex = 6, height = 1, width = 1)
+    @Log(name = "x-Position", rowIndex = 2, columnIndex = 6, height = 1, width = 1)
     public double getYPos() {
         return m_odometry.getPoseMeters().getY();
     }
 
-    @Log(rowIndex = 3, columnIndex = 5, height = 1, width = 1)
+    @Log(name = "x-Velocity", rowIndex = 3, columnIndex = 5, height = 1, width = 1)
     public double getRobotXVelocity() {
         return m_chassisSpeeds.vxMetersPerSecond;
     }
 
-    @Log(rowIndex = 3, columnIndex = 6, height = 1, width = 1)
+    @Log(name = "y-Velocity", rowIndex = 3, columnIndex = 6, height = 1, width = 1)
     public double getRobotYVelocity() {
         return m_chassisSpeeds.vyMetersPerSecond;
     }
 
-    @Log(rowIndex = 3, columnIndex = 7, height = 1, width = 1)
+    @Log(name = "Theta-Velocity", rowIndex = 3, columnIndex = 4, height = 1, width = 1)
     public double getRobotThetaVelocity() {
         return m_chassisSpeeds.omegaRadiansPerSecond;
     }
 
-    @Log.BooleanBox(rowIndex = 1, columnIndex = 1)
+    @Log.BooleanBox(name = "Gyro Int?", rowIndex = 1, columnIndex = 1)
     public boolean getGyroInterference() {
         return this.m_navx.isMagneticDisturbance();
     }

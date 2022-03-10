@@ -97,17 +97,6 @@
               "_title": "Hood Angle"
             }
           },
-          "6,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Toggle Switch",
-              "_source0": "network_table:///Shuffleboard/RobotContainer/LED Ring",
-              "_title": "LED Ring"
-            }
-          },
           "7,3": {
             "size": [
               1,
@@ -169,8 +158,8 @@
     }
   ],
   "windowGeometry": {
-    "x": 2813.0,
-    "y": 275.0,
+    "x": 836.0,
+    "y": 205.0,
     "width": 1366.0,
     "height": 785.0
   }
