@@ -213,6 +213,7 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
      *
      * @return The current state of the module.
      */
+
     public SwerveModuleState getState(SwerveModule module) {
         return new SwerveModuleState(module.getDriveVelocity(), new Rotation2d(module.getSteerAngle()));
     }
@@ -231,7 +232,8 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
 
     @Log.Dial(name = "FL Angle", min = -90, max = 90, rowIndex = 0, columnIndex = 3, height = 1, width = 1)
     public double getFrontLeftAngle() {
-        return Math.IEEEremainder(Math.toDegrees(m_frontLeftModule.getSteerAngle()), 180);
+        return Math.IEEEremainder(Math.toDegrees(m_frontLeftModule.getSteerAngle()),
+                180);
     }
 
     @Log.NumberBar(name = "FR Velocity", min = -5, max = 5, rowIndex = 0, columnIndex = 7, height = 1, width = 1)
@@ -241,7 +243,8 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
 
     @Log.Dial(name = "FR Angle", min = -90, max = 90, rowIndex = 0, columnIndex = 8, height = 1, width = 1)
     public double getFrontRightAngle() {
-        return Math.IEEEremainder(Math.toDegrees(m_frontRightModule.getSteerAngle()), 180);
+        return Math.IEEEremainder(Math.toDegrees(m_frontRightModule.getSteerAngle()),
+                180);
     }
 
     @Log.NumberBar(name = "BL Velocity", min = -5, max = 5, rowIndex = 1, columnIndex = 4, height = 1, width = 1)
@@ -251,7 +254,8 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
 
     @Log.Dial(name = "BL Angle", min = -90, max = 90, rowIndex = 1, columnIndex = 3, height = 1, width = 1)
     public double getBackLeftAngle() {
-        return Math.IEEEremainder(Math.toDegrees(m_backLeftModule.getSteerAngle()), 180);
+        return Math.IEEEremainder(Math.toDegrees(m_backLeftModule.getSteerAngle()),
+                180);
     }
 
     @Log.NumberBar(name = "BR Velocity", min = -5, max = 5, rowIndex = 1, columnIndex = 7, height = 1, width = 1)
@@ -261,7 +265,8 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
 
     @Log.Dial(name = "BR Angle", min = -90, max = 90, rowIndex = 1, columnIndex = 8, height = 1, width = 1)
     public double getBackRightAngle() {
-        return Math.IEEEremainder(Math.toDegrees(m_backRightModule.getSteerAngle()), 180);
+        return Math.IEEEremainder(Math.toDegrees(m_backRightModule.getSteerAngle()),
+                180);
     }
 
     @Log(name = "y-Position", rowIndex = 2, columnIndex = 5, height = 1, width = 1)
@@ -313,7 +318,6 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
     @Config.NumberSlider(name = "Theta P", defaultValue = 5, rowIndex = 2, columnIndex = 4, height = 1, width = 1)
     public void setThetaP(double thetaP) {
         this.thetaP = thetaP;
-
     }
 
     public double getThetaP() {

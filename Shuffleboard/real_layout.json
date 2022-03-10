@@ -133,34 +133,15 @@
               "_source0": "network_table:///SmartDashboard/SendableChooser[0]",
               "_title": "Autonomous"
             }
-          },
-          "3,0": {
-            "size": [
-              3,
-              3
-            ],
-            "content": {
-              "_type": "Camera Stream",
-              "_source0": "camera_server://USB Camera-B4.09.24.1",
-              "_title": "USB Camera-B4.09.24.1",
-              "Crosshair/Show crosshair": true,
-              "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": false,
-              "Controls/Rotation": "NONE",
-              "compression": -1.0,
-              "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
-            }
           }
         }
       }
     }
   ],
   "windowGeometry": {
-    "x": 836.0,
-    "y": 205.0,
-    "width": 1366.0,
-    "height": 785.0
+    "x": 471.0,
+    "y": 134.0,
+    "width": 1936.0,
+    "height": 1216.0
   }
 }
