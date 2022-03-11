@@ -17,19 +17,17 @@ public class OIUtils {
 
     public static double modifyAxis(double value) {
         // Deadband
-
-       value = deadband(value, OI.kJoystickDeadband);
+        value = deadband(value, OI.kJoystickDeadband);
 
         // Square the axis
-        //value = Math.copySign(value * value, value);
+        // value = Math.copySign(value * value, value);
         value = expo(value);
-    
         return value;
     }
 
     public static double expo(double value) {
-        double adjValue = (1 - (100 - OI.kExpoConstant) / 100) * Math.pow(value, 3)
-                + value * ((100 - OI.kExpoConstant) / 100);
+        double adjValue = (1 - ((100 - OI.kExpoConstant) / 100)) * Math.pow(value, 3)
+                + (value * ((100 - OI.kExpoConstant) / 100));
 
         return adjValue;
     }
