@@ -3,7 +3,6 @@ package frc.robot;
 // region Imports
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.OI.Gamepad;
@@ -13,8 +12,9 @@ import frc.robot.settings.Constants.Drivetrain;
 import frc.robot.settings.RobotMap;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.shooter.IntakeSubsystem;
+import frc.robot.subsystems.shooter.ShooterSubsystem;
 import io.github.oblarg.oblog.Logger;
-import io.github.oblarg.oblog.annotations.Log;
 
 // endregion
 
@@ -30,7 +30,8 @@ public class RobotContainer {
 
     private static RobotContainer instance;
     private SwerveSubsystem driveSystem;
-
+    private IntakeSubsystem intakeSystem;
+    private ShooterSubsystem shooterSystem;
     private Gamepad controller;
     private LimelightSubsystem limelightSystem;
 
@@ -57,8 +58,9 @@ public class RobotContainer {
     }
 
     public void initSubsystems() {
-        this.controller = new Gamepad(RobotMap.DRIVE_STATION.USB_XBOX_CONTROLLER);
         this.driveSystem = new SwerveSubsystem();
+        this.shooterSystem = new ShooterSubsystem();
+        this.controller = new Gamepad(RobotMap.DRIVE_STATION.USB_XBOX_CONTROLLER);
         this.limelightSystem = LimelightSubsystem.getInstance();
     }
 
@@ -78,13 +80,40 @@ public class RobotContainer {
                             * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
                     true));
 
+        }
+        if (intakeSystem != null && controller != null) {
             controller.A.whenPressed(new Runnable() {
                 @Override
                 public void run() {
-                    //RobotContainer.getInstance().getDriveSystem().resetGyroAndOdometry(true);
+                    // RobotContainer.getInstance().getDriveSystem().resetGyroAndOdometry(true);
                 }
 
-            }, driveSystem);
+            }, intakeSystem);
+        }
+        if (shooterSystem != null && controller != null) {
+            controller.B.whenPressed(new Runnable() {
+                @Override
+                public void run() {
+
+                }
+
+            }, shooterSystem);
+
+            controller.X.whenPressed(new Runnable() {
+                @Override
+                public void run() {
+
+                }
+
+            }, shooterSystem);
+
+            controller.Y.whenPressed(new Runnable() {
+                @Override
+                public void run() {
+
+                }
+
+            }, shooterSystem);
         }
     }
 
