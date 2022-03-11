@@ -71,7 +71,7 @@ public class RobotContainer {
         this.hopperSystem = new HopperSubsystem();
         this.controller = new Gamepad(RobotMap.DRIVE_STATION.USB_XBOX_CONTROLLER);
         this.limelightSystem = LimelightSubsystem.getInstance();
-        // this.colorSensorSystem = new ColorSensorSubsystem();
+        this.colorSensorSystem = new ColorSensorSubsystem();
     }
 
     /**

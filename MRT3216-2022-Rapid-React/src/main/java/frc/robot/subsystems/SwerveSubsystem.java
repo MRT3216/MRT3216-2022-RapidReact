@@ -22,7 +22,6 @@ import static frc.robot.settings.RobotMap.ROBOT.DRIVETRAIN.RIGHT_FRONT_DRIVE;
 import static frc.robot.settings.RobotMap.ROBOT.DRIVETRAIN.RIGHT_REAR_ANGLE;
 import static frc.robot.settings.RobotMap.ROBOT.DRIVETRAIN.RIGHT_REAR_CANCODER;
 import static frc.robot.settings.RobotMap.ROBOT.DRIVETRAIN.RIGHT_REAR_DRIVE;
-import static frc.robot.settings.RobotMap.ROBOT.SENSORS.NAVX;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.swervedrivespecialties.swervelib.Mk3SwerveModuleHelper;
@@ -35,6 +34,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -57,9 +57,8 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
 
     private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, new Rotation2d());
 
-    // connected over I2C
+    // connected over USB
     private final AHRS m_navx;
-    muxSubsystem mux = new muxSubsystem();
 
     // These are our modules. We initialize them in the constructor.
     private final SwerveModule m_frontLeftModule;
@@ -73,37 +72,8 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
     private double thetaP;
 
     public SwerveSubsystem() {
-        mux.setIndex(NAVX);
-       
-        m_navx = new AHRS(mux.getPort(), (byte) 200);
-        
-        /*{
-            @Override
-            public void zeroYaw() {
-                mux.setIndex(NAVX);
-                super.zeroYaw();
-            }
+        m_navx = new AHRS(SerialPort.Port.kUSB1);
 
-            @Override
-            public void calibrate() {
-                mux.setIndex(NAVX);
-                super.calibrate();
-            }
-
-            @Override
-            public float getYaw() {
-                mux.setIndex(NAVX);
-                return super.getYaw();
-            }
-
-            @Override
-            public boolean isMagneticDisturbance() {
-                mux.setIndex(NAVX);
-                return super.isMagneticDisturbance();
-            }
-        }; // NavX
-        */
-        
         ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
         m_frontLeftModule = Mk3SwerveModuleHelper.createFalcon500(
