@@ -87,24 +87,14 @@ public final class Constants {
 
     public static final class Shooter {
         public static final class Flywheel {
-            public static final boolean LEFT_FLYWHEEL_MOTOR_INVERTED = false;
+            public static final boolean FLYWHEEL_MOTOR_INVERTED = true;
             public static final boolean FYLWHEEL_ENCODER_INVERTED = false;
 
             // TODO: Determine optimal speed
-            public static final double targetSpeed = 4050;
-            public static final double acceptableSpeed = 4000;
+            public static final double targetSpeed = 2000;
+            public static final double acceptableSpeed =  2000;
 
             public static final double RAMP_RATE = 0.3;
-
-            // TODO: These came from Robot Characterization for Tucker (2020)
-            // Voltage to overcome static friction
-            public static final double kS = 0.146;
-            // Voltage to hold at a given velocity while overcoming viscous drag
-            public static final double kV = 0.132;
-            // Voltage needed to induce a given acceleration
-            public static final double kA = 0.0489;
-
-            public static final double kMaxVoltage = 12.0;
 
             // TODO: Tune these values
             // Proportional gain
@@ -150,13 +140,13 @@ public final class Constants {
 
         public static final class Hopper {
             public static final boolean HOPPER_MOTOR_INVERTED = true;
-            public static final double kHopperSpeed = 0.2;
+            public static final double kHopperSpeed = 0.5;
             public static double rampTime = 2;
         }
 
         public static final class Indexer {
-            public static final boolean LEFT_INDEXER_MOTOR_INVERTED = true;
-            public static final double kIndexerSpeed = 0.25;
+            public static final boolean INDEXER_MOTOR_INVERTED = false;
+            public static final double kIndexerSpeed = 0.4;
         }
     }
 

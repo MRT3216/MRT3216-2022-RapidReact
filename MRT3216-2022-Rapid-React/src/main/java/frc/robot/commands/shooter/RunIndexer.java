@@ -14,11 +14,11 @@ import frc.robot.subsystems.shooter.IndexerSubsystem;
 
 public class RunIndexer extends CommandBase {
     private final IndexerSubsystem indexer;
-    private final BooleanSupplier run;
+    private final BooleanSupplier isForward;
 
-    public RunIndexer(final IndexerSubsystem indexer, final BooleanSupplier run) {
+    public RunIndexer(final IndexerSubsystem indexer, final BooleanSupplier isForward) {
         this.indexer = indexer;
-        this.run = run;
+        this.isForward = isForward;
     }
 
     // Called when the command is initially scheduled.
@@ -29,13 +29,13 @@ public class RunIndexer extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        indexer.setOn(run.getAsBoolean());
+        indexer.runIndexer(isForward.getAsBoolean());
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(final boolean interrupted) {
-        indexer.setOn(false);
+        indexer.stopIndexer();
     }
 
     // Returns true when the command should end.

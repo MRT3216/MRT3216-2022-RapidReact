@@ -1,7 +1,5 @@
 package frc.robot;
 
-import java.util.function.BooleanSupplier;
-
 // region Imports
 
 import edu.wpi.first.wpilibj.GenericHID;
@@ -11,7 +9,9 @@ import frc.robot.OI.Gamepad;
 import frc.robot.OI.OIUtils;
 import frc.robot.commands.TeleDrive;
 import frc.robot.commands.shooter.RunHopper;
+import frc.robot.commands.shooter.RunIndexer;
 import frc.robot.commands.shooter.RunIntake;
+import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.settings.Constants.Drivetrain;
 import frc.robot.settings.RobotMap;
 import frc.robot.subsystems.ColorSensorSubsystem;
@@ -19,8 +19,10 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.shooter.HopperSubsystem;
+import frc.robot.subsystems.shooter.IndexerSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import io.github.oblarg.oblog.Logger;
+import io.github.oblarg.oblog.annotations.Config;
 
 // endregion
 
@@ -39,6 +41,7 @@ public class RobotContainer {
     private IntakeSubsystem intakeSystem;
     private ShooterSubsystem shooterSystem;
     private HopperSubsystem hopperSystem;
+    private IndexerSubsystem indexerSystem;
     private Gamepad controller;
     private LimelightSubsystem limelightSystem;
     private ColorSensorSubsystem colorSensorSystem;
@@ -68,7 +71,9 @@ public class RobotContainer {
     public void initSubsystems() {
         this.driveSystem = new SwerveSubsystem();
         this.shooterSystem = new ShooterSubsystem();
+        this.intakeSystem = new IntakeSubsystem();
         this.hopperSystem = new HopperSubsystem();
+        this.indexerSystem = new IndexerSubsystem();
         this.controller = new Gamepad(RobotMap.DRIVE_STATION.USB_XBOX_CONTROLLER);
         this.limelightSystem = LimelightSubsystem.getInstance();
         this.colorSensorSystem = new ColorSensorSubsystem();
@@ -93,12 +98,16 @@ public class RobotContainer {
         }
 
         if (intakeSystem != null && controller != null) {
-            BooleanSupplier bs = () -> true;
-            controller.A.whileHeld(new RunIntake(this.intakeSystem, bs));
+            controller.A.whileHeld(new RunIntake(this.intakeSystem, () -> !controller.getLeftBumper()));
         }
         if (hopperSystem != null && controller != null) {
-            BooleanSupplier bs = () -> true;
-            controller.B.whileHeld(new RunHopper(this.hopperSystem, bs));
+            controller.B.whileHeld(new RunHopper(this.hopperSystem, () -> !controller.getLeftBumper()));
+        }
+        if (indexerSystem != null && controller != null) {
+            controller.X.whileHeld(new RunIndexer(this.indexerSystem, () -> !controller.getLeftBumper()));
+        }
+        if (shooterSystem != null && controller != null) {
+            controller.Y.whileHeld(new SpinShooter(this.shooterSystem, () -> !controller.getLeftBumper()));
         }
     }
 
@@ -121,5 +130,10 @@ public class RobotContainer {
 
     public SwerveSubsystem getDriveSystem() {
         return driveSystem;
+    }
+
+    @Config.NumberSlider(name = "Indexer Speed", defaultValue = 0.5, rowIndex = 0, columnIndex = 1, height = 1, width = 1)
+    public void setThetaP(double output) {
+        this.indexerSystem.setPercentOutput(output);
     }
 }

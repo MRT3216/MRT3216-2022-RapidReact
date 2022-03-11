@@ -17,7 +17,7 @@ public class ShooterSubsystem extends SubsystemBase {
         flywheelMotor = new TalonFX(SHOOTER.FLYWHEEL_MOTOR);
         flywheelMotor.configAllSettings(Configurations.getInstance().getFlywheelMotorConfiguration());
 
-        flywheelMotor.setInverted(Flywheel.LEFT_FLYWHEEL_MOTOR_INVERTED);
+        flywheelMotor.setInverted(Flywheel.FLYWHEEL_MOTOR_INVERTED);
         flywheelMotor.setNeutralMode(NeutralMode.Coast);
         flywheelMotor.enableVoltageCompensation(true);
         flywheelMotor.set(TalonFXControlMode.PercentOutput, 0);
@@ -34,9 +34,15 @@ public class ShooterSubsystem extends SubsystemBase {
     public void periodic() {
     }
 
-    public void spinToSpeed() {
+    public void spinToSpeed(boolean forward) {
         // Velocity closed loop without feed forward (not sure if this is enough)
-        flywheelMotor.set(TalonFXControlMode.Velocity, Flywheel.targetSpeed);
+        // double targetVelocity_UnitsPer100ms = 2000.0 * 2048.0 / 600.0;
+        // flywheelMotor.set(TalonFXControlMode.Velocity, targetVelocity_UnitsPer100ms);        
+        if (forward) {
+            flywheelMotor.set(TalonFXControlMode.PercentOutput, .5);
+        } else if (!forward) {
+            flywheelMotor.set(TalonFXControlMode.PercentOutput, -1 * .1);
+        }        
     }
 
     public double getRPM() {
@@ -54,7 +60,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     /* Zero all sensors on Talons */
-    void zeroSensors() {
+    public void zeroSensors() {
         flywheelMotor.getSensorCollection().setIntegratedSensorPosition(0, Flywheel.kTimeoutMs);
     }
 }

@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.settings.Constants;
 import frc.robot.settings.RobotMap.ROBOT.INTAKE;
 
-
 public class IntakeSubsystem extends SubsystemBase {
     private final CANSparkMax motor;
 

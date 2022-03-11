@@ -1,28 +1,37 @@
 package frc.robot.subsystems.shooter;
 
-import com.revrobotics.CANSparkMax;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.settings.Constants;
-import frc.robot.settings.RobotMap;
+import frc.robot.settings.Constants.Shooter.Indexer;
+import frc.robot.settings.RobotMap.ROBOT.SHOOTER;
 
 public class IndexerSubsystem extends SubsystemBase {
-    private final CANSparkMax motor;
+    private TalonFX indexerMotor;
+    private double percentOutput;
 
     public IndexerSubsystem() {
-        motor = new CANSparkMax(RobotMap.ROBOT.INTAKE.INTAKE_MOTOR, Constants.kBrusheless);
-        motor.setInverted(false);
+        this.indexerMotor = new TalonFX(SHOOTER.INDEXER_MOTOR);
+        this.indexerMotor.setInverted(Indexer.INDEXER_MOTOR_INVERTED);
+        this.percentOutput = Indexer.kIndexerSpeed;
     }
 
-    public void setOn(final boolean forward) {
+    public void runIndexer(boolean forward) {
         if (forward) {
-            motor.set(Constants.Intake.kForwardIntakeSpeed);
-        } else {
-            motor.set(-1 * Constants.Intake.kReverseIntakeSpeed);
+            indexerMotor.set(TalonFXControlMode.PercentOutput, this.percentOutput);
+        } else if (!forward) {
+            indexerMotor.set(TalonFXControlMode.PercentOutput, -1 * this.percentOutput);
         }
     }
 
-    public void setOff() {
-        motor.set(0);
+    public void stopIndexer() {
+        if (indexerMotor != null) {
+            indexerMotor.set(TalonFXControlMode.PercentOutput, 0.0);
+        }
+    }
+
+    public void setPercentOutput(double output) {
+        this.percentOutput = output;
     }
 }
