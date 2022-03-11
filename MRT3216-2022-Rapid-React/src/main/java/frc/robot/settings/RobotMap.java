@@ -55,7 +55,7 @@ public final class RobotMap {
 
         public static class SENSORS {
             public static final I2C.Port MUX_PORT = I2C.Port.kMXP;
-            public static final int SHOOTER_COLOR = 2;
+            public static final int COLOR = 2;
             public static final int NAVX = 1;
         }
     }

@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
+
 // region Imports
 
 import edu.wpi.first.wpilibj.GenericHID;
@@ -8,11 +10,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.OI.Gamepad;
 import frc.robot.OI.OIUtils;
 import frc.robot.commands.TeleDrive;
+import frc.robot.commands.shooter.RunHopper;
+import frc.robot.commands.shooter.RunIntake;
 import frc.robot.settings.Constants.Drivetrain;
 import frc.robot.settings.RobotMap;
+import frc.robot.subsystems.ColorSensorSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.subsystems.shooter.IntakeSubsystem;
+import frc.robot.subsystems.shooter.HopperSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import io.github.oblarg.oblog.Logger;
 
@@ -32,8 +38,10 @@ public class RobotContainer {
     private SwerveSubsystem driveSystem;
     private IntakeSubsystem intakeSystem;
     private ShooterSubsystem shooterSystem;
+    private HopperSubsystem hopperSystem;
     private Gamepad controller;
     private LimelightSubsystem limelightSystem;
+    private ColorSensorSubsystem colorSensorSystem;
 
     // endregion
 
@@ -60,8 +68,10 @@ public class RobotContainer {
     public void initSubsystems() {
         this.driveSystem = new SwerveSubsystem();
         this.shooterSystem = new ShooterSubsystem();
+        this.hopperSystem = new HopperSubsystem();
         this.controller = new Gamepad(RobotMap.DRIVE_STATION.USB_XBOX_CONTROLLER);
         this.limelightSystem = LimelightSubsystem.getInstance();
+        // this.colorSensorSystem = new ColorSensorSubsystem();
     }
 
     /**
@@ -81,39 +91,14 @@ public class RobotContainer {
                     true));
 
         }
+
         if (intakeSystem != null && controller != null) {
-            controller.A.whenPressed(new Runnable() {
-                @Override
-                public void run() {
-                    // RobotContainer.getInstance().getDriveSystem().resetGyroAndOdometry(true);
-                }
-
-            }, intakeSystem);
+            BooleanSupplier bs = () -> true;
+            controller.A.whileHeld(new RunIntake(this.intakeSystem, bs));
         }
-        if (shooterSystem != null && controller != null) {
-            controller.B.whenPressed(new Runnable() {
-                @Override
-                public void run() {
-
-                }
-
-            }, shooterSystem);
-
-            controller.X.whenPressed(new Runnable() {
-                @Override
-                public void run() {
-
-                }
-
-            }, shooterSystem);
-
-            controller.Y.whenPressed(new Runnable() {
-                @Override
-                public void run() {
-
-                }
-
-            }, shooterSystem);
+        if (hopperSystem != null && controller != null) {
+            BooleanSupplier bs = () -> true;
+            controller.B.whileHeld(new RunHopper(this.hopperSystem, bs));
         }
     }
 

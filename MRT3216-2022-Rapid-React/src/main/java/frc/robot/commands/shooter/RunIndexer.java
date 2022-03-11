@@ -29,13 +29,13 @@ public class RunIndexer extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        indexer.activateIndexer(run.getAsBoolean());
+        indexer.setOn(run.getAsBoolean());
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(final boolean interrupted) {
-        indexer.activateIndexer(false);
+        indexer.setOn(false);
     }
 
     // Returns true when the command should end.

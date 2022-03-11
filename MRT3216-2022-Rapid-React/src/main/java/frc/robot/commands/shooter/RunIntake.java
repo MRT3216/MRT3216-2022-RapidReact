@@ -10,14 +10,14 @@ package frc.robot.commands.shooter;
 import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.shooter.HopperSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
-public class RunHopper extends CommandBase {
-    private final HopperSubsystem hopper;
+public class RunIntake extends CommandBase {
+    private final IntakeSubsystem intake;
     private final BooleanSupplier isForward;
 
-    public RunHopper(HopperSubsystem hopper, BooleanSupplier isForward) {
-        this.hopper = hopper;
+    public RunIntake(IntakeSubsystem intake, BooleanSupplier isForward) {
+        this.intake = intake;
         this.isForward = isForward;
     }
 
@@ -29,13 +29,13 @@ public class RunHopper extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        hopper.runHopper(isForward.getAsBoolean());
+        intake.runIntake(isForward.getAsBoolean());
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        hopper.stopHopper();
+        intake.stopIntake();
     }
 
     // Returns true when the command should end.

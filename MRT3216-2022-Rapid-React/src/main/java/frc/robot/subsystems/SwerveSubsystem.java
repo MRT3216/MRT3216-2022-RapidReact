@@ -74,7 +74,10 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
 
     public SwerveSubsystem() {
         mux.setIndex(NAVX);
-        m_navx = new AHRS(mux.getPort(), (byte) 200) {
+       
+        m_navx = new AHRS(mux.getPort(), (byte) 200);
+        
+        /*{
             @Override
             public void zeroYaw() {
                 mux.setIndex(NAVX);
@@ -99,6 +102,8 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
                 return super.isMagneticDisturbance();
             }
         }; // NavX
+        */
+        
         ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
         m_frontLeftModule = Mk3SwerveModuleHelper.createFalcon500(

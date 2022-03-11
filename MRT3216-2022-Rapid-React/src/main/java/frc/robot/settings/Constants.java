@@ -86,8 +86,6 @@ public final class Constants {
     }
 
     public static final class Shooter {
-        public static final double kWaitPeriod = 0.25;
-
         public static final class Flywheel {
             public static final boolean LEFT_FLYWHEEL_MOTOR_INVERTED = false;
             public static final boolean FYLWHEEL_ENCODER_INVERTED = false;
@@ -151,7 +149,7 @@ public final class Constants {
         }
 
         public static final class Hopper {
-            public static final boolean HOPPER_MOTOR_INVERTED = false;
+            public static final boolean HOPPER_MOTOR_INVERTED = true;
             public static final double kHopperSpeed = 0.2;
             public static double rampTime = 2;
         }
