@@ -136,6 +136,13 @@ public final class Constants {
         public static final class Hood {
             public static final double kMaxHoodError = 1.0; // Degrees
             public static double hoodErrorAdjustment = 11.5;
+
+            //todo: set these vals
+            public static final double hoodForwardLimit = 0;
+            public static final double hoodReverseLimit = 0;
+
+            public static final double hoodSpeed = 0.1;
+
         }
 
         public static final class Hopper {

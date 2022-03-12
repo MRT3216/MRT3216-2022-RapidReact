@@ -14,7 +14,7 @@ import frc.robot.settings.Constants;
 import frc.robot.settings.Constants.Shooter.Hood;
 import frc.robot.settings.RobotMap.ROBOT.SHOOTER;
 import io.github.oblarg.oblog.Loggable;
-import io.github.oblarg.oblog.annotations.Log;
+import frc.robot.settings.Constants.Shooter.Hood;
 
 public class HoodSubsystem extends SubsystemBase implements Loggable{
     //private final Servo aimServo;
@@ -32,6 +32,7 @@ public class HoodSubsystem extends SubsystemBase implements Loggable{
         encoder = new DutyCycleEncoder(SHOOTER.HOOD_ENCODER_PWM_PORT);
         hoodMotor = new CANSparkMax(SHOOTER.HOOD_MOTOR, Constants.kBrusheless);
         hoodMotor.setInverted(false);
+        hoodMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
     }
 
     @Override
@@ -44,7 +45,33 @@ public class HoodSubsystem extends SubsystemBase implements Loggable{
     }
 
     public void setAngle(double position) {
-        //aimServo.setAngle(position);
+        if (position>Hood.hoodForwardLimit&&position<Hood.hoodReverseLimit) {
+            //goto position
+            if (getAngle()<position) {
+                runMotor(false);
+            }
+            else if (getAngle()>position) {
+                runMotor(true);
+            }
+        }
+        else if (position>Hood.hoodForwardLimit) {
+            runMotor(true);
+        }
+        else if (position<Hood.hoodReverseLimit) {
+            runMotor(false);
+        }
+        else {
+            this.hoodMotor.stopMotor();
+        }
+    }
+
+    public void runMotor(boolean reverse) {
+        if (reverse) {
+            this.hoodMotor.set(-Hood.hoodSpeed);
+        }
+        else {
+            this.hoodMotor.set(Hood.hoodSpeed);
+        }
     }
 
     /**
@@ -56,7 +83,6 @@ public class HoodSubsystem extends SubsystemBase implements Loggable{
      * 
      * @return the angle (degrees) the motor was last commanded to.
      */
-    @Log(name = "hoodAngle", rowIndex = 3, columnIndex = 6, height = 1, width = 1)
     public double getAngle() {
         //return aimServo.getAngle();
         return encoder.getAbsolutePosition();

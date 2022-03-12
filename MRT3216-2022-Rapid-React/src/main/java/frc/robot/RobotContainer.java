@@ -18,6 +18,7 @@ import frc.robot.subsystems.ColorSensorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.shooter.HoodSubsystem;
 import frc.robot.subsystems.shooter.HopperSubsystem;
 import frc.robot.subsystems.shooter.IndexerSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
@@ -45,6 +46,7 @@ public class RobotContainer {
     private Gamepad controller;
     private LimelightSubsystem limelightSystem;
     private ColorSensorSubsystem colorSensorSystem;
+    private HoodSubsystem hoodSubsystem;
 
     // endregion
 
@@ -77,6 +79,7 @@ public class RobotContainer {
         this.controller = new Gamepad(RobotMap.DRIVE_STATION.USB_XBOX_CONTROLLER);
         this.limelightSystem = LimelightSubsystem.getInstance();
         this.colorSensorSystem = new ColorSensorSubsystem();
+        this.hoodSubsystem = new HoodSubsystem();
     }
 
     /**
