@@ -11,6 +11,7 @@ import frc.robot.settings.Constants.Shooter.Flywheel;
 import frc.robot.settings.RobotMap.ROBOT.SHOOTER;
 
 public class ShooterSubsystem extends SubsystemBase {
+    private static ShooterSubsystem instance;
     private TalonFX flywheelMotor;
 
     public ShooterSubsystem() {
@@ -62,5 +63,13 @@ public class ShooterSubsystem extends SubsystemBase {
     /* Zero all sensors on Talons */
     public void zeroSensors() {
         flywheelMotor.getSensorCollection().setIntegratedSensorPosition(0, Flywheel.kTimeoutMs);
+    }
+
+    public static ShooterSubsystem getInstance() {
+        if (instance == null) {
+            // if instance is null, initialize
+            instance = new ShooterSubsystem();
+        }
+        return instance;
     }
 }

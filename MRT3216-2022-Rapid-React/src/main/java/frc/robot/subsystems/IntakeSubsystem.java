@@ -7,6 +7,7 @@ import frc.robot.settings.Constants;
 import frc.robot.settings.RobotMap.ROBOT.INTAKE;
 
 public class IntakeSubsystem extends SubsystemBase {
+    private static IntakeSubsystem instance;
     private final CANSparkMax motor;
 
     /**
@@ -32,5 +33,13 @@ public class IntakeSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
+    }
+
+    public static IntakeSubsystem getInstance() {
+        if (instance == null) {
+            // if instance is null, initialize
+            instance = new IntakeSubsystem();
+        }
+        return instance;
     }
 }

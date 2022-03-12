@@ -8,6 +8,7 @@ import frc.robot.settings.Constants.Shooter.Indexer;
 import frc.robot.settings.RobotMap.ROBOT.SHOOTER;
 
 public class IndexerSubsystem extends SubsystemBase {
+    private static IndexerSubsystem instance;
     private TalonFX indexerMotor;
     private double percentOutput;
 
@@ -33,5 +34,13 @@ public class IndexerSubsystem extends SubsystemBase {
 
     public void setPercentOutput(double output) {
         this.percentOutput = output;
+    }
+
+    public static IndexerSubsystem getInstance() {
+        if (instance == null) {
+            // if instance is null, initialize
+            instance = new IndexerSubsystem();
+        }
+        return instance;
     }
 }

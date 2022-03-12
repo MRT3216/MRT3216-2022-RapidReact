@@ -13,15 +13,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.settings.Constants;
 import frc.robot.settings.Constants.Shooter.Hood;
 import frc.robot.settings.RobotMap.ROBOT.SHOOTER;
+import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 import io.github.oblarg.oblog.Loggable;
 import frc.robot.settings.Constants.Shooter.Hood;
 
 public class HoodSubsystem extends SubsystemBase implements Loggable{
-    //private final Servo aimServo;
+    private static HoodSubsystem instance;
     private final DutyCycleEncoder encoder;
     private final CANSparkMax hoodMotor;
     private double targetAngle;
-
     private double manualErrorAdjustment;
 
     /**
@@ -118,5 +119,13 @@ public class HoodSubsystem extends SubsystemBase implements Loggable{
 
     public void setHoodManualAdjustment(double value) {
         this.manualErrorAdjustment = value;
+    }
+
+    public static HoodSubsystem getInstance() {
+        if (instance == null) {
+            // if instance is null, initialize
+            instance = new HoodSubsystem();
+        }
+        return instance;
     }
 }

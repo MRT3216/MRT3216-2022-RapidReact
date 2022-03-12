@@ -45,6 +45,7 @@ import io.github.oblarg.oblog.annotations.Config;
 import io.github.oblarg.oblog.annotations.Log;;
 
 public class SwerveSubsystem extends SubsystemBase implements Loggable {
+    private static SwerveSubsystem instance;
     private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
             // Front left
             new Translation2d(TRACKWIDTH_METERS / 2.0, WHEELBASE_METERS / 2.0),
@@ -300,4 +301,12 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
     }
 
     // endregion
+
+    public static SwerveSubsystem getInstance() {
+        if (instance == null) {
+            // if instance is null, initialize
+            instance = new SwerveSubsystem();
+        }
+        return instance;
+    }
 }
