@@ -71,15 +71,15 @@ public class RobotContainer {
     }
 
     public void initSubsystems() {
-        this.driveSystem = new SwerveSubsystem();
-        this.shooterSystem = new ShooterSubsystem();
-        this.intakeSystem = new IntakeSubsystem();
-        this.hopperSystem = new HopperSubsystem();
-        this.indexerSystem = new IndexerSubsystem();
+        this.driveSystem = SwerveSubsystem.getInstance();
+        this.shooterSystem = ShooterSubsystem.getInstance();
+        this.intakeSystem = IntakeSubsystem.getInstance();
+        this.hopperSystem = HopperSubsystem.getInstance();
+        this.indexerSystem = IndexerSubsystem.getInstance();
         this.controller = new Gamepad(RobotMap.DRIVE_STATION.USB_XBOX_CONTROLLER);
         this.limelightSystem = LimelightSubsystem.getInstance();
-        this.colorSensorSystem = new ColorSensorSubsystem();
-        this.hoodSubsystem = new HoodSubsystem();
+        this.colorSensorSystem = ColorSensorSubsystem.getInstance();
+        this.hoodSubsystem = HoodSubsystem.getInstance();
     }
 
     /**
