@@ -7,14 +7,19 @@
 
 package frc.robot.subsystems.shooter;
 
-import edu.wpi.first.wpilibj.Servo;
+import com.revrobotics.CANSparkMax;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.settings.Constants;
 import frc.robot.settings.Constants.Shooter.Hood;
 import frc.robot.settings.RobotMap.ROBOT.SHOOTER;
+import io.github.oblarg.oblog.Loggable;
+import io.github.oblarg.oblog.annotations.Log;
 
-public class ShooterHoodSubsystem extends SubsystemBase {
-    private final Servo aimServo;
+public class HoodSubsystem extends SubsystemBase implements Loggable{
+    //private final Servo aimServo;
+    private final DutyCycleEncoder encoder;
+    private final CANSparkMax hoodMotor;
     private double targetAngle;
 
     private double manualErrorAdjustment;
@@ -22,8 +27,11 @@ public class ShooterHoodSubsystem extends SubsystemBase {
     /**
      * Creates a new Hopper.
      */
-    public ShooterHoodSubsystem() {
-        aimServo = new Servo(SHOOTER.HOOD_ENCODER_PWM_PORT);
+    public HoodSubsystem() {
+        //aimServo = new Servo(SHOOTER.HOOD_ENCODER_PWM_PORT);
+        encoder = new DutyCycleEncoder(SHOOTER.HOOD_ENCODER_PWM_PORT);
+        hoodMotor = new CANSparkMax(SHOOTER.HOOD_MOTOR, Constants.kBrusheless);
+        hoodMotor.setInverted(false);
     }
 
     @Override
@@ -36,7 +44,7 @@ public class ShooterHoodSubsystem extends SubsystemBase {
     }
 
     public void setAngle(double position) {
-        aimServo.setAngle(position);
+        //aimServo.setAngle(position);
     }
 
     /**
@@ -48,18 +56,21 @@ public class ShooterHoodSubsystem extends SubsystemBase {
      * 
      * @return the angle (degrees) the motor was last commanded to.
      */
+    @Log(name = "hoodAngle", rowIndex = 3, columnIndex = 6, height = 1, width = 1)
     public double getAngle() {
-        return aimServo.getAngle();
+        //return aimServo.getAngle();
+        return encoder.getAbsolutePosition();
     }
 
     public double getPosition() {
-        return aimServo.getPosition();
+        return getAngle();
+        //return aimServo.getPosition();
     }
 
     public void setHoodFromPitch(double pitch) {
         double servoAngle = calculateHoodFromPitch(pitch);
         servoAngle -= this.manualErrorAdjustment;
-        aimServo.setAngle(servoAngle);
+        //aimServo.setAngle(servoAngle);
     }
 
     private double calculateHoodFromPitch(double x) {

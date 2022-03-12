@@ -43,7 +43,7 @@ public final class RobotMap {
             public static final int FLYWHEEL_MOTOR = 17;
             // NEO/SparkMaxx
             public static final int HOOD_MOTOR = 19;
-            public static final int HOOD_ENCODER_PWM_PORT = 1;
+            public static final int HOOD_ENCODER_PWM_PORT = 9;
         }
 
         public static class CLIMBER {
