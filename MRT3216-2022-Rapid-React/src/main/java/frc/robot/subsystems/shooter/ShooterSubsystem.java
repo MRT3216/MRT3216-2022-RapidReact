@@ -13,6 +13,8 @@ import frc.robot.settings.RobotMap.ROBOT.SHOOTER;
 public class ShooterSubsystem extends SubsystemBase {
     private static ShooterSubsystem instance;
     private TalonFX flywheelMotor;
+    private double shootingVelocityUnitsPer100ms;
+    private double ejectVelocityUnitsPer100ms;
 
     public ShooterSubsystem() {
         flywheelMotor = new TalonFX(SHOOTER.FLYWHEEL_MOTOR);
@@ -28,6 +30,9 @@ public class ShooterSubsystem extends SubsystemBase {
         flywheelMotor.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 20, Flywheel.kTimeoutMs);
         flywheelMotor.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, Flywheel.kTimeoutMs);
 
+        this.shootingVelocityUnitsPer100ms = Flywheel.shootingRPM * 2048.0 / 600.0;
+        this.ejectVelocityUnitsPer100ms = Flywheel.ejectRPM * 2048.0 / 600.0;
+
         this.zeroSensors();
     }
 
@@ -37,21 +42,19 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void spinToSpeed(boolean forward) {
         // Velocity closed loop without feed forward (not sure if this is enough)
-        // double targetVelocity_UnitsPer100ms = 2000.0 * 2048.0 / 600.0;
-        // flywheelMotor.set(TalonFXControlMode.Velocity, targetVelocity_UnitsPer100ms);        
         if (forward) {
-            flywheelMotor.set(TalonFXControlMode.PercentOutput, .5);
+            flywheelMotor.set(TalonFXControlMode.Velocity, this.shootingVelocityUnitsPer100ms);
         } else if (!forward) {
-            flywheelMotor.set(TalonFXControlMode.PercentOutput, -1 * .1);
-        }        
+            flywheelMotor.set(TalonFXControlMode.PercentOutput, -1 * .25);
+        }
+    }
+
+    public void eject() {
+        flywheelMotor.set(TalonFXControlMode.Velocity, this.ejectVelocityUnitsPer100ms);
     }
 
     public double getRPM() {
         return flywheelMotor.getSelectedSensorVelocity();
-    }
-
-    public boolean isReadyToShoot() {
-        return getRPM() > Flywheel.acceptableSpeed;
     }
 
     public void stopShooter() {
@@ -65,11 +68,12 @@ public class ShooterSubsystem extends SubsystemBase {
         flywheelMotor.getSensorCollection().setIntegratedSensorPosition(0, Flywheel.kTimeoutMs);
     }
 
-    public static ShooterSubsystem getInstance() {
-        if (instance == null) {
-            // if instance is null, initialize
-            instance = new ShooterSubsystem();
-        }
-        return instance;
+    public void setShootingRPM(double rPM) {
+        this.shootingVelocityUnitsPer100ms = rPM * 2048.0 / 600.0;
+
+    }
+
+    public void setEjectRPM(double rPM) {
+        this.ejectVelocityUnitsPer100ms = rPM * 2048.0 / 600.0;
     }
 }

@@ -8,17 +8,15 @@
 package frc.robot.subsystems.shooter;
 
 import com.revrobotics.CANSparkMax;
+
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.settings.Constants;
 import frc.robot.settings.Constants.Shooter.Hood;
 import frc.robot.settings.RobotMap.ROBOT.SHOOTER;
-import frc.robot.subsystems.LimelightSubsystem;
-import frc.robot.subsystems.SwerveSubsystem;
 import io.github.oblarg.oblog.Loggable;
-import frc.robot.settings.Constants.Shooter.Hood;
 
-public class HoodSubsystem extends SubsystemBase implements Loggable{
+public class HoodSubsystem extends SubsystemBase implements Loggable {
     private static HoodSubsystem instance;
     private final DutyCycleEncoder encoder;
     private final CANSparkMax hoodMotor;
@@ -29,7 +27,7 @@ public class HoodSubsystem extends SubsystemBase implements Loggable{
      * Creates a new Hopper.
      */
     public HoodSubsystem() {
-        //aimServo = new Servo(SHOOTER.HOOD_ENCODER_PWM_PORT);
+        // aimServo = new Servo(SHOOTER.HOOD_ENCODER_PWM_PORT);
         encoder = new DutyCycleEncoder(SHOOTER.HOOD_ENCODER_PWM_PORT);
         hoodMotor = new CANSparkMax(SHOOTER.HOOD_MOTOR, Constants.kBrusheless);
         hoodMotor.setInverted(false);
@@ -46,22 +44,18 @@ public class HoodSubsystem extends SubsystemBase implements Loggable{
     }
 
     public void setAngle(double position) {
-        if (position>Hood.hoodForwardLimit&&position<Hood.hoodReverseLimit) {
-            //goto position
-            if (getAngle()<position) {
+        if (position > Hood.hoodForwardLimit && position < Hood.hoodReverseLimit) {
+            // goto position
+            if (getAngle() < position) {
                 runMotor(false);
-            }
-            else if (getAngle()>position) {
+            } else if (getAngle() > position) {
                 runMotor(true);
             }
-        }
-        else if (position>Hood.hoodForwardLimit) {
+        } else if (position > Hood.hoodForwardLimit) {
             runMotor(true);
-        }
-        else if (position<Hood.hoodReverseLimit) {
+        } else if (position < Hood.hoodReverseLimit) {
             runMotor(false);
-        }
-        else {
+        } else {
             this.hoodMotor.stopMotor();
         }
     }
@@ -69,8 +63,7 @@ public class HoodSubsystem extends SubsystemBase implements Loggable{
     public void runMotor(boolean reverse) {
         if (reverse) {
             this.hoodMotor.set(-Hood.hoodSpeed);
-        }
-        else {
+        } else {
             this.hoodMotor.set(Hood.hoodSpeed);
         }
     }
@@ -85,19 +78,19 @@ public class HoodSubsystem extends SubsystemBase implements Loggable{
      * @return the angle (degrees) the motor was last commanded to.
      */
     public double getAngle() {
-        //return aimServo.getAngle();
+        // return aimServo.getAngle();
         return encoder.getAbsolutePosition();
     }
 
     public double getPosition() {
         return getAngle();
-        //return aimServo.getPosition();
+        // return aimServo.getPosition();
     }
 
     public void setHoodFromPitch(double pitch) {
         double servoAngle = calculateHoodFromPitch(pitch);
         servoAngle -= this.manualErrorAdjustment;
-        //aimServo.setAngle(servoAngle);
+        // aimServo.setAngle(servoAngle);
     }
 
     private double calculateHoodFromPitch(double x) {

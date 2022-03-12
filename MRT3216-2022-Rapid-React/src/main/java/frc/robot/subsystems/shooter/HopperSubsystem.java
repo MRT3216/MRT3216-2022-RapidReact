@@ -9,17 +9,19 @@ import frc.robot.settings.RobotMap.ROBOT.SHOOTER;
 
 public class HopperSubsystem extends SubsystemBase {
     private TalonFX hopperMotor;
-    private static HopperSubsystem instance;
+    private double percentOutput;
+
     public HopperSubsystem() {
         this.hopperMotor = new TalonFX(SHOOTER.HOPPER_MOTOR);
         this.hopperMotor.setInverted(Hopper.HOPPER_MOTOR_INVERTED);
+        this.percentOutput = Hopper.kHopperSpeed;
     }
 
     public void runHopper(boolean forward) {
         if (forward) {
-            hopperMotor.set(TalonFXControlMode.PercentOutput, Hopper.kHopperSpeed);
+            hopperMotor.set(TalonFXControlMode.PercentOutput, this.percentOutput);
         } else if (!forward) {
-            hopperMotor.set(TalonFXControlMode.PercentOutput, -1 * Hopper.kHopperSpeed);
+            hopperMotor.set(TalonFXControlMode.PercentOutput, -1 * this.percentOutput);
         }
     }
 
@@ -29,11 +31,7 @@ public class HopperSubsystem extends SubsystemBase {
         }
     }
 
-    public static HopperSubsystem getInstance() {
-        if (instance == null) {
-            // if instance is null, initialize
-            instance = new HopperSubsystem();
-        }
-        return instance;
+    public void setPercentOutput(double output) {
+        this.percentOutput = output;
     }
 }

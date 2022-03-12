@@ -18,15 +18,13 @@ public final class Constants {
 
 
     public static final class Drivetrain {
-        public static final double LEFT_FRONT_STEER_OFFSET = -Math.toRadians(21.97); // TODO: set these values
-        public static final double RIGHT_FRONT_STEER_OFFSET = -Math.toRadians(276.24); // TODO: set these values
-        public static final double LEFT_REAR_STEER_OFFSET = -Math.toRadians(120.67); // TODO: set these values
-        public static final double RIGHT_REAR_STEER_OFFSET = -Math.toRadians(44.82); // TODO: set these values
+        public static final double LEFT_FRONT_STEER_OFFSET = -Math.toRadians(17.04); // TODO: set these values
+        public static final double RIGHT_FRONT_STEER_OFFSET = -Math.toRadians(277.02); // TODO: set these values
+        public static final double LEFT_REAR_STEER_OFFSET = -Math.toRadians(113.02); // TODO: set these values
+        public static final double RIGHT_REAR_STEER_OFFSET = -Math.toRadians(44.38); // TODO: set these values
 
         public static final double WHEELBASE_METERS = 0.5461; // TODO: check this value
         public static final double TRACKWIDTH_METERS = 0.5588; // TODO check this value
-
-
 
         /**
          * The maximum voltage that will be delivered to the drive motors.
@@ -81,8 +79,8 @@ public final class Constants {
 
     public static final class Intake {
         public static final boolean INTAKE_MOTOR_INVERTED = false;
-        public static double kForwardIntakeSpeed = 0.6;
-        public static double kReverseIntakeSpeed = 0.3;
+        public static final double kForwardIntakeSpeed = 0.7;
+        public static final double kReverseIntakeSpeed = 0.3;
     }
 
     public static final class Shooter {
@@ -91,8 +89,8 @@ public final class Constants {
             public static final boolean FYLWHEEL_ENCODER_INVERTED = false;
 
             // TODO: Determine optimal speed
-            public static final double targetSpeed = 2000;
-            public static final double acceptableSpeed =  2000;
+            public static final double shootingRPM = 2800;
+            public static final double ejectRPM = 1500;
 
             public static final double RAMP_RATE = 0.3;
 
@@ -147,13 +145,14 @@ public final class Constants {
 
         public static final class Hopper {
             public static final boolean HOPPER_MOTOR_INVERTED = true;
-            public static final double kHopperSpeed = 0.5;
+            public static final double kHopperSpeed = 0.7;
             public static double rampTime = 2;
         }
 
         public static final class Indexer {
             public static final boolean INDEXER_MOTOR_INVERTED = false;
-            public static final double kIndexerSpeed = 0.4;
+            public static final double shootingRPM = 2000;
+            public static final double indexingRPM = 1500;
         }
     }
 

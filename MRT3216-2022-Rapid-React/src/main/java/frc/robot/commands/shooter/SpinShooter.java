@@ -13,10 +13,12 @@ public class SpinShooter extends CommandBase {
 
     private final ShooterSubsystem shooterSubsystem;
     private final BooleanSupplier isForward;
+    private final BooleanSupplier eject;
 
-    public SpinShooter(final ShooterSubsystem shooterSubsystem, BooleanSupplier isForward) {
+    public SpinShooter(final ShooterSubsystem shooterSubsystem, BooleanSupplier isForward, BooleanSupplier eject) {
         this.shooterSubsystem = shooterSubsystem;
         this.isForward = isForward;
+        this.eject = eject;
     }
 
     // Called when the command is initially scheduled.
@@ -27,7 +29,11 @@ public class SpinShooter extends CommandBase {
 
     @Override
     public void execute() {
-        shooterSubsystem.spinToSpeed(isForward.getAsBoolean());
+        if (this.eject.getAsBoolean()) {
+            shooterSubsystem.eject();
+        } else {
+            shooterSubsystem.spinToSpeed(isForward.getAsBoolean());
+        }
     }
 
     @Override

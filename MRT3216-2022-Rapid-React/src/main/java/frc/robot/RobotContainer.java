@@ -5,13 +5,16 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.OI.Gamepad;
 import frc.robot.OI.OIUtils;
 import frc.robot.commands.TeleDrive;
+import frc.robot.commands.shooter.IndexCargo;
 import frc.robot.commands.shooter.RunHopper;
 import frc.robot.commands.shooter.RunIndexer;
 import frc.robot.commands.shooter.RunIntake;
 import frc.robot.commands.shooter.SpinShooter;
+import frc.robot.settings.Constants;
 import frc.robot.settings.Constants.Drivetrain;
 import frc.robot.settings.RobotMap;
 import frc.robot.subsystems.ColorSensorSubsystem;
@@ -24,7 +27,6 @@ import frc.robot.subsystems.shooter.IndexerSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import io.github.oblarg.oblog.Logger;
 import io.github.oblarg.oblog.annotations.Config;
-
 // endregion
 
 /**
@@ -41,12 +43,12 @@ public class RobotContainer {
     private SwerveSubsystem driveSystem;
     private IntakeSubsystem intakeSystem;
     private ShooterSubsystem shooterSystem;
-    private HopperSubsystem hopperSystem;
     private IndexerSubsystem indexerSystem;
+    private HopperSubsystem hopperSystem;
     private Gamepad controller;
     private LimelightSubsystem limelightSystem;
     private ColorSensorSubsystem colorSensorSystem;
-    private HoodSubsystem hoodSubsystem;
+    private HoodSubsystem hoodSystem;
 
     // endregion
 
@@ -58,7 +60,6 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     private RobotContainer() {
-
         this.initSubsystems();
 
         // The first argument is the root container
@@ -71,15 +72,15 @@ public class RobotContainer {
     }
 
     public void initSubsystems() {
-        this.driveSystem = SwerveSubsystem.getInstance();
-        this.shooterSystem = ShooterSubsystem.getInstance();
-        this.intakeSystem = IntakeSubsystem.getInstance();
-        this.hopperSystem = HopperSubsystem.getInstance();
-        this.indexerSystem = IndexerSubsystem.getInstance();
+        this.driveSystem = new SwerveSubsystem();
+        this.intakeSystem = new IntakeSubsystem();
+        this.hopperSystem = new HopperSubsystem();
+        this.indexerSystem = new IndexerSubsystem();
+        // this.hoodSystem = new HoodSubsystem();
+        this.shooterSystem = new ShooterSubsystem();
         this.controller = new Gamepad(RobotMap.DRIVE_STATION.USB_XBOX_CONTROLLER);
         this.limelightSystem = LimelightSubsystem.getInstance();
-        this.colorSensorSystem = ColorSensorSubsystem.getInstance();
-        this.hoodSubsystem = HoodSubsystem.getInstance();
+        this.colorSensorSystem = new ColorSensorSubsystem();
     }
 
     /**
@@ -100,18 +101,27 @@ public class RobotContainer {
 
         }
 
-        if (intakeSystem != null && controller != null) {
-            controller.A.whileHeld(new RunIntake(this.intakeSystem, () -> !controller.getLeftBumper()));
-        }
-        if (hopperSystem != null && controller != null) {
-            controller.B.whileHeld(new RunHopper(this.hopperSystem, () -> !controller.getLeftBumper()));
-        }
-        if (indexerSystem != null && controller != null) {
-            controller.X.whileHeld(new RunIndexer(this.indexerSystem, () -> !controller.getLeftBumper()));
-        }
-        if (shooterSystem != null && controller != null) {
-            controller.Y.whileHeld(new SpinShooter(this.shooterSystem, () -> !controller.getLeftBumper()));
-        }
+        controller.RB.whileHeld(new ParallelCommandGroup(new RunIntake(this.intakeSystem, () -> true),
+                new RunHopper(this.hopperSystem, () -> true),
+                new IndexCargo(this.indexerSystem, () -> this.colorSensorSystem.isAllianceBall()),
+                new SpinShooter(this.shooterSystem, () -> true, () -> true)));
+
+        controller.LB.whileHeld(new ParallelCommandGroup(
+                new RunHopper(this.hopperSystem, () -> true),
+                new RunIndexer(this.indexerSystem, () -> true),
+                new SpinShooter(this.shooterSystem, () -> true, () -> false)));
+
+        controller.X.whileHeld(new ParallelCommandGroup(new RunHopper(this.hopperSystem, () -> false),
+                new RunIndexer(this.indexerSystem, () -> false),
+                new SpinShooter(this.shooterSystem, () -> false, () -> false)));
+
+        controller.A.whenPressed(new Runnable() {
+            @Override
+            public void run() {
+                RobotContainer.getInstance().getDriveSystem().resetGyroAndOdometry(true);
+            }
+
+        }, driveSystem);
     }
 
     /**
@@ -135,8 +145,38 @@ public class RobotContainer {
         return driveSystem;
     }
 
-    @Config.NumberSlider(name = "Indexer Speed", defaultValue = 0.5, rowIndex = 0, columnIndex = 1, height = 1, width = 1)
-    public void setThetaP(double output) {
-        this.indexerSystem.setPercentOutput(output);
+    @Config.NumberSlider(name = "F Intake Speed", defaultValue = Constants.Intake.kForwardIntakeSpeed, min = 0, max = 1, blockIncrement = 0.05, tabName = "RobotContainer", rowIndex = 0, columnIndex = 0, height = 1, width = 1)
+    public void setForwardPercentOutput(double output) {
+        this.intakeSystem.setForwardPercentOutput(output);
+    }
+
+    @Config.NumberSlider(name = "R Intake Speed", defaultValue = Constants.Intake.kReverseIntakeSpeed, min = 0, max = 1, blockIncrement = 0.05, tabName = "RobotContainer", rowIndex = 1, columnIndex = 0, height = 1, width = 1)
+    public void setReversePercentOutput(double output) {
+        this.intakeSystem.setReversePercentOutput(output);
+    }
+
+    @Config.NumberSlider(name = "Hopper Speed", defaultValue = Constants.Shooter.Hopper.kHopperSpeed, min = 0, max = 1, blockIncrement = 0.05, tabName = "RobotContainer", rowIndex = 0, columnIndex = 1, height = 1, width = 1)
+    public void setPercentOutput(double output) {
+        this.hopperSystem.setPercentOutput(output);
+    }
+
+    @Config.NumberSlider(name = "Indexer Shoot RPM", defaultValue = Constants.Shooter.Indexer.shootingRPM, min = 1000, max = 4000, blockIncrement = 50, rowIndex = 0, columnIndex = 2, height = 1, width = 1)
+    public void setIndexerShootingRPM(double rPM) {
+        this.indexerSystem.setShootingRPM(rPM);
+    }
+
+    @Config.NumberSlider(name = "Indexer Index RPM", defaultValue = Constants.Shooter.Indexer.indexingRPM, min = 1000, max = 4000, blockIncrement = 50, rowIndex = 1, columnIndex = 2, height = 1, width = 1)
+    public void setIndexerIndexRPM(double rPM) {
+        this.indexerSystem.setIndexingRPM(rPM);
+    }
+
+    @Config.NumberSlider(name = "Shooter Shoot RPM", defaultValue = Constants.Shooter.Flywheel.shootingRPM, min = 1000, max = 4000, blockIncrement = 50, rowIndex = 0, columnIndex = 3, height = 1, width = 1)
+    public void setShooterShootingRPM(double rPM) {
+        this.shooterSystem.setShootingRPM(rPM);
+    }
+
+    @Config.NumberSlider(name = "Shooter Eject RPM", defaultValue = Constants.Shooter.Flywheel.ejectRPM, min = 1000, max = 4000, blockIncrement = 50, rowIndex = 1, columnIndex = 3, height = 1, width = 1)
+    public void setEjectRPM(double rPM) {
+        this.shooterSystem.setEjectRPM(rPM);
     }
 }

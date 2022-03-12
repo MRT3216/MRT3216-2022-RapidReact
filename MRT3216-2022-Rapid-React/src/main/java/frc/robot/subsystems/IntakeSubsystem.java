@@ -1,28 +1,33 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.settings.Constants;
+import frc.robot.settings.Constants.Intake;
 import frc.robot.settings.RobotMap.ROBOT.INTAKE;
 
 public class IntakeSubsystem extends SubsystemBase {
     private static IntakeSubsystem instance;
     private final CANSparkMax motor;
+    private double percentOutputForward;
+    private double percentOutputReverse;
 
     /**
      * Creates a new Intake.
      */
     public IntakeSubsystem() {
-        motor = new CANSparkMax(INTAKE.INTAKE_MOTOR, Constants.kBrusheless);
+        motor = new CANSparkMax(INTAKE.INTAKE_MOTOR, MotorType.kBrushless);
+        this.percentOutputForward = Intake.kForwardIntakeSpeed;
+        this.percentOutputReverse = Intake.kReverseIntakeSpeed;
         motor.setInverted(false);
     }
 
     public void runIntake(final boolean forward) {
         if (forward) {
-            motor.set(Constants.Intake.kForwardIntakeSpeed);
+            motor.set(this.percentOutputForward);
         } else {
-            motor.set(-1 * Constants.Intake.kReverseIntakeSpeed);
+            motor.set(-1 * this.percentOutputReverse);
         }
     }
 
@@ -35,11 +40,11 @@ public class IntakeSubsystem extends SubsystemBase {
         // This method will be called once per scheduler run
     }
 
-    public static IntakeSubsystem getInstance() {
-        if (instance == null) {
-            // if instance is null, initialize
-            instance = new IntakeSubsystem();
-        }
-        return instance;
+    public void setForwardPercentOutput(double output) {
+        this.percentOutputForward = output;
+    }
+
+    public void setReversePercentOutput(double output) {
+        this.percentOutputForward = output;
     }
 }

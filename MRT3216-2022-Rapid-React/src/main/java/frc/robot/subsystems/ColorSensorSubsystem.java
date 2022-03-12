@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.ColorSensorV3;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -24,7 +26,17 @@ public class ColorSensorSubsystem extends SubsystemBase implements Loggable {
         // the raw input, as with
         // .getRawColor - this is perfect for our use though, as we're just looking for
         // the "average" color
+        System.out.println("Color: " + sensor.getColor());
         return sensor.getColor();
+    }
+
+    public boolean isAllianceBall() {
+        Alliance currentAlliance = DriverStation.getAlliance();
+        if (currentAlliance == Alliance.Blue) {
+            return this.isBlue();
+        } else {
+            return this.isRed();
+        }
     }
 
     @Log.BooleanBox(name = "Red Detected", rowIndex = 0, columnIndex = 0)
