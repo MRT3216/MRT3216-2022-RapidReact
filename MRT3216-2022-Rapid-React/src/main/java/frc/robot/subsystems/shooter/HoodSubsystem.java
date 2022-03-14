@@ -9,6 +9,7 @@ package frc.robot.subsystems.shooter;
 
 import com.revrobotics.CANSparkMax;
 
+import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.settings.Constants;
@@ -22,6 +23,8 @@ public class HoodSubsystem extends SubsystemBase implements Loggable {
     private final CANSparkMax hoodMotor;
     private double targetAngle;
     private double manualErrorAdjustment;
+    private SparkMaxPIDController hoodPIDController;
+
 
     /**
      * Creates a new Hopper.
@@ -30,8 +33,13 @@ public class HoodSubsystem extends SubsystemBase implements Loggable {
         // aimServo = new Servo(SHOOTER.HOOD_ENCODER_PWM_PORT);
         encoder = new DutyCycleEncoder(SHOOTER.HOOD_ENCODER_PWM_PORT);
         hoodMotor = new CANSparkMax(SHOOTER.HOOD_MOTOR, Constants.kBrusheless);
+        hoodMotor.restoreFactoryDefaults();
         hoodMotor.setInverted(false);
         hoodMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        hoodMotor.enableVoltageCompensation(12);
+        hoodMotor.burnFlash();
+        hoodPIDController = hoodMotor.getPIDController();
+        hoodPIDController.setOutputRange(-1,1);
     }
 
     @Override
@@ -44,28 +52,7 @@ public class HoodSubsystem extends SubsystemBase implements Loggable {
     }
 
     public void setAngle(double position) {
-        if (position > Hood.hoodForwardLimit && position < Hood.hoodReverseLimit) {
-            // goto position
-            if (getAngle() < position) {
-                runMotor(false);
-            } else if (getAngle() > position) {
-                runMotor(true);
-            }
-        } else if (position > Hood.hoodForwardLimit) {
-            runMotor(true);
-        } else if (position < Hood.hoodReverseLimit) {
-            runMotor(false);
-        } else {
-            this.hoodMotor.stopMotor();
-        }
-    }
-
-    public void runMotor(boolean reverse) {
-        if (reverse) {
-            this.hoodMotor.set(-Hood.hoodSpeed);
-        } else {
-            this.hoodMotor.set(Hood.hoodSpeed);
-        }
+        //todo: pid code goes here
     }
 
     /**
@@ -82,10 +69,8 @@ public class HoodSubsystem extends SubsystemBase implements Loggable {
         return encoder.getAbsolutePosition();
     }
 
-    public double getPosition() {
-        return getAngle();
-        // return aimServo.getPosition();
-    }
+
+    //todo: determing what here is necessary and fix it
 
     public void setHoodFromPitch(double pitch) {
         double servoAngle = calculateHoodFromPitch(pitch);
@@ -121,4 +106,8 @@ public class HoodSubsystem extends SubsystemBase implements Loggable {
         }
         return instance;
     }
+
+    public void setP(int P) {this.hoodPIDController.setP(P);}
+    public void setI(int I) {this.hoodPIDController.setI(I);}
+    public void setD(int D) {this.hoodPIDController.setD(D);}
 }
