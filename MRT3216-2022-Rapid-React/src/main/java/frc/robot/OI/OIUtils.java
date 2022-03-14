@@ -3,6 +3,14 @@ package frc.robot.OI;
 import frc.robot.settings.Constants.OI;
 
 public class OIUtils {
+    public static double modifyAxis(double value, double expo) {
+        // Deadband
+        value = deadband(value, OI.kJoystickDeadband);
+
+        value = expo(value, expo);
+        return value;
+    }
+
     private static double deadband(double value, double deadband) {
         if (Math.abs(value) > deadband) {
             if (value > 0.0) {
@@ -15,20 +23,12 @@ public class OIUtils {
         }
     }
 
-    public static double modifyAxis(double value) {
-        // Deadband
-        value = deadband(value, OI.kJoystickDeadband);
+    private static double expo(double value, double expo) {
+        double adjValue = (1 - ((100 - expo) / 100)) * Math.pow(value, 3)
+                + (value * ((100 - expo) / 100));
 
-        // Square the axis
-        // value = Math.copySign(value * value, value);
-        value = expo(value);
-        return value;
-    }
-
-    public static double expo(double value) {
-        double adjValue = (1 - ((100 - OI.kExpoConstant) / 100)) * Math.pow(value, 3)
-                + (value * ((100 - OI.kExpoConstant) / 100));
-
+        System.out.println("Value: " + value);
+        System.out.println("Adj Value: " + adjValue);
         return adjValue;
     }
 }

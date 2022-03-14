@@ -31,10 +31,7 @@ public class Robot extends TimedRobot {
         // Instantiate our RobotContainer. This will perform all our button bindings,
         // and put our
         // autonomous chooser on the dashboard.
-        robotContainer = RobotContainer.getInstance();        
-        PowerDistribution pdh = new PowerDistribution();
-        pdh.clearStickyFaults();
-        pdh.close();
+        robotContainer = RobotContainer.getInstance(); 
         autoChooser = AutoChooser.getInstance();
         autoChooser.populateAutoChooser();
         robotContainer.getDriveSystem().calibrateGyroscope();

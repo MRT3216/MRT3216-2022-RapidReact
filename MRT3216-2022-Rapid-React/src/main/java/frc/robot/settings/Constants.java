@@ -16,7 +16,6 @@ public final class Constants {
     public static CANSparkMaxLowLevel.MotorType kBrushed = CANSparkMaxLowLevel.MotorType.kBrushed;
     public static CANSparkMaxLowLevel.MotorType kBrusheless = CANSparkMaxLowLevel.MotorType.kBrushless;
 
-
     public static final class Drivetrain {
         public static final double LEFT_FRONT_STEER_OFFSET = -Math.toRadians(17.04); // TODO: set these values
         public static final double RIGHT_FRONT_STEER_OFFSET = -Math.toRadians(277.02); // TODO: set these values
@@ -74,7 +73,8 @@ public final class Constants {
 
     public static final class OI {
         public static final double kJoystickDeadband = 0.05;
-        public static final double kExpoConstant = 50;
+        public static final double kTranslationExpo = 75;
+        public static final double kRotationnExpo = 75;
     }
 
     public static final class Intake {
@@ -135,7 +135,7 @@ public final class Constants {
             public static final double kMaxHoodError = 1.0; // Degrees
             public static double hoodErrorAdjustment = 11.5;
 
-            //todo: set these vals
+            // todo: set these vals
             public static final double hoodForwardLimit = 0;
             public static final double hoodReverseLimit = 0;
 
@@ -163,7 +163,6 @@ public final class Constants {
     public static final class Sensors {
         public static final double ColorRange = 100;
 
-
     }
 
     public static final class Directories {
@@ -172,6 +171,6 @@ public final class Constants {
     }
 
     public static final class Limelight {
-        
+
     }
 }
