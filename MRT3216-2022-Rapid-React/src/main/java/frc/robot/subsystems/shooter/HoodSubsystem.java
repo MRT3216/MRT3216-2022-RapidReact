@@ -51,6 +51,6 @@ public class HoodSubsystem extends ProfiledPIDSubsystem {
     @Override
     public double getMeasurement() {
         return m_encoder.getAbsolutePosition();
-        //return m_encoder.getDistance() + Hood.kArmOffsetRads;
+        // return m_encoder.getDistance() + Hood.kArmOffsetRads;
     }
 }

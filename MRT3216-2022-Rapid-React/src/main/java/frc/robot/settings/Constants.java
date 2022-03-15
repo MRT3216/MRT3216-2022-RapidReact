@@ -160,6 +160,8 @@ public final class Constants {
             public static final double hoodForwardLimit = 0;
             public static final double hoodReverseLimit = 0;
 
+            //todo: set this val
+            public static final double hoodOffset = 0;
             public static final double hoodSpeed = 0.1;
         }
 
