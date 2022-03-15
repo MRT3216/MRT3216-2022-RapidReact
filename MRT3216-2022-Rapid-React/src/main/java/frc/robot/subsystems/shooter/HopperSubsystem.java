@@ -1,5 +1,6 @@
 package frc.robot.subsystems.shooter;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
@@ -8,12 +9,17 @@ import frc.robot.settings.Constants.Shooter.Hopper;
 import frc.robot.settings.RobotMap.ROBOT.SHOOTER;
 
 public class HopperSubsystem extends SubsystemBase {
+    private static HopperSubsystem instance;
     private TalonFX hopperMotor;
     private double percentOutput;
 
-    public HopperSubsystem() {
+    private HopperSubsystem() {
         this.hopperMotor = new TalonFX(SHOOTER.HOPPER_MOTOR);
+        this.hopperMotor.configFactoryDefault();
         this.hopperMotor.setInverted(Hopper.HOPPER_MOTOR_INVERTED);
+        this.hopperMotor.setNeutralMode(NeutralMode.Coast);
+        this.hopperMotor.enableVoltageCompensation(true);
+        
         this.percentOutput = Hopper.kHopperSpeed;
     }
 
@@ -33,5 +39,13 @@ public class HopperSubsystem extends SubsystemBase {
 
     public void setPercentOutput(double output) {
         this.percentOutput = output;
+    }
+
+    public static HopperSubsystem getInstance() {
+        if (instance == null) {
+            // if instance is null, initialize
+            instance = new HopperSubsystem();
+        }
+        return instance;
     }
 }

@@ -86,15 +86,15 @@ public class RobotContainer {
     }
 
     public void initSubsystems() {
-        this.driveSystem = new SwerveSubsystem();
-        this.intakeSystem = new IntakeSubsystem();
-        this.hopperSystem = new HopperSubsystem();
+        this.driveSystem = SwerveSubsystem.getInstance();
+        this.intakeSystem = IntakeSubsystem.getInstance();
+        this.hopperSystem = HopperSubsystem.getInstance();
         this.indexerSystem = IndexerSubsystem.getInstance();
-        this.hoodSystem = new HoodSubsystem();
-        this.shooterSystem = new ShooterSubsystem();
+        this.hoodSystem = HoodSubsystem.getInstance();
+        this.shooterSystem = ShooterSubsystem.getInstance();
         this.controller = new Gamepad(RobotMap.DRIVE_STATION.USB_XBOX_CONTROLLER);
         this.limelightSystem = LimelightSubsystem.getInstance();
-        this.colorSensorSystem = new ColorSensorSubsystem();
+        this.colorSensorSystem = ColorSensorSubsystem.getInstance();
     }
 
     /**
@@ -196,7 +196,7 @@ public class RobotContainer {
         this.shooterSystem.setShootingRPM(rPM);
     }
 
-    @Log.NumberBar(name = "Shoot RPM", rowIndex = 3, columnIndex = 3, height = 1, width = 1)
+    @Log.NumberBar(name = "Shoot RPM", rowIndex = 2, columnIndex = 3, height = 1, width = 1)
     public double getShooterShootingRPM() {
         return this.shooterSystem.getShootingRPM();
     }

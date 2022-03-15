@@ -101,14 +101,16 @@ public final class Constants {
             public static final double kI = 0;
             // Derivative gain
             public static final double kD = 0;
-            // public static final double kF = 1023.0 / 20660.0;
-            public static final double kF = 0.057;
-            public static final double kS = 0.67572;
-            public static final double kV = 0.14379;
-            public static final double kA = 0.014485;
+                        public static final double kF = 0.057;
             public static final int kIzone = 300;
             public static final double kPeakOutput = 1.0;
             public static final int kSensorUnitsPerRotation = 2048;
+            /* These came from characterization but aren't currently used
+            public static final double kS = 0.67572;
+            public static final double kV = 0.14379;
+            public static final double kA = 0.014485;
+            */
+
             public static final Gains kShooterGains = new Gains(kP, kI, kD, kF, kIzone, kPeakOutput);
             
             /**
@@ -139,8 +141,10 @@ public final class Constants {
         }
 
         public static final class Hood {
+            public static final boolean HOOD_MOTOR_INVERTED = true;
             public static final double kMaxHoodError = 1.0; // Degrees
 
+            // TODO: Tune these values
             // Proportional gain
             public static final double kP = 0.00016899;
             // Integral gainc
@@ -156,11 +160,11 @@ public final class Constants {
             public static final double kEncoderDistancePerPulse = 8192;
             public static final double kArmOffsetRads = 0;
 
-            // todo: set these vals
+            // TODO: set these vals
             public static final double hoodForwardLimit = 0;
             public static final double hoodReverseLimit = 0;
 
-            //todo: set this val
+            // TODO: set this val
             public static final double hoodOffset = 0;
             public static final double hoodSpeed = 0.1;
         }

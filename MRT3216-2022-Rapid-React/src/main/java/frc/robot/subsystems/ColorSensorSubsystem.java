@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.settings.Constants;
-import frc.robot.subsystems.shooter.ShooterSubsystem;
 import io.github.oblarg.oblog.Loggable;
 import io.github.oblarg.oblog.annotations.Log;
 
@@ -16,7 +15,7 @@ public class ColorSensorSubsystem extends SubsystemBase implements Loggable {
     private static ColorSensorSubsystem instance;
     private ColorSensorV3 sensor;
 
-    public ColorSensorSubsystem() {
+    private ColorSensorSubsystem() {
         sensor = new ColorSensorV3(I2C.Port.kMXP);
     }
 

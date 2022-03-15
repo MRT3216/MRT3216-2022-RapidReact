@@ -16,8 +16,9 @@ public class IntakeSubsystem extends SubsystemBase {
     /**
      * Creates a new Intake.
      */
-    public IntakeSubsystem() {
+    private IntakeSubsystem() {
         motor = new CANSparkMax(INTAKE.INTAKE_MOTOR, MotorType.kBrushless);
+        motor.restoreFactoryDefaults();
         this.percentOutputForward = Intake.kForwardIntakeSpeed;
         this.percentOutputReverse = Intake.kReverseIntakeSpeed;
         motor.setInverted(false);
@@ -46,5 +47,13 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public void setReversePercentOutput(double output) {
         this.percentOutputForward = output;
+    }
+
+    public static IntakeSubsystem getInstance() {
+        if (instance == null) {
+            // if instance is null, initialize
+            instance = new IntakeSubsystem();
+        }
+        return instance;
     }
 }

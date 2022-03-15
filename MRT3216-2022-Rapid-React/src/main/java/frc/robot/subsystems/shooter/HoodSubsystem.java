@@ -14,6 +14,7 @@ import frc.robot.settings.RobotMap;
 
 /** A robot hood subsystem that moves with a motion profile. */
 public class HoodSubsystem extends ProfiledPIDSubsystem {
+    private static HoodSubsystem instance;
     private final CANSparkMax motor = new CANSparkMax(RobotMap.ROBOT.SHOOTER.HOOD_MOTOR, MotorType.kBrushless);
 
     private final DutyCycleEncoder m_encoder = new DutyCycleEncoder(RobotMap.ROBOT.SHOOTER.HOOD_ENCODER_PWM_PORT);
@@ -23,7 +24,7 @@ public class HoodSubsystem extends ProfiledPIDSubsystem {
             Hood.kV, Hood.kA);
 
     /** Create a new HoodSubsystem. */
-    public HoodSubsystem() {
+    private HoodSubsystem() {
         super(
                 new ProfiledPIDController(
                         Hood.kP,
@@ -34,6 +35,7 @@ public class HoodSubsystem extends ProfiledPIDSubsystem {
                                 Hood.kMaxAcceleration)),
                 0);
 
+        motor.restoreFactoryDefaults();
         m_encoder.setDistancePerRotation(2 * Math.PI);
         motor.setIdleMode(IdleMode.kCoast);
         // Start arm at rest in neutral position
@@ -53,4 +55,12 @@ public class HoodSubsystem extends ProfiledPIDSubsystem {
         return m_encoder.getAbsolutePosition();
         // return m_encoder.getDistance() + Hood.kArmOffsetRads;
     }
+    
+	public static HoodSubsystem getInstance() {
+		if (instance == null) {
+			// if instance is null, initialize
+			instance = new HoodSubsystem();
+		}
+		return instance;
+	}
 }
