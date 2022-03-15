@@ -6,8 +6,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import frc.robot.settings.Constants.Shooter.Flywheel;
 
 public class Configurations {
-    private TalonFXConfiguration hopperMotorConfiguration;
     private TalonFXConfiguration intakeMotorConfiguration;
+    private TalonFXConfiguration hopperMotorConfiguration;
+    private TalonFXConfiguration indexerMotorConfiguration;
     private TalonFXConfiguration flywheelMotorConfiguration;
     private TalonFXConfiguration swerveDriveMotorConfiguration;
     private TalonFXConfiguration swerveAngleMotorConfiguration;
@@ -41,13 +42,13 @@ public class Configurations {
     }
 
     public TalonFXConfiguration getIndexerMotorConfiguration() {
-        if (hopperMotorConfiguration == null) {
-            hopperMotorConfiguration = new TalonFXConfiguration();
-            hopperMotorConfiguration.primaryPID.selectedFeedbackSensor = TalonFXFeedbackDevice.IntegratedSensor
+        if (indexerMotorConfiguration == null) {
+            indexerMotorConfiguration = new TalonFXConfiguration();
+            indexerMotorConfiguration.primaryPID.selectedFeedbackSensor = TalonFXFeedbackDevice.IntegratedSensor
                     .toFeedbackDevice();
         }
 
-        return hopperMotorConfiguration;
+        return indexerMotorConfiguration;
     }
 
     public TalonFXConfiguration getFlywheelMotorConfiguration() {

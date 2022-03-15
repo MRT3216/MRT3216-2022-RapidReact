@@ -27,8 +27,6 @@ public class OIUtils {
         double adjValue = (1 - ((100 - expo) / 100)) * Math.pow(value, 3)
                 + (value * ((100 - expo) / 100));
 
-        System.out.println("Value: " + value);
-        System.out.println("Adj Value: " + adjValue);
         return adjValue;
     }
 }

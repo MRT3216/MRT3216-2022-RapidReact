@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.settings.Configurations;
 import frc.robot.settings.Constants.Shooter.Indexer;
 import frc.robot.settings.RobotMap.ROBOT.SHOOTER;
+import frc.robot.settings.Utilities;
 
 public class IndexerSubsystem extends SubsystemBase {
     private static IndexerSubsystem instance;
@@ -15,16 +16,16 @@ public class IndexerSubsystem extends SubsystemBase {
     private double shootingVelocityUnitsPer100ms;
     private double indexingVelocityUnitsPer100ms;
 
-    public IndexerSubsystem() {
+    private IndexerSubsystem() {
         this.indexerMotor = new TalonFX(SHOOTER.INDEXER_MOTOR);
-        this.indexerMotor.configAllSettings(Configurations.getInstance().getFlywheelMotorConfiguration());
+        this.indexerMotor.configAllSettings(Configurations.getInstance().getIndexerMotorConfiguration());
 
         this.indexerMotor.setNeutralMode(NeutralMode.Brake);
         this.indexerMotor.setInverted(Indexer.INDEXER_MOTOR_INVERTED);
         this.indexerMotor.enableVoltageCompensation(true);
 
-        this.shootingVelocityUnitsPer100ms = Indexer.shootingRPM * 2048.0 / 600.0;
-        this.shootingVelocityUnitsPer100ms = Indexer.indexingRPM * 2048.0 / 600.0;
+        this.shootingVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(Indexer.shootingRPM, Indexer.kSensorUnitsPerRotation);
+        this.shootingVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(Indexer.indexingRPM, Indexer.kSensorUnitsPerRotation);
     }
 
     public void runIndexer(boolean forward) {
@@ -45,13 +46,13 @@ public class IndexerSubsystem extends SubsystemBase {
         }
     }
 
-    public void setShootingRPM(double rPM) {
-        this.shootingVelocityUnitsPer100ms = rPM * 2048.0 / 600.0;
+    public void setShootingRPM(double rpm) {
+        this.shootingVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(rpm, Indexer.kSensorUnitsPerRotation);
 
     }
 
-    public void setIndexingRPM(double rPM) {
-        this.indexingVelocityUnitsPer100ms = rPM * 2048.0 / 600.0;
+    public void setIndexingRPM(double rpm) {
+        this.indexingVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(rpm, Indexer.kSensorUnitsPerRotation);
     }
 
     public static IndexerSubsystem getInstance() {

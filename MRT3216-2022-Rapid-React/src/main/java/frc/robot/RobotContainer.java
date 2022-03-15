@@ -3,7 +3,6 @@ package frc.robot;
 // region Imports
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -28,8 +27,9 @@ import frc.robot.subsystems.shooter.IndexerSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import io.github.oblarg.oblog.Logger;
 import io.github.oblarg.oblog.annotations.Config;
-// endregion
 import io.github.oblarg.oblog.annotations.Log;
+
+// endregion
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -44,16 +44,26 @@ public class RobotContainer {
     private static RobotContainer instance;
     private SwerveSubsystem driveSystem;
     private IntakeSubsystem intakeSystem;
+    @Config(name = "Flywheel P", defaultValueNumeric = Constants.Shooter.Flywheel.kP, methodName = "setPValue", methodTypes = {
+            double.class }, rowIndex = 4, columnIndex = 0)
+    @Config(name = "Flywheel I", defaultValueNumeric = Constants.Shooter.Flywheel.kI, methodName = "setIValue", methodTypes = {
+            double.class }, rowIndex = 4, columnIndex = 1)
+    @Config(name = "Flywheel D", defaultValueNumeric = Constants.Shooter.Flywheel.kD, methodName = "setDValue", methodTypes = {
+            double.class }, rowIndex = 4, columnIndex = 2)
+    @Config(name = "Flywheel F", defaultValueNumeric = Constants.Shooter.Flywheel.kF, methodName = "setFValue", methodTypes = {
+            double.class }, rowIndex = 4, columnIndex = 3)
+    @Log.Graph(name = "Flywheel Velocity", methodName = "getRPM", width = 4, height = 2, rowIndex = 0, columnIndex = 4)
+    @Log(name = "Current Velocity", methodName = "getRPM", rowIndex = 0, columnIndex = 8)
     private ShooterSubsystem shooterSystem;
     private IndexerSubsystem indexerSystem;
     private HopperSubsystem hopperSystem;
     private Gamepad controller;
     private LimelightSubsystem limelightSystem;
     private ColorSensorSubsystem colorSensorSystem;
+    @Log(name = "Hood Position", methodName = "getMeasurement", rowIndex = 5, columnIndex = 0)
     private HoodSubsystem hoodSystem;
     private double translationExpo;
-    private double rotationExpo;    
-    private PowerDistribution pdh;
+    private double rotationExpo;
 
     // endregion
 
@@ -62,6 +72,7 @@ public class RobotContainer {
      */
     private RobotContainer() {
         this.translationExpo = Constants.OI.kTranslationExpo;
+        this.rotationExpo = Constants.OI.kRotationnExpo;
 
         this.initSubsystems();
 
@@ -78,14 +89,12 @@ public class RobotContainer {
         this.driveSystem = new SwerveSubsystem();
         this.intakeSystem = new IntakeSubsystem();
         this.hopperSystem = new HopperSubsystem();
-        this.indexerSystem = new IndexerSubsystem();
-        // this.hoodSystem = new HoodSubsystem();
+        this.indexerSystem = IndexerSubsystem.getInstance();
+        this.hoodSystem = new HoodSubsystem();
         this.shooterSystem = new ShooterSubsystem();
         this.controller = new Gamepad(RobotMap.DRIVE_STATION.USB_XBOX_CONTROLLER);
         this.limelightSystem = LimelightSubsystem.getInstance();
         this.colorSensorSystem = new ColorSensorSubsystem();
-        this.pdh = new PowerDistribution();
-        pdh.clearStickyFaults();
     }
 
     /**
@@ -128,6 +137,12 @@ public class RobotContainer {
             }
 
         }, driveSystem);
+    }
+
+    public void disablePIDSubsystems() {
+        if (hoodSystem != null) {
+            hoodSystem.disable();
+        }
     }
 
     /**
@@ -181,6 +196,11 @@ public class RobotContainer {
         this.shooterSystem.setShootingRPM(rPM);
     }
 
+    @Log.NumberBar(name = "Shoot RPM", rowIndex = 3, columnIndex = 3, height = 1, width = 1)
+    public double getShooterShootingRPM() {
+        return this.shooterSystem.getShootingRPM();
+    }
+
     @Config.NumberSlider(name = "Sho. Eject RPM", defaultValue = Constants.Shooter.Flywheel.ejectRPM, min = 1000, max = 4000, blockIncrement = 50, rowIndex = 1, columnIndex = 3, height = 1, width = 1)
     public void setEjectRPM(double rPM) {
         this.shooterSystem.setEjectRPM(rPM);
@@ -195,11 +215,4 @@ public class RobotContainer {
     public void setRotationExpo(double expo) {
         this.rotationExpo = expo;
     }
-
-    /*
-    @Log.VoltageView(name = "Rotation Expo", min = 0, max = 100, rowIndex = 3, columnIndex = 1, height = 1, width = 1)
-    public double getVoltage() {
-        return pdh.getVoltage();
-    }
-    */
 }

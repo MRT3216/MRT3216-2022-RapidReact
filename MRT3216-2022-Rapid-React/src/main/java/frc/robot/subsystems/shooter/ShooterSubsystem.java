@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.settings.Configurations;
 import frc.robot.settings.Constants.Shooter.Flywheel;
 import frc.robot.settings.RobotMap.ROBOT.SHOOTER;
+import frc.robot.settings.Utilities;
 
 public class ShooterSubsystem extends SubsystemBase {
     private static ShooterSubsystem instance;
@@ -30,8 +31,10 @@ public class ShooterSubsystem extends SubsystemBase {
         flywheelMotor.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 20, Flywheel.kTimeoutMs);
         flywheelMotor.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, Flywheel.kTimeoutMs);
 
-        this.shootingVelocityUnitsPer100ms = Flywheel.shootingRPM * 2048.0 / 600.0;
-        this.ejectVelocityUnitsPer100ms = Flywheel.ejectRPM * 2048.0 / 600.0;
+        this.shootingVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(Flywheel.shootingRPM,
+                Flywheel.kSensorUnitsPerRotation);
+        this.ejectVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(Flywheel.ejectRPM,
+                Flywheel.kSensorUnitsPerRotation);
 
         this.zeroSensors();
     }
@@ -54,7 +57,8 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public double getRPM() {
-        return flywheelMotor.getSelectedSensorVelocity();
+        return Utilities.convertUnitsPer100msToRPM(flywheelMotor.getSelectedSensorVelocity(),
+                Flywheel.kSensorUnitsPerRotation);
     }
 
     public void stopShooter() {
@@ -68,12 +72,34 @@ public class ShooterSubsystem extends SubsystemBase {
         flywheelMotor.getSensorCollection().setIntegratedSensorPosition(0, Flywheel.kTimeoutMs);
     }
 
-    public void setShootingRPM(double rPM) {
-        this.shootingVelocityUnitsPer100ms = rPM * 2048.0 / 600.0;
+    public void setShootingRPM(double rpm) {
+        this.shootingVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(rpm,
+                Flywheel.kSensorUnitsPerRotation);
 
     }
 
-    public void setEjectRPM(double rPM) {
-        this.ejectVelocityUnitsPer100ms = rPM * 2048.0 / 600.0;
+    public double getShootingRPM() {
+        return Utilities.convertUnitsPer100msToRPM(this.shootingVelocityUnitsPer100ms, Flywheel.kSensorUnitsPerRotation);
+
+    }
+
+    public void setEjectRPM(double rpm) {
+        this.ejectVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(rpm, Flywheel.kSensorUnitsPerRotation);
+    }
+
+    public void setPValue(double p){
+        this.flywheelMotor.config_kP(Flywheel.kSlotIdx, p);
+    }
+
+    public void setIValue(double i){
+        this.flywheelMotor.config_kP(Flywheel.kSlotIdx, i);
+    }
+
+    public void setDValue(double d){
+        this.flywheelMotor.config_kP(Flywheel.kSlotIdx, d);
+    }
+
+    public void setFValue(double f){
+        this.flywheelMotor.config_kF(Flywheel.kSlotIdx, f);
     }
 }

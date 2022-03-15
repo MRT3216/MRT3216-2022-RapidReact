@@ -96,14 +96,21 @@ public final class Constants {
 
             // TODO: Tune these values
             // Proportional gain
-            public static final double kP = .001;
-            // Integral gain
+            public static final double kP = .0085355;
+            // Integral gainc
             public static final double kI = 0;
             // Derivative gain
-            public static final double kD = .01;
-
-            public static final Gains kShooterGains = new Gains(kP, kI, kD, 1023.0 / 20660.0, 300, 1.00);
-
+            public static final double kD = 0;
+            // public static final double kF = 1023.0 / 20660.0;
+            public static final double kF = 0.057;
+            public static final double kS = 0.67572;
+            public static final double kV = 0.14379;
+            public static final double kA = 0.014485;
+            public static final int kIzone = 300;
+            public static final double kPeakOutput = 1.0;
+            public static final int kSensorUnitsPerRotation = 2048;
+            public static final Gains kShooterGains = new Gains(kP, kI, kD, kF, kIzone, kPeakOutput);
+            
             /**
              * Which PID slot to pull gains from. Starting 2018, you can choose from 0,1,2
              * or 3. Only the first two (0,1) are visible in web-based configuration.
@@ -133,14 +140,27 @@ public final class Constants {
 
         public static final class Hood {
             public static final double kMaxHoodError = 1.0; // Degrees
-            public static double hoodErrorAdjustment = 11.5;
+
+            // Proportional gain
+            public static final double kP = 0.00016899;
+            // Integral gainc
+            public static final double kI = 0;
+            // Derivative gain
+            public static final double kD = 0.00010635;
+            public static final double kS = 0.12344;
+            public static final double kG = -0.10972;
+            public static final double kV = 1.4653;
+            public static final double kA = 2.2813;
+            public static final double kMaxVelocity = 0.1;
+            public static final double kMaxAcceleration = 1;
+            public static final double kEncoderDistancePerPulse = 8192;
+            public static final double kArmOffsetRads = 0;
 
             // todo: set these vals
             public static final double hoodForwardLimit = 0;
             public static final double hoodReverseLimit = 0;
 
             public static final double hoodSpeed = 0.1;
-
         }
 
         public static final class Hopper {
@@ -153,6 +173,7 @@ public final class Constants {
             public static final boolean INDEXER_MOTOR_INVERTED = false;
             public static final double shootingRPM = 2000;
             public static final double indexingRPM = 1500;
+            public static final int kSensorUnitsPerRotation = 2048;
         }
     }
 
