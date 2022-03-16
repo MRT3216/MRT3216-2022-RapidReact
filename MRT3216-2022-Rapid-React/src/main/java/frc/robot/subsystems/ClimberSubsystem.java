@@ -37,14 +37,13 @@ public class ClimberSubsystem extends SubsystemBase {
     }
 
     public void runMotors(double speed) {
-        if(!rightSwitch.get()|| speed >= 0) {
+        if (!rightSwitch.get() || speed >= 0) {
             rightMotor.set(speed);
         }
 
-        if(!leftSwitch.get()  || speed >= 0) {
+        if (!leftSwitch.get() || speed >= 0) {
             leftMotor.set(speed);
         }
-        System.out.println("Speed: " + speed);
     }
 
     public void stop() {
