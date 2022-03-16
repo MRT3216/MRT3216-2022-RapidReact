@@ -96,7 +96,7 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
 
         // We will do the same for the other modules
         m_frontRightModule = Mk3SwerveModuleHelper.createFalcon500(
-                // tab.getLayout("Front Right Module", BuiltInLayouts.kList).withSize(2, 4).withPosition(2, 0),
+                tab.getLayout("Front Right Module", BuiltInLayouts.kList).withSize(2, 4).withPosition(2, 0),
                 Mk3SwerveModuleHelper.GearRatio.STANDARD, RIGHT_FRONT_DRIVE, RIGHT_FRONT_ANGLE,
                 RIGHT_FRONT_CANCODER, RIGHT_FRONT_STEER_OFFSET);
 
