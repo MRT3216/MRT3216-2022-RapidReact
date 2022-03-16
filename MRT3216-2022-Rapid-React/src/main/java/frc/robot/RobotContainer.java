@@ -5,6 +5,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.OI.Gamepad;
 import frc.robot.OI.OIUtils;
@@ -17,6 +18,7 @@ import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.settings.Constants;
 import frc.robot.settings.Constants.Drivetrain;
 import frc.robot.settings.RobotMap;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ColorSensorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -57,6 +59,7 @@ public class RobotContainer {
     private ShooterSubsystem shooterSystem;
     private IndexerSubsystem indexerSystem;
     private HopperSubsystem hopperSystem;
+    private ClimberSubsystem climberSystem;
     private Gamepad controller;
     private LimelightSubsystem limelightSystem;
     @Log.BooleanBox(name = "Red Detected", methodName = "isRed", rowIndex = 3, columnIndex = 0)
@@ -94,6 +97,7 @@ public class RobotContainer {
         this.hopperSystem = HopperSubsystem.getInstance();
         this.indexerSystem = IndexerSubsystem.getInstance();
         this.hoodSystem = HoodSubsystem.getInstance();
+        this.climberSystem = ClimberSubsystem.getInstance();
         this.shooterSystem = ShooterSubsystem.getInstance();
         this.controller = new Gamepad(RobotMap.DRIVE_STATION.USB_XBOX_CONTROLLER);
         this.limelightSystem = LimelightSubsystem.getInstance();
@@ -140,6 +144,13 @@ public class RobotContainer {
             }
 
         }, driveSystem);
+
+        climberSystem.setDefaultCommand(new FunctionalCommand(
+                                        () -> {}, // OnInit: do nothing
+                                        () -> climberSystem.runMotors(controller.getRightTriggerAxis() - controller.getLeftTriggerAxis()), // OnExedcute: call run motors
+                                        interrupted -> climberSystem.stop(), // OnEnd: stop motors
+                                        () -> false, // IsFinished: never finish
+                                        climberSystem)); // Required subsystem
     }
 
     public void disablePIDSubsystems() {

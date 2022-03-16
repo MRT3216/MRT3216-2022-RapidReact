@@ -52,6 +52,9 @@ public final class RobotMap {
             // NEO/SparkMax
             public static final int RIGHT_MOTOR = 21;
 
+            public static final boolean LEFT_MOTOR_INVERTED = false;
+            public static final boolean RIGHT_MOTOR_INVERTED = true;
+
             public static final int LEFT_SWITCH = 0;
             public static final int RIGHT_SWITCH = 1;
             public static final int RIGHT_UPPER_SWITCH = 2;

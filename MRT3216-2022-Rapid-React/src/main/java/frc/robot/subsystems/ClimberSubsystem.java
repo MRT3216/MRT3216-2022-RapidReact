@@ -2,38 +2,29 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-<<<<<<< Updated upstream
 
-=======
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
->>>>>>> Stashed changes
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.settings.Constants.Climber;
 import frc.robot.settings.RobotMap.ROBOT.CLIMBER;
 
 public class ClimberSubsystem extends SubsystemBase {
     private static ClimberSubsystem instance;
-    private static CANSparkMax leftMotor;
-    private static CANSparkMax rightMotor;
+    private CANSparkMax leftMotor;
+    private CANSparkMax rightMotor;
 
-<<<<<<< Updated upstream
-=======
-    private static DigitalInput leftSwitch;
-    private static DigitalInput rightSwitch;
-    private static DigitalInput leftUpperSwitch;
-    private static DigitalInput rightUpperSwitch;
+    private DigitalInput rightSwitch;
+    private DigitalInput leftSwitch;
 
-    private boolean isForward;
-    private boolean stater;
-
-
->>>>>>> Stashed changes
     private ClimberSubsystem() {
         leftSwitch = new DigitalInput(CLIMBER.LEFT_SWITCH);
         rightSwitch = new DigitalInput(CLIMBER.RIGHT_SWITCH);
 
         leftMotor = new CANSparkMax(CLIMBER.LEFT_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
         rightMotor = new CANSparkMax(CLIMBER.RIGHT_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
+        leftMotor.setInverted(CLIMBER.LEFT_MOTOR_INVERTED);
+        rightMotor.setInverted(CLIMBER.RIGHT_MOTOR_INVERTED);
 
         leftMotor.restoreFactoryDefaults();
         rightMotor.restoreFactoryDefaults();
@@ -43,18 +34,22 @@ public class ClimberSubsystem extends SubsystemBase {
 
         leftMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
         rightMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-
-        isForward = true;
-        stater = false;
     }
 
-<<<<<<< Updated upstream
-    public void runForward() {
+    public void runMotors(double speed) {
+        if(!rightSwitch.get()|| speed >= 0) {
+            rightMotor.set(speed);
+        }
 
-=======
-    public void runForward(double speed) {
-        
->>>>>>> Stashed changes
+        if(!leftSwitch.get()  || speed >= 0) {
+            leftMotor.set(speed);
+        }
+        System.out.println("Speed: " + speed);
+    }
+
+    public void stop() {
+        leftMotor.set(0);
+        rightMotor.set(0);
     }
 
     public static ClimberSubsystem getInstance() {
