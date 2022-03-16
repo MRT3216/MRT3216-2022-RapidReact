@@ -45,13 +45,13 @@ public class RobotContainer {
     private SwerveSubsystem driveSystem;
     private IntakeSubsystem intakeSystem;
     @Config(name = "Flywheel P", defaultValueNumeric = Constants.Shooter.Flywheel.kP, methodName = "setPValue", methodTypes = {
-            double.class }, rowIndex = 4, columnIndex = 0)
+            double.class }, rowIndex = 3, columnIndex = 4)
     @Config(name = "Flywheel I", defaultValueNumeric = Constants.Shooter.Flywheel.kI, methodName = "setIValue", methodTypes = {
-            double.class }, rowIndex = 4, columnIndex = 1)
+            double.class }, rowIndex = 3, columnIndex = 5)
     @Config(name = "Flywheel D", defaultValueNumeric = Constants.Shooter.Flywheel.kD, methodName = "setDValue", methodTypes = {
-            double.class }, rowIndex = 4, columnIndex = 2)
+            double.class }, rowIndex = 3, columnIndex = 6)
     @Config(name = "Flywheel F", defaultValueNumeric = Constants.Shooter.Flywheel.kF, methodName = "setFValue", methodTypes = {
-            double.class }, rowIndex = 4, columnIndex = 3)
+            double.class }, rowIndex = 3, columnIndex = 7)
     @Log.Graph(name = "Flywheel Velocity", methodName = "getRPM", width = 4, height = 2, rowIndex = 0, columnIndex = 4)
     @Log(name = "Current Velocity", methodName = "getRPM", rowIndex = 0, columnIndex = 8)
     private ShooterSubsystem shooterSystem;
@@ -59,8 +59,10 @@ public class RobotContainer {
     private HopperSubsystem hopperSystem;
     private Gamepad controller;
     private LimelightSubsystem limelightSystem;
+    @Log.BooleanBox(name = "Red Detected", methodName = "isRed", rowIndex = 3, columnIndex = 0)
+    @Log.BooleanBox(name = "Blue Detected", methodName = "isBlue", rowIndex = 3, columnIndex = 1)
     private ColorSensorSubsystem colorSensorSystem;
-    @Log(name = "Hood Position", methodName = "getMeasurement", rowIndex = 5, columnIndex = 0)
+    @Log(name = "Hood Position", methodName = "getMeasurement", rowIndex = 3, columnIndex = 3)
     private HoodSubsystem hoodSystem;
     private double translationExpo;
     private double rotationExpo;
@@ -79,7 +81,8 @@ public class RobotContainer {
         // The first argument is the root container
         // The second argument is whether logging and config should be given separate
         // tabs
-        Logger.configureLoggingAndConfig(this, false);
+        // Logger.configureLoggingAndConfig(this, false);
+        Logger.configureLogging(this);
 
         // Configure the button bindings
         configureButtonBindings();

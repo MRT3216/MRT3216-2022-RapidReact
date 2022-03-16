@@ -7,8 +7,9 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.settings.Constants;
-import io.github.oblarg.oblog.annotations.Log;
 import frc.robot.settings.RobotMap.ROBOT.SENSORS;
+import io.github.oblarg.oblog.Loggable;
+import io.github.oblarg.oblog.annotations.Log;
 
 public class ColorSensorSubsystem extends SubsystemBase {
     private static ColorSensorSubsystem instance;
@@ -24,7 +25,6 @@ public class ColorSensorSubsystem extends SubsystemBase {
         // the raw input, as with
         // .getRawColor - this is perfect for our use though, as we're just looking for
         // the "average" color
-        System.out.println("Color: " + sensor.getColor());
         return sensor.getColor();
     }
 
@@ -37,12 +37,10 @@ public class ColorSensorSubsystem extends SubsystemBase {
         }
     }
 
-    //@Log.BooleanBox(name = "Red Detected", rowIndex = 0, columnIndex = 0)
     public boolean isRed() {
         return inRange() && getColor().red > getColor().blue; // if in range && red > blue
     }
 
-    //@Log.BooleanBox(name = "Blue Detected", rowIndex = 0, columnIndex = 1)
     public boolean isBlue() {
         return inRange() && !isRed(); // if in range && not red
     }
