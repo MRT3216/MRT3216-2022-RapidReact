@@ -19,6 +19,7 @@ public class IntakeSubsystem extends SubsystemBase {
     private IntakeSubsystem() {
         motor = new CANSparkMax(INTAKE.INTAKE_MOTOR, MotorType.kBrushless);
         motor.restoreFactoryDefaults();
+        motor.enableVoltageCompensation(Intake.kVoltageCompSaturation);
         this.percentOutputForward = Intake.kForwardIntakeSpeed;
         this.percentOutputReverse = Intake.kReverseIntakeSpeed;
         motor.setInverted(false);

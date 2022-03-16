@@ -3,7 +3,11 @@ package frc.robot.settings;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
+import frc.robot.settings.Constants.Intake;
 import frc.robot.settings.Constants.Shooter.Flywheel;
+import frc.robot.settings.Constants.Shooter.Hood;
+import frc.robot.settings.Constants.Shooter.Hopper;
+import frc.robot.settings.Constants.Shooter.Indexer;
 
 public class Configurations {
     private TalonFXConfiguration intakeMotorConfiguration;
@@ -25,17 +29,10 @@ public class Configurations {
         return instance;
     }
 
-    public TalonFXConfiguration getIntakeMotorConfiguration() {
-        if (intakeMotorConfiguration == null) {
-            intakeMotorConfiguration = new TalonFXConfiguration();
-        }
-
-        return intakeMotorConfiguration;
-    }
-
     public TalonFXConfiguration getHopperMotorConfiguration() {
         if (hopperMotorConfiguration == null) {
             hopperMotorConfiguration = new TalonFXConfiguration();
+            hopperMotorConfiguration.voltageCompSaturation = Hopper.kVoltageCompSaturation;
         }
 
         return hopperMotorConfiguration;
@@ -44,6 +41,7 @@ public class Configurations {
     public TalonFXConfiguration getIndexerMotorConfiguration() {
         if (indexerMotorConfiguration == null) {
             indexerMotorConfiguration = new TalonFXConfiguration();
+            indexerMotorConfiguration.voltageCompSaturation = Indexer.kVoltageCompSaturation;
             indexerMotorConfiguration.primaryPID.selectedFeedbackSensor = TalonFXFeedbackDevice.IntegratedSensor
                     .toFeedbackDevice();
         }
@@ -66,7 +64,7 @@ public class Configurations {
             flywheelMotorConfiguration.peakOutputReverse = -1;
         
             flywheelMotorConfiguration.slot0.closedLoopPeakOutput = Flywheel.kShooterGains.kPeakOutput;
-            //flywheelMotorConfiguration.closedloopRamp = Flywheel.RAMP_RATE;
+            flywheelMotorConfiguration.closedloopRamp = Flywheel.RAMP_RATE;
             flywheelMotorConfiguration.neutralDeadband = Flywheel.kNeutralDeadband;
             flywheelMotorConfiguration.slot0.closedLoopPeriod = Flywheel.closedLoopTimeMs;
             flywheelMotorConfiguration.primaryPID.selectedFeedbackSensor = TalonFXFeedbackDevice.IntegratedSensor

@@ -36,6 +36,7 @@ public class HoodSubsystem extends ProfiledPIDSubsystem {
                 0);
 
         motor.restoreFactoryDefaults();
+        motor.enableVoltageCompensation(Hood.kVoltageCompSaturation);
         m_encoder.setDistancePerRotation(2 * Math.PI);
         motor.setIdleMode(IdleMode.kCoast);
         // Start arm at rest in neutral position
@@ -55,12 +56,12 @@ public class HoodSubsystem extends ProfiledPIDSubsystem {
         return m_encoder.getAbsolutePosition();
         // return m_encoder.getDistance() + Hood.kArmOffsetRads;
     }
-    
-	public static HoodSubsystem getInstance() {
-		if (instance == null) {
-			// if instance is null, initialize
-			instance = new HoodSubsystem();
-		}
-		return instance;
-	}
+
+    public static HoodSubsystem getInstance() {
+        if (instance == null) {
+            // if instance is null, initialize
+            instance = new HoodSubsystem();
+        }
+        return instance;
+    }
 }

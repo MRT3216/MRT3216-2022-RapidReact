@@ -1,7 +1,6 @@
 package frc.robot.subsystems.shooter;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -80,7 +79,8 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public double getShootingRPM() {
-        return Utilities.convertUnitsPer100msToRPM(this.shootingVelocityUnitsPer100ms, Flywheel.kSensorUnitsPerRotation);
+        return Utilities.convertUnitsPer100msToRPM(this.shootingVelocityUnitsPer100ms,
+                Flywheel.kSensorUnitsPerRotation);
 
     }
 
@@ -88,27 +88,27 @@ public class ShooterSubsystem extends SubsystemBase {
         this.ejectVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(rpm, Flywheel.kSensorUnitsPerRotation);
     }
 
-    public void setPValue(double p){
+    public void setPValue(double p) {
         this.flywheelMotor.config_kP(Flywheel.kSlotIdx, p);
     }
 
-    public void setIValue(double i){
+    public void setIValue(double i) {
         this.flywheelMotor.config_kP(Flywheel.kSlotIdx, i);
     }
 
-    public void setDValue(double d){
+    public void setDValue(double d) {
         this.flywheelMotor.config_kP(Flywheel.kSlotIdx, d);
     }
 
-    public void setFValue(double f){
+    public void setFValue(double f) {
         this.flywheelMotor.config_kF(Flywheel.kSlotIdx, f);
     }
-    
-	public static ShooterSubsystem getInstance() {
-		if (instance == null) {
-			// if instance is null, initialize
-			instance = new ShooterSubsystem();
-		}
-		return instance;
-	}
+
+    public static ShooterSubsystem getInstance() {
+        if (instance == null) {
+            // if instance is null, initialize
+            instance = new ShooterSubsystem();
+        }
+        return instance;
+    }
 }

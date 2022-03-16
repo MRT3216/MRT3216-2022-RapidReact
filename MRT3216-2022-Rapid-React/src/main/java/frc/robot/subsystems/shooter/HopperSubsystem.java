@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.settings.Configurations;
 import frc.robot.settings.Constants.Shooter.Hopper;
 import frc.robot.settings.RobotMap.ROBOT.SHOOTER;
 
@@ -16,6 +17,7 @@ public class HopperSubsystem extends SubsystemBase {
     private HopperSubsystem() {
         this.hopperMotor = new TalonFX(SHOOTER.HOPPER_MOTOR);
         this.hopperMotor.configFactoryDefault();
+        this.hopperMotor.configAllSettings(Configurations.getInstance().getHopperMotorConfiguration());
         this.hopperMotor.setInverted(Hopper.HOPPER_MOTOR_INVERTED);
         this.hopperMotor.setNeutralMode(NeutralMode.Coast);
         this.hopperMotor.enableVoltageCompensation(true);

@@ -17,10 +17,10 @@ public final class Constants {
     public static CANSparkMaxLowLevel.MotorType kBrusheless = CANSparkMaxLowLevel.MotorType.kBrushless;
 
     public static final class Drivetrain {
-        public static final double LEFT_FRONT_STEER_OFFSET = -Math.toRadians(17.04); // TODO: set these values
-        public static final double RIGHT_FRONT_STEER_OFFSET = -Math.toRadians(277.02); // TODO: set these values
+        public static final double LEFT_FRONT_STEER_OFFSET = -Math.toRadians(19.33); // TODO: set these values
+        public static final double RIGHT_FRONT_STEER_OFFSET = -Math.toRadians(276.86); // TODO: set these values
         public static final double LEFT_REAR_STEER_OFFSET = -Math.toRadians(113.02); // TODO: set these values
-        public static final double RIGHT_REAR_STEER_OFFSET = -Math.toRadians(44.38); // TODO: set these values
+        public static final double RIGHT_REAR_STEER_OFFSET = -Math.toRadians(47.62); // TODO: set these values
 
         public static final double WHEELBASE_METERS = 0.5461; // TODO: check this value
         public static final double TRACKWIDTH_METERS = 0.5588; // TODO check this value
@@ -72,13 +72,14 @@ public final class Constants {
     }
 
     public static final class OI {
-        public static final double kJoystickDeadband = 0.05;
+        public static final double kJoystickDeadband = 0.1;
         public static final double kTranslationExpo = 75;
         public static final double kRotationnExpo = 75;
     }
 
     public static final class Intake {
         public static final boolean INTAKE_MOTOR_INVERTED = false;
+        public final static double kVoltageCompSaturation = 10;
         public static final double kForwardIntakeSpeed = 0.7;
         public static final double kReverseIntakeSpeed = 0.3;
     }
@@ -159,6 +160,7 @@ public final class Constants {
             public static final double kMaxAcceleration = 1;
             public static final double kEncoderDistancePerPulse = 8192;
             public static final double kArmOffsetRads = 0;
+            public final static double kVoltageCompSaturation = 10;
 
             // TODO: set these vals
             public static final double hoodForwardLimit = 0;
@@ -172,11 +174,13 @@ public final class Constants {
         public static final class Hopper {
             public static final boolean HOPPER_MOTOR_INVERTED = true;
             public static final double kHopperSpeed = 0.7;
+            public final static double kVoltageCompSaturation = 10;
             public static double rampTime = 2;
         }
 
         public static final class Indexer {
             public static final boolean INDEXER_MOTOR_INVERTED = false;
+            public final static double kVoltageCompSaturation = 10;
             public static final double shootingRPM = 2000;
             public static final double indexingRPM = 1500;
             public static final int kSensorUnitsPerRotation = 2048;
