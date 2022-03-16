@@ -204,4 +204,8 @@ public final class Constants {
     public static final class Limelight {
 
     }
+
+    public static final class Climber {
+        public final static double kVoltageCompSaturation = 10;
+    }
 }
