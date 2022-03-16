@@ -37,12 +37,12 @@ public class ColorSensorSubsystem extends SubsystemBase {
         }
     }
 
-    @Log.BooleanBox(name = "Red Detected", rowIndex = 0, columnIndex = 0)
+    //@Log.BooleanBox(name = "Red Detected", rowIndex = 0, columnIndex = 0)
     public boolean isRed() {
         return inRange() && getColor().red > getColor().blue; // if in range && red > blue
     }
 
-    @Log.BooleanBox(name = "Blue Detected", rowIndex = 0, columnIndex = 1)
+    //@Log.BooleanBox(name = "Blue Detected", rowIndex = 0, columnIndex = 1)
     public boolean isBlue() {
         return inRange() && !isRed(); // if in range && not red
     }
