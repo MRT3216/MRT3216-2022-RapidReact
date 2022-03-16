@@ -4,18 +4,18 @@ import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.settings.Constants;
 import io.github.oblarg.oblog.annotations.Log;
+import frc.robot.settings.RobotMap.ROBOT.SENSORS;
 
 public class ColorSensorSubsystem extends SubsystemBase {
     private static ColorSensorSubsystem instance;
     private ColorSensorV3 sensor;
 
     private ColorSensorSubsystem() {
-        sensor = new ColorSensorV3(I2C.Port.kMXP);
+        sensor = new ColorSensorV3(SENSORS.COLOR_SENSOR);
     }
 
     private Color getColor() {

@@ -54,14 +54,11 @@ public final class RobotMap {
         }
 
         public static class SENSORS {
-            public static final I2C.Port MUX_PORT = I2C.Port.kMXP;
-            public static final int COLOR = 2;
-            public static final int NAVX = 1;
+            public static final I2C.Port COLOR_SENSOR = I2C.Port.kMXP;
         }
     }
 
     public final static class DRIVE_STATION {
         public static final int USB_XBOX_CONTROLLER = 0;
-        public static final int USB_JOYSTICK = 1;
     }
 }
