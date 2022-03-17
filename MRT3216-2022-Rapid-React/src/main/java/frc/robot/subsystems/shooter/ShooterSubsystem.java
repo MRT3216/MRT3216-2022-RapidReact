@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.settings.Configurations;
 import frc.robot.settings.Constants.Projectile;
@@ -19,6 +20,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private double acceptableShootingVelocityUnitsPer100ms;
     private double targetEjectVelocityUnitsPer100ms;
     private double acceptableEjectVelocityUnitsPer100ms;
+    private LinearFilter filter;
+    private double lastFilterValue;
 
     private ShooterSubsystem() {
         flywheelMotor = new TalonFX(SHOOTER.FLYWHEEL_MOTOR);
@@ -44,11 +47,14 @@ public class ShooterSubsystem extends SubsystemBase {
         this.acceptableEjectVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(Flywheel.acceptableEjectRPM,
                 Flywheel.kSensorUnitsPerRotation);
 
+        this.filter = LinearFilter.highPass(0.05, 0.02);
+
         this.zeroSensors();
     }
 
     @Override
     public void periodic() {
+        this.lastFilterValue = filter.calculate(flywheelMotor.getSelectedSensorVelocity());
     }
 
     public void spinToSpeed(boolean forward) {
@@ -66,7 +72,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public boolean isReadyToShoot() {
         System.out.println("Velocity: " + flywheelMotor.getSelectedSensorVelocity() + "   isReadyToShoot: "
-                + (flywheelMotor.getSelectedSensorVelocity() > acceptableShootingVelocityUnitsPer100ms) + "  Acceptable: "
+                + (flywheelMotor.getSelectedSensorVelocity() > acceptableShootingVelocityUnitsPer100ms)
+                + "  Acceptable: "
                 + acceptableShootingVelocityUnitsPer100ms);
         return flywheelMotor.getSelectedSensorVelocity() > acceptableShootingVelocityUnitsPer100ms;
     }
@@ -74,6 +81,10 @@ public class ShooterSubsystem extends SubsystemBase {
     public double getRPM() {
         return Utilities.convertUnitsPer100msToRPM(flywheelMotor.getSelectedSensorVelocity(),
                 Flywheel.kSensorUnitsPerRotation);
+    }
+
+    public double getFilterValue() {
+        return this.lastFilterValue;
     }
 
     public void stopShooter() {

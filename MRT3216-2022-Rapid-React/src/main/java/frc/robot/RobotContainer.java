@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.OI.Gamepad;
 import frc.robot.OI.OIUtils;
 import frc.robot.commands.TeleDrive;
@@ -58,6 +57,7 @@ public class RobotContainer {
             double.class }, rowIndex = 0, columnIndex = 9)
     @Log.Graph(name = "Flywheel Velocity G", methodName = "getRPM", width = 4, height = 2, rowIndex = 0, columnIndex = 4)
     @Log(name = "Flywheel Velocity", methodName = "getRPM", rowIndex = 2, columnIndex = 8)
+    @Log.Graph(name = "Flywheel Filter Value", methodName = "getFilterValue", width = 4, height = 2, rowIndex = 3, columnIndex = 4)
     private ShooterSubsystem shooterSystem;
     @Config(name = "Indexer P", defaultValueNumeric = Constants.Shooter.Indexer.kP, methodName = "setPValue", methodTypes = {
             double.class }, rowIndex = 3, columnIndex = 8)
@@ -67,7 +67,6 @@ public class RobotContainer {
             double.class }, rowIndex = 4, columnIndex = 9)
     @Config(name = "Indexer F", defaultValueNumeric = Constants.Shooter.Indexer.kF, methodName = "setFValue", methodTypes = {
             double.class }, rowIndex = 3, columnIndex = 9)
-    @Log.Graph(name = "Indexer Velocity G", methodName = "getRPM", width = 4, height = 2, rowIndex = 3, columnIndex = 4)
     @Log(name = "Indexer Velocity", methodName = "getRPM", rowIndex = 5, columnIndex = 8)
     private IndexerSubsystem indexerSystem;
     private HopperSubsystem hopperSystem;
@@ -77,12 +76,15 @@ public class RobotContainer {
     @Log.BooleanBox(name = "Red Detected", methodName = "isRed", rowIndex = 3, columnIndex = 0)
     @Log.BooleanBox(name = "Blue Detected", methodName = "isBlue", rowIndex = 3, columnIndex = 1)
     @Log.BooleanBox(name = "Opponent Ball", methodName = "isOpponentBall", rowIndex = 3, columnIndex = 2)
-    @Log.BooleanBox(name = "Alliance Ball", methodName = "isAllianceBall", rowIndex = 3, columnIndex = 2)
+    @Log.BooleanBox(name = "Alliance Ball", methodName = "isAllianceBall", rowIndex = 3, columnIndex = 3)
     private ColorSensorSubsystem colorSensorSystem;
-    @Log(name = "Hood Position", methodName = "getMeasurement", rowIndex = 4, columnIndex = 2)
+    @Log(name = "Hood Position", methodName = "getMeasurement", rowIndex = 5, columnIndex = 2)
     @Config.NumberSlider(name = "Move Hood", methodName = "setAngle", methodTypes = {
-            double.class }, defaultValue = Constants.Shooter.Hood.hoodReverseLimit, min = Constants.Shooter.Hood.hoodForwardLimit, max = Constants.Shooter.Hood.hoodReverseLimit, rowIndex = 4, columnIndex = 0)
+            double.class }, defaultValue = Constants.Shooter.Hood.hoodReverseLimit, min = Constants.Shooter.Hood.hoodForwardLimit, max = Constants.Shooter.Hood.hoodReverseLimit, rowIndex = 5, columnIndex = 0)
     private HoodSubsystem hoodSystem;
+    @Log(name = "1st Ball", methodName = "get1stBallString", rowIndex = 4, columnIndex = 0)
+    @Log(name = "2nd Ball", methodName = "get2ndBallString", rowIndex = 4, columnIndex = 1)
+    private ShooterStateMachine shooterStateMachine;
     private double translationExpo;
     private double rotationExpo;
 
@@ -119,6 +121,7 @@ public class RobotContainer {
         this.controller = new Gamepad(RobotMap.DRIVE_STATION.USB_XBOX_CONTROLLER);
         this.limelightSystem = LimelightSubsystem.getInstance();
         this.colorSensorSystem = ColorSensorSubsystem.getInstance();
+        this.shooterStateMachine = ShooterStateMachine.getInstance();
     }
 
     /**

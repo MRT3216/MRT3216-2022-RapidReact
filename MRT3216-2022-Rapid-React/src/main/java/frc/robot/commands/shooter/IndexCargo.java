@@ -10,6 +10,7 @@ package frc.robot.commands.shooter;
 import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.ShooterStateMachine;
 import frc.robot.subsystems.shooter.IndexerSubsystem;
 
 public class IndexCargo extends CommandBase {

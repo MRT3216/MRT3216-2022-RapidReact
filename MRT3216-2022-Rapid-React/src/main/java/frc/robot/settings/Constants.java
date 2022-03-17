@@ -17,6 +17,10 @@ public final class Constants {
     public static CANSparkMaxLowLevel.MotorType kBrushed = CANSparkMaxLowLevel.MotorType.kBrushed;
     public static CANSparkMaxLowLevel.MotorType kBrusheless = CANSparkMaxLowLevel.MotorType.kBrushless;
 
+    public enum Ball {
+        ALLIANCE, OPPONENT, NONE
+    };
+
     public static final class Drivetrain {
         public static final double LEFT_FRONT_STEER_OFFSET = -Math.toRadians(19.33); // TODO: set these values
         public static final double RIGHT_FRONT_STEER_OFFSET = -Math.toRadians(276.86); // TODO: set these values
@@ -91,6 +95,8 @@ public final class Constants {
         public static final class Flywheel {
             public static final boolean FLYWHEEL_MOTOR_INVERTED = true;
             public static final boolean FYLWHEEL_ENCODER_INVERTED = false;
+            public static final double ballShotfilterThreshold = -250;
+            public static final double ballShotDebounceTime = 0.5;
 
             // TODO: Determine optimal speed
             public static final double targetShootingRPM = 2800;

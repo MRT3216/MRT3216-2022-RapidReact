@@ -6,7 +6,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.ShooterStateMachine;
 import frc.robot.settings.Constants;
+import frc.robot.settings.Constants.Ball;
 import frc.robot.settings.RobotMap.ROBOT.SENSORS;
 
 public class ColorSensorSubsystem extends SubsystemBase {
@@ -15,6 +17,21 @@ public class ColorSensorSubsystem extends SubsystemBase {
 
     private ColorSensorSubsystem() {
         sensor = new ColorSensorV3(SENSORS.COLOR_SENSOR);
+    }
+
+    @Override
+    public void periodic() {
+        ShooterStateMachine.getInstance().set1stBall(getCurrentBall());
+    }
+
+    public Ball getCurrentBall(){
+        if(!this.inRange()) {
+            return Ball.NONE;
+        } else if (this.isAllianceBall()) {
+            return Ball.ALLIANCE;
+        } else{
+            return Ball.OPPONENT;
+        }
     }
 
     private Color getColor() {
@@ -56,7 +73,7 @@ public class ColorSensorSubsystem extends SubsystemBase {
         return sensor.getProximity(); // get proximity
     }
 
-    private boolean inRange() {
+    public boolean inRange() {
         return getProximity() > Constants.Sensors.ColorRange; // prox > wanted range
     }
 
