@@ -20,9 +20,9 @@ public class HopperSubsystem extends SubsystemBase {
         this.hopperMotor.configAllSettings(Configurations.getInstance().getHopperMotorConfiguration());
         this.hopperMotor.setInverted(Hopper.HOPPER_MOTOR_INVERTED);
         this.hopperMotor.setNeutralMode(NeutralMode.Coast);
-        this.hopperMotor.enableVoltageCompensation(true);
-        
+        this.hopperMotor.enableVoltageCompensation(true);        
         this.percentOutput = Hopper.kHopperSpeed;
+        this.stopHopper();
     }
 
     public void runHopper(boolean forward) {

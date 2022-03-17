@@ -33,6 +33,8 @@ public class ClimberSubsystem extends SubsystemBase {
 
         leftMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
         rightMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+
+        this.stop();
     }
 
     public void runMotors(double speed) {

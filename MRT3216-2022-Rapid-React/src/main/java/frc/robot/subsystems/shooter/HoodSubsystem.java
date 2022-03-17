@@ -39,7 +39,7 @@ public class HoodSubsystem extends ProfiledPIDSubsystem {
         motor.enableVoltageCompensation(Hood.kVoltageCompSaturation);
         m_encoder.setDistancePerRotation(2 * Math.PI);
         motor.setIdleMode(IdleMode.kBrake);
-        motor.setVoltage(0);
+        this.stop();
         // Start arm at rest in neutral position
         setGoal(Hood.hoodReverseLimit);
     }

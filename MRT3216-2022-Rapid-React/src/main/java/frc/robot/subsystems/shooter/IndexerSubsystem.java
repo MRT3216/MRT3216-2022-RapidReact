@@ -24,6 +24,7 @@ public class IndexerSubsystem extends SubsystemBase {
         this.indexerMotor.setNeutralMode(NeutralMode.Brake);
         this.indexerMotor.setInverted(Indexer.INDEXER_MOTOR_INVERTED);
         this.indexerMotor.enableVoltageCompensation(true);
+        this.stopIndexer();
 
         this.shootingVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(Indexer.shootingRPM, Indexer.kSensorUnitsPerRotation);
         this.shootingVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(Indexer.indexingRPM, Indexer.kSensorUnitsPerRotation);
