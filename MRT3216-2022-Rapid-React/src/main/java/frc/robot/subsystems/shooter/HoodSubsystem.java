@@ -36,29 +36,31 @@ public class HoodSubsystem extends ProfiledPIDSubsystem {
                 0);
 
         motor.restoreFactoryDefaults();
-        // motor.enableVoltageCompensation(Hood.kVoltageCompSaturation);
+        motor.enableVoltageCompensation(Hood.kVoltageCompSaturation);
         m_encoder.setDistancePerRotation(2 * Math.PI);
         motor.setIdleMode(IdleMode.kBrake);
         // Start arm at rest in neutral position
-        setGoal(Hood.kArmOffsetRads);
+        setGoal(Hood.hoodReverseLimit);
     }
 
     @Override
     public void useOutput(double output, TrapezoidProfile.State setpoint) {
         // Calculate the feedforward from the sepoint
         double feedforward = m_feedforward.calculate(setpoint.position, setpoint.velocity);
-        System.out.println("Measurement: " + getMeasurement()+ "  Output: " + output + "  Feed-forward: " + feedforward);
+        // System.out.println("Measurement: " + getMeasurement()+ "  Output: " + output + "  Feed-forward: " + feedforward);
         // Add the feedforward to the PID output to get the motor output
         double outputVoltage = output + feedforward;
 
         // TODO: Check signs
         if (outputVoltage < 0 && getMeasurement() < Hood.hoodForwardLimit) {
+            motor.setVoltage(0);
             return;
         }
         if (outputVoltage > 0 && getMeasurement() > Hood.hoodReverseLimit) {
+            motor.setVoltage(0);
             return;
         }
-        System.out.println("Voltage: " + outputVoltage + "   Measurement: " + getMeasurement());
+        // System.out.println("Voltage: " + outputVoltage + "   Measurement: " + getMeasurement());
         motor.setVoltage(outputVoltage);
     }
 
@@ -68,8 +70,9 @@ public class HoodSubsystem extends ProfiledPIDSubsystem {
     }
 
     public void setAngle(double rads) {
-        System.out.println("Hood rads: " + rads);
-        // asetGoal(rads);
+        // System.out.println("Hood rads: " + rads);
+        enable();
+        setGoal(rads);
     }
 
     public static HoodSubsystem getInstance() {

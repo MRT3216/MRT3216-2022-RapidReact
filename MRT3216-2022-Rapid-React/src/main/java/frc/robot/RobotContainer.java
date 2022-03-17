@@ -68,7 +68,7 @@ public class RobotContainer {
     private ColorSensorSubsystem colorSensorSystem;
     @Log(name = "Hood Position", methodName = "getMeasurement", rowIndex = 3, columnIndex = 3)
     @Config.NumberSlider(name = "Move Hood", methodName = "setAngle", methodTypes = {
-            double.class }, min = Constants.Shooter.Hood.hoodForwardLimit, max = Constants.Shooter.Hood.hoodReverseLimit, rowIndex = 4, columnIndex = 0)
+            double.class },defaultValue = Constants.Shooter.Hood.hoodReverseLimit, min = Constants.Shooter.Hood.hoodForwardLimit, max = Constants.Shooter.Hood.hoodReverseLimit, rowIndex = 4, columnIndex = 0)
     private HoodSubsystem hoodSystem;
     private double translationExpo;
     private double rotationExpo;

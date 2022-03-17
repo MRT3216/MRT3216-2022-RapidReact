@@ -19,7 +19,7 @@ public class IndexerSubsystem extends SubsystemBase {
     private IndexerSubsystem() {
         this.indexerMotor = new TalonFX(SHOOTER.INDEXER_MOTOR);
         this.indexerMotor.configFactoryDefault();
-        this.indexerMotor.configAllSettings(Configurations.getInstance().getIndexerMotorConfiguration());
+        this.indexerMotor.configAllSettings(Configurations.getInstance().getFlywheelMotorConfiguration());
 
         this.indexerMotor.setNeutralMode(NeutralMode.Brake);
         this.indexerMotor.setInverted(Indexer.INDEXER_MOTOR_INVERTED);

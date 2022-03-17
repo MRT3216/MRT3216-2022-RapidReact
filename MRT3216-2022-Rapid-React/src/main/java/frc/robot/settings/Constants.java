@@ -149,24 +149,24 @@ public final class Constants {
 
             // TODO: Tune these values
             // Proportional gainaaaaaa
-            public static final double kP = 5;
+            public static final double kP = 20;
             // Integral gainc
             public static final double kI = 0;
             // Derivative gain
-            public static final double kD = 0.00010635;
+            public static final double kD = 0.1;
             public static final double kS = 0.12344;
             public static final double kG = -0.10972;
             public static final double kV = 1.4653;
             public static final double kA = 2.2813;
-            public static final double kMaxVelocity = 0.5;
-            public static final double kMaxAcceleration = 1;
+            public static final double kMaxVelocity = 3;
+            public static final double kMaxAcceleration = 5;
             public static final double kEncoderDistancePerPulse = 8192;
             public static final double kArmOffsetRads = -3.41;
             public final static double kVoltageCompSaturation = 10;
 
             // TODO: set these vals
-            public static final double hoodForwardLimit = -1.5;
-            public static final double hoodReverseLimit = 0.09;
+            public static final double hoodForwardLimit = -.9;
+            public static final double hoodReverseLimit = 0;
         }
 
         public static final class Hopper {
