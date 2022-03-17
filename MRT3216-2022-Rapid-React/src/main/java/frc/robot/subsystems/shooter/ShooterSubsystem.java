@@ -15,8 +15,10 @@ import frc.robot.settings.Utilities;
 public class ShooterSubsystem extends SubsystemBase {
     private static ShooterSubsystem instance;
     private TalonFX flywheelMotor;
-    private double shootingVelocityUnitsPer100ms;
-    private double ejectVelocityUnitsPer100ms;
+    private double targetShootingVelocityUnitsPer100ms;
+    private double acceptableShootingVelocityUnitsPer100ms;
+    private double targetEjectVelocityUnitsPer100ms;
+    private double acceptableEjectVelocityUnitsPer100ms;
 
     private ShooterSubsystem() {
         flywheelMotor = new TalonFX(SHOOTER.FLYWHEEL_MOTOR);
@@ -32,9 +34,14 @@ public class ShooterSubsystem extends SubsystemBase {
         flywheelMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 20, Flywheel.kTimeoutMs);
         flywheelMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 5, Flywheel.kTimeoutMs);
 
-        this.shootingVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(Flywheel.shootingRPM,
+        this.targetShootingVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(Flywheel.targetShootingRPM,
                 Flywheel.kSensorUnitsPerRotation);
-        this.ejectVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(Flywheel.ejectRPM,
+        this.acceptableShootingVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(
+                Flywheel.acceptableShootingRPM,
+                Flywheel.kSensorUnitsPerRotation);
+        this.targetEjectVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(Flywheel.targetEjectRPM,
+                Flywheel.kSensorUnitsPerRotation);
+        this.acceptableEjectVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(Flywheel.acceptableEjectRPM,
                 Flywheel.kSensorUnitsPerRotation);
 
         this.zeroSensors();
@@ -47,14 +54,21 @@ public class ShooterSubsystem extends SubsystemBase {
     public void spinToSpeed(boolean forward) {
         // Velocity closed loop without feed forward (not sure if this is enough)
         if (forward) {
-            flywheelMotor.set(TalonFXControlMode.Velocity, this.shootingVelocityUnitsPer100ms);
+            flywheelMotor.set(TalonFXControlMode.Velocity, this.targetShootingVelocityUnitsPer100ms);
         } else if (!forward) {
             flywheelMotor.set(TalonFXControlMode.PercentOutput, -1 * .25);
         }
     }
 
     public void eject() {
-        flywheelMotor.set(TalonFXControlMode.Velocity, this.ejectVelocityUnitsPer100ms);
+        flywheelMotor.set(TalonFXControlMode.Velocity, this.targetEjectVelocityUnitsPer100ms);
+    }
+
+    public boolean isReadyToShoot() {
+        System.out.println("Velocity: " + flywheelMotor.getSelectedSensorVelocity() + "   isReadyToShoot: "
+                + (flywheelMotor.getSelectedSensorVelocity() > acceptableShootingVelocityUnitsPer100ms) + "  Acceptable: "
+                + acceptableShootingVelocityUnitsPer100ms);
+        return flywheelMotor.getSelectedSensorVelocity() > acceptableShootingVelocityUnitsPer100ms;
     }
 
     public double getRPM() {
@@ -73,12 +87,6 @@ public class ShooterSubsystem extends SubsystemBase {
         flywheelMotor.getSensorCollection().setIntegratedSensorPosition(0, Flywheel.kTimeoutMs);
     }
 
-    public void setShootingRPM(double rpm) {
-        this.shootingVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(rpm,
-                Flywheel.kSensorUnitsPerRotation);
-
-    }
-
     /*
      * Takes in the angle (rads) of the vision target from the camera's center of
      * POV
@@ -90,7 +98,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
         // The horizontal distance from the front of the robot to the center of the
         // goal.
-        double robotXDistToGoal = (cameraXDist - Projectile.kCameraOffsetFromFrame) + Projectile.kTargetGoalHorizontalOffest;
+        double robotXDistToGoal = (cameraXDist - Projectile.kCameraOffsetFromFrame)
+                + Projectile.kTargetGoalHorizontalOffest;
 
         // The horizontal distance from the shooter to the center of the goal.
         return robotXDistToGoal + Projectile.kShooterOffsetFromFrame;
@@ -101,22 +110,31 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public static double getInitialVelocity(double cameraAngle) {
-        return Math.sqrt(Math.pow(getHorizontalGoalDistance(cameraAngle), 2) + Math.pow(Projectile.kInitVerticalVelocity, 2));
+        return Math.sqrt(
+                Math.pow(getHorizontalGoalDistance(cameraAngle), 2) + Math.pow(Projectile.kInitVerticalVelocity, 2));
     }
 
     public static double getProjectileLaunchAngle(double cameraAngle) {
         return Math.atan(getHorizontalGoalDistance(cameraAngle) / Projectile.kInitVerticalVelocity);
     }
 
-
     public double getShootingRPM() {
-        return Utilities.convertUnitsPer100msToRPM(this.shootingVelocityUnitsPer100ms,
+        return Utilities.convertUnitsPer100msToRPM(this.targetShootingVelocityUnitsPer100ms,
                 Flywheel.kSensorUnitsPerRotation);
+    }
 
+    public void setShootingRPM(double rpm) {
+        this.targetShootingVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(rpm,
+                Flywheel.kSensorUnitsPerRotation);
+        this.acceptableShootingVelocityUnitsPer100ms = this.targetShootingVelocityUnitsPer100ms * .9;
+        System.out.println("Target: " + this.targetShootingVelocityUnitsPer100ms + "  Acceptable: "
+                + this.acceptableShootingVelocityUnitsPer100ms);
     }
 
     public void setEjectRPM(double rpm) {
-        this.ejectVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(rpm, Flywheel.kSensorUnitsPerRotation);
+        this.targetEjectVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(rpm,
+                Flywheel.kSensorUnitsPerRotation);
+        this.acceptableEjectVelocityUnitsPer100ms = this.targetEjectVelocityUnitsPer100ms * .9;
     }
 
     public void setPValue(double p) {

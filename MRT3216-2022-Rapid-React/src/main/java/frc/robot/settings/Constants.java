@@ -86,13 +86,17 @@ public final class Constants {
     }
 
     public static final class Shooter {
+        public static final double kWaitPeriod = 0;
+
         public static final class Flywheel {
             public static final boolean FLYWHEEL_MOTOR_INVERTED = true;
             public static final boolean FYLWHEEL_ENCODER_INVERTED = false;
 
             // TODO: Determine optimal speed
-            public static final double shootingRPM = 2800;
-            public static final double ejectRPM = 1500;
+            public static final double targetShootingRPM = 2800;
+            public static final double acceptableShootingRPM = 2750;
+            public static final double targetEjectRPM = 1500;
+            public static final double acceptableEjectRPM = 1450;
 
             public static final double RAMP_RATE = 0.3;
 
@@ -103,7 +107,7 @@ public final class Constants {
             public static final double kI = 0;
             // Derivative gain
             public static final double kD = 0;
-            public static final double kF = 0.057;
+            public static final double kF = 0.0575;
             public static final int kIzone = 300;
             public static final double kPeakOutput = 1.0;
             public static final int kSensorUnitsPerRotation = 2048;
@@ -181,7 +185,40 @@ public final class Constants {
             public final static double kVoltageCompSaturation = 10;
             public static final double shootingRPM = 2000;
             public static final double indexingRPM = 1500;
+            public static final double RAMP_RATE = 0.3;
+
+            /**
+             * Which PID slot to pull gains from. Starting 2018, you can choose from 0,1,2
+             * or 3. Only the first two (0,1) are visible in web-based configuration.
+             */
+            public static final int kSlotIdx = 0;
+
+            // TODO: Tune these values
+            // Proportional gain
+            public static final double kP = 0.00000038864;
+            // Integral gainc
+            public static final double kI = 0;
+            // Derivative gain
+            public static final double kD = 0;
+            public static final double kF = 0.0572;
+            public static final int kIzone = 0;
+            public static final double kPeakOutput = 1.0;
             public static final int kSensorUnitsPerRotation = 2048;
+            /*
+             * These came from characterization but aren't currently used
+             * public static final double kS = 0.66782;
+             * public static final double kV = 0.017064;
+             * public static final double kA = 0.00056598;
+             */
+
+            /**
+             * Motor neutral dead-band, set to the minimum 0.1%.
+             */
+            public final static double kNeutralDeadband = 0.001;
+
+            public final static int closedLoopTimeMs = 1;
+
+            public static final Gains kIndexerGains = new Gains(kP, kI, kD, kF, kIzone, kPeakOutput);
         }
     }
 

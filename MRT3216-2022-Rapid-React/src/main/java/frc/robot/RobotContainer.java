@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.OI.Gamepad;
 import frc.robot.OI.OIUtils;
 import frc.robot.commands.TeleDrive;
+import frc.robot.commands.shooter.FireCargo;
 import frc.robot.commands.shooter.IndexCargo;
 import frc.robot.commands.shooter.RunHopper;
 import frc.robot.commands.shooter.RunIndexer;
@@ -48,16 +49,26 @@ public class RobotContainer {
     private SwerveSubsystem driveSystem;
     private IntakeSubsystem intakeSystem;
     @Config(name = "Flywheel P", defaultValueNumeric = Constants.Shooter.Flywheel.kP, methodName = "setPValue", methodTypes = {
-            double.class }, rowIndex = 3, columnIndex = 4)
+            double.class }, rowIndex = 0, columnIndex = 8)
     @Config(name = "Flywheel I", defaultValueNumeric = Constants.Shooter.Flywheel.kI, methodName = "setIValue", methodTypes = {
-            double.class }, rowIndex = 3, columnIndex = 5)
+            double.class }, rowIndex = 1, columnIndex = 8)
     @Config(name = "Flywheel D", defaultValueNumeric = Constants.Shooter.Flywheel.kD, methodName = "setDValue", methodTypes = {
-            double.class }, rowIndex = 3, columnIndex = 6)
+            double.class }, rowIndex = 1, columnIndex = 9)
     @Config(name = "Flywheel F", defaultValueNumeric = Constants.Shooter.Flywheel.kF, methodName = "setFValue", methodTypes = {
-            double.class }, rowIndex = 3, columnIndex = 7)
-    @Log.Graph(name = "Flywheel Velocity", methodName = "getRPM", width = 4, height = 2, rowIndex = 0, columnIndex = 4)
-    @Log(name = "Current Velocity", methodName = "getRPM", rowIndex = 0, columnIndex = 8)
+            double.class }, rowIndex = 0, columnIndex = 9)
+    @Log.Graph(name = "Flywheel Velocity G", methodName = "getRPM", width = 4, height = 2, rowIndex = 0, columnIndex = 4)
+    @Log(name = "Flywheel Velocity", methodName = "getRPM", rowIndex = 2, columnIndex = 8)
     private ShooterSubsystem shooterSystem;
+    @Config(name = "Indexer P", defaultValueNumeric = Constants.Shooter.Indexer.kP, methodName = "setPValue", methodTypes = {
+            double.class }, rowIndex = 3, columnIndex = 8)
+    @Config(name = "Indexer I", defaultValueNumeric = Constants.Shooter.Indexer.kI, methodName = "setIValue", methodTypes = {
+            double.class }, rowIndex = 4, columnIndex = 8)
+    @Config(name = "Indexer D", defaultValueNumeric = Constants.Shooter.Indexer.kD, methodName = "setDValue", methodTypes = {
+            double.class }, rowIndex = 4, columnIndex = 9)
+    @Config(name = "Indexer F", defaultValueNumeric = Constants.Shooter.Indexer.kF, methodName = "setFValue", methodTypes = {
+            double.class }, rowIndex = 3, columnIndex = 9)
+    @Log.Graph(name = "Indexer Velocity G", methodName = "getRPM", width = 4, height = 2, rowIndex = 3, columnIndex = 4)
+    @Log(name = "Indexer Velocity", methodName = "getRPM", rowIndex = 5, columnIndex = 8)
     private IndexerSubsystem indexerSystem;
     private HopperSubsystem hopperSystem;
     private ClimberSubsystem climberSystem;
@@ -65,10 +76,12 @@ public class RobotContainer {
     private LimelightSubsystem limelightSystem;
     @Log.BooleanBox(name = "Red Detected", methodName = "isRed", rowIndex = 3, columnIndex = 0)
     @Log.BooleanBox(name = "Blue Detected", methodName = "isBlue", rowIndex = 3, columnIndex = 1)
+    @Log.BooleanBox(name = "Opponent Ball", methodName = "isOpponentBall", rowIndex = 3, columnIndex = 2)
+    @Log.BooleanBox(name = "Alliance Ball", methodName = "isAllianceBall", rowIndex = 3, columnIndex = 2)
     private ColorSensorSubsystem colorSensorSystem;
-    @Log(name = "Hood Position", methodName = "getMeasurement", rowIndex = 3, columnIndex = 3)
+    @Log(name = "Hood Position", methodName = "getMeasurement", rowIndex = 4, columnIndex = 2)
     @Config.NumberSlider(name = "Move Hood", methodName = "setAngle", methodTypes = {
-            double.class },defaultValue = Constants.Shooter.Hood.hoodReverseLimit, min = Constants.Shooter.Hood.hoodForwardLimit, max = Constants.Shooter.Hood.hoodReverseLimit, rowIndex = 4, columnIndex = 0)
+            double.class }, defaultValue = Constants.Shooter.Hood.hoodReverseLimit, min = Constants.Shooter.Hood.hoodForwardLimit, max = Constants.Shooter.Hood.hoodReverseLimit, rowIndex = 4, columnIndex = 0)
     private HoodSubsystem hoodSystem;
     private double translationExpo;
     private double rotationExpo;
@@ -100,7 +113,7 @@ public class RobotContainer {
         this.hopperSystem = HopperSubsystem.getInstance();
         this.indexerSystem = IndexerSubsystem.getInstance();
         this.hoodSystem = HoodSubsystem.getInstance();
-        this.hoodSystem.enable();
+        this.hoodSystem.stop();
         this.climberSystem = ClimberSubsystem.getInstance();
         this.shooterSystem = ShooterSubsystem.getInstance();
         this.controller = new Gamepad(RobotMap.DRIVE_STATION.USB_XBOX_CONTROLLER);
@@ -132,13 +145,11 @@ public class RobotContainer {
                 new IndexCargo(this.indexerSystem, () -> this.colorSensorSystem.isAllianceBall()),
                 new SpinShooter(this.shooterSystem, () -> true, () -> true)));
 
-        controller.LB.whileHeld(new ParallelCommandGroup(
-                new RunHopper(this.hopperSystem, () -> true),
-                new RunIndexer(this.indexerSystem, () -> true),
-                new SpinShooter(this.shooterSystem, () -> true, () -> false)));
+        controller.LB.whileHeld(
+                new FireCargo(this.shooterSystem, this.indexerSystem, this.hopperSystem, this.colorSensorSystem));
 
         controller.X.whileHeld(new ParallelCommandGroup(new RunHopper(this.hopperSystem, () -> false),
-                new RunIndexer(this.indexerSystem, () -> false),
+                new RunIndexer(this.indexerSystem, () -> false, () -> true, () -> false),
                 new SpinShooter(this.shooterSystem, () -> false, () -> false)));
 
         controller.A.whenPressed(new Runnable() {
@@ -148,14 +159,6 @@ public class RobotContainer {
             }
 
         }, driveSystem);
-
-        // Move the arm to neutral position when the 'B' button is pressed.
-        controller.Y.whenPressed(
-                () -> {
-                    hoodSystem.setGoal(-.75);
-                    hoodSystem.enable();
-                },
-                hoodSystem);
 
         climberSystem.setDefaultCommand(new FunctionalCommand(
                 () -> {
@@ -172,6 +175,7 @@ public class RobotContainer {
     public void disablePIDSubsystems() {
         if (hoodSystem != null) {
             hoodSystem.disable();
+            hoodSystem.stop();
         }
     }
 
@@ -221,17 +225,12 @@ public class RobotContainer {
         this.indexerSystem.setIndexingRPM(rPM);
     }
 
-    @Config.NumberSlider(name = "Sho. Shoot RPM", defaultValue = Constants.Shooter.Flywheel.shootingRPM, min = 1000, max = 4000, blockIncrement = 50, rowIndex = 0, columnIndex = 3, height = 1, width = 1)
+    @Config.NumberSlider(name = "Sho. Shoot RPM", defaultValue = Constants.Shooter.Flywheel.targetShootingRPM, min = 1000, max = 4000, blockIncrement = 50, rowIndex = 0, columnIndex = 3, height = 1, width = 1)
     public void setShooterShootingRPM(double rPM) {
         this.shooterSystem.setShootingRPM(rPM);
     }
 
-    @Log.NumberBar(name = "Shoot RPM", rowIndex = 2, columnIndex = 3, height = 1, width = 1)
-    public double getShooterShootingRPM() {
-        return this.shooterSystem.getShootingRPM();
-    }
-
-    @Config.NumberSlider(name = "Sho. Eject RPM", defaultValue = Constants.Shooter.Flywheel.ejectRPM, min = 1000, max = 4000, blockIncrement = 50, rowIndex = 1, columnIndex = 3, height = 1, width = 1)
+    @Config.NumberSlider(name = "Sho. Eject RPM", defaultValue = Constants.Shooter.Flywheel.targetEjectRPM, min = 1000, max = 4000, blockIncrement = 50, rowIndex = 1, columnIndex = 3, height = 1, width = 1)
     public void setEjectRPM(double rPM) {
         this.shooterSystem.setEjectRPM(rPM);
     }

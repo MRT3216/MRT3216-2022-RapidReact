@@ -19,7 +19,7 @@ public class IndexerSubsystem extends SubsystemBase {
     private IndexerSubsystem() {
         this.indexerMotor = new TalonFX(SHOOTER.INDEXER_MOTOR);
         this.indexerMotor.configFactoryDefault();
-        this.indexerMotor.configAllSettings(Configurations.getInstance().getFlywheelMotorConfiguration());
+        this.indexerMotor.configAllSettings(Configurations.getInstance().getIndexerMotorConfiguration());
 
         this.indexerMotor.setNeutralMode(NeutralMode.Brake);
         this.indexerMotor.setInverted(Indexer.INDEXER_MOTOR_INVERTED);
@@ -47,13 +47,33 @@ public class IndexerSubsystem extends SubsystemBase {
         }
     }
 
+    public double getRPM() {
+        return Utilities.convertUnitsPer100msToRPM(indexerMotor.getSelectedSensorVelocity(),
+                Indexer.kSensorUnitsPerRotation);
+    }
+
     public void setShootingRPM(double rpm) {
         this.shootingVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(rpm, Indexer.kSensorUnitsPerRotation);
-
     }
 
     public void setIndexingRPM(double rpm) {
         this.indexingVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(rpm, Indexer.kSensorUnitsPerRotation);
+    }
+
+    public void setPValue(double p) {
+        this.indexerMotor.config_kP(Indexer.kSlotIdx, p);
+    }
+
+    public void setIValue(double i) {
+        this.indexerMotor.config_kP(Indexer.kSlotIdx, i);
+    }
+
+    public void setDValue(double d) {
+        this.indexerMotor.config_kP(Indexer.kSlotIdx, d);
+    }
+
+    public void setFValue(double f) {
+        this.indexerMotor.config_kF(Indexer.kSlotIdx, f);
     }
 
     public static IndexerSubsystem getInstance() {

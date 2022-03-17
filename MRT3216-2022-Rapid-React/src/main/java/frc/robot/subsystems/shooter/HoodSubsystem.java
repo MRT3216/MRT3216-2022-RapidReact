@@ -39,6 +39,7 @@ public class HoodSubsystem extends ProfiledPIDSubsystem {
         motor.enableVoltageCompensation(Hood.kVoltageCompSaturation);
         m_encoder.setDistancePerRotation(2 * Math.PI);
         motor.setIdleMode(IdleMode.kBrake);
+        motor.setVoltage(0);
         // Start arm at rest in neutral position
         setGoal(Hood.hoodReverseLimit);
     }
@@ -47,7 +48,8 @@ public class HoodSubsystem extends ProfiledPIDSubsystem {
     public void useOutput(double output, TrapezoidProfile.State setpoint) {
         // Calculate the feedforward from the sepoint
         double feedforward = m_feedforward.calculate(setpoint.position, setpoint.velocity);
-        // System.out.println("Measurement: " + getMeasurement()+ "  Output: " + output + "  Feed-forward: " + feedforward);
+        // System.out.println("Measurement: " + getMeasurement()+ " Output: " + output +
+        // " Feed-forward: " + feedforward);
         // Add the feedforward to the PID output to get the motor output
         double outputVoltage = output + feedforward;
 
@@ -60,8 +62,13 @@ public class HoodSubsystem extends ProfiledPIDSubsystem {
             motor.setVoltage(0);
             return;
         }
-        // System.out.println("Voltage: " + outputVoltage + "   Measurement: " + getMeasurement());
+        // System.out.println("Voltage: " + outputVoltage + " Measurement: " +
+        // getMeasurement());
         motor.setVoltage(outputVoltage);
+    }
+
+    public void stop() {
+        motor.setVoltage(0);
     }
 
     @Override
@@ -70,9 +77,8 @@ public class HoodSubsystem extends ProfiledPIDSubsystem {
     }
 
     public void setAngle(double rads) {
-        // System.out.println("Hood rads: " + rads);
-        enable();
         setGoal(rads);
+        enable();
     }
 
     public static HoodSubsystem getInstance() {

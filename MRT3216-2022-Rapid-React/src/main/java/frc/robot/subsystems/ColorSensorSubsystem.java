@@ -8,8 +8,6 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.settings.Constants;
 import frc.robot.settings.RobotMap.ROBOT.SENSORS;
-import io.github.oblarg.oblog.Loggable;
-import io.github.oblarg.oblog.annotations.Log;
 
 public class ColorSensorSubsystem extends SubsystemBase {
     private static ColorSensorSubsystem instance;
@@ -34,6 +32,15 @@ public class ColorSensorSubsystem extends SubsystemBase {
             return this.isBlue();
         } else {
             return this.isRed();
+        }
+    }
+
+    public boolean isOpponentBall() {
+        Alliance currentAlliance = DriverStation.getAlliance();
+        if (currentAlliance == Alliance.Blue) {
+            return this.isRed();
+        } else {
+            return this.isBlue();
         }
     }
 

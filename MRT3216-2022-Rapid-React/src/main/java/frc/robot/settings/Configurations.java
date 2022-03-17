@@ -42,6 +42,20 @@ public class Configurations {
         if (indexerMotorConfiguration == null) {
             indexerMotorConfiguration = new TalonFXConfiguration();
             indexerMotorConfiguration.voltageCompSaturation = Indexer.kVoltageCompSaturation;
+            indexerMotorConfiguration.slot0.kF = Indexer.kIndexerGains.kF;
+            indexerMotorConfiguration.slot0.kP = Indexer.kIndexerGains.kP;
+            indexerMotorConfiguration.slot0.kI = Indexer.kIndexerGains.kI;
+            indexerMotorConfiguration.slot0.kD = Indexer.kIndexerGains.kD;
+            indexerMotorConfiguration.slot0.integralZone = Indexer.kIndexerGains.kIzone;
+            indexerMotorConfiguration.nominalOutputForward = 0;
+            indexerMotorConfiguration.nominalOutputReverse = 0;
+            indexerMotorConfiguration.peakOutputForward = 1;
+            indexerMotorConfiguration.peakOutputReverse = -1;
+
+            indexerMotorConfiguration.slot0.closedLoopPeakOutput = Indexer.kIndexerGains.kPeakOutput;
+            indexerMotorConfiguration.closedloopRamp = Indexer.RAMP_RATE;
+            indexerMotorConfiguration.neutralDeadband = Indexer.kNeutralDeadband;
+            indexerMotorConfiguration.slot0.closedLoopPeriod = Indexer.closedLoopTimeMs;
             indexerMotorConfiguration.primaryPID.selectedFeedbackSensor = TalonFXFeedbackDevice.IntegratedSensor
                     .toFeedbackDevice();
         }
@@ -62,7 +76,7 @@ public class Configurations {
             flywheelMotorConfiguration.nominalOutputReverse = 0;
             flywheelMotorConfiguration.peakOutputForward = 1;
             flywheelMotorConfiguration.peakOutputReverse = -1;
-        
+
             flywheelMotorConfiguration.slot0.closedLoopPeakOutput = Flywheel.kShooterGains.kPeakOutput;
             flywheelMotorConfiguration.closedloopRamp = Flywheel.RAMP_RATE;
             flywheelMotorConfiguration.neutralDeadband = Flywheel.kNeutralDeadband;
