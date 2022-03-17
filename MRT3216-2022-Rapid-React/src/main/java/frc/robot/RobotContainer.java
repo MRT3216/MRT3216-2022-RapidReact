@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.OI.Gamepad;
 import frc.robot.OI.OIUtils;
 import frc.robot.commands.TeleDrive;
@@ -66,6 +67,8 @@ public class RobotContainer {
     @Log.BooleanBox(name = "Blue Detected", methodName = "isBlue", rowIndex = 3, columnIndex = 1)
     private ColorSensorSubsystem colorSensorSystem;
     @Log(name = "Hood Position", methodName = "getMeasurement", rowIndex = 3, columnIndex = 3)
+    @Config.NumberSlider(name = "Move Hood", methodName = "setAngle", methodTypes = {
+            double.class }, min = Constants.Shooter.Hood.hoodForwardLimit, max = Constants.Shooter.Hood.hoodReverseLimit, rowIndex = 4, columnIndex = 0)
     private HoodSubsystem hoodSystem;
     private double translationExpo;
     private double rotationExpo;
@@ -84,8 +87,8 @@ public class RobotContainer {
         // The first argument is the root container
         // The second argument is whether logging and config should be given separate
         // tabs
-        // Logger.configureLoggingAndConfig(this, false);
-        Logger.configureLogging(this);
+        Logger.configureLoggingAndConfig(this, false);
+        // Logger.configureLogging(this);
 
         // Configure the button bindings
         configureButtonBindings();
@@ -97,6 +100,7 @@ public class RobotContainer {
         this.hopperSystem = HopperSubsystem.getInstance();
         this.indexerSystem = IndexerSubsystem.getInstance();
         this.hoodSystem = HoodSubsystem.getInstance();
+        this.hoodSystem.enable();
         this.climberSystem = ClimberSubsystem.getInstance();
         this.shooterSystem = ShooterSubsystem.getInstance();
         this.controller = new Gamepad(RobotMap.DRIVE_STATION.USB_XBOX_CONTROLLER);
@@ -145,12 +149,24 @@ public class RobotContainer {
 
         }, driveSystem);
 
+        // Move the arm to neutral position when the 'B' button is pressed.
+        controller.Y.whenPressed(
+                () -> {
+                    hoodSystem.setGoal(-.75);
+                    hoodSystem.enable();
+                },
+                hoodSystem);
+
         climberSystem.setDefaultCommand(new FunctionalCommand(
-                                        () -> {}, // OnInit: do nothing
-                                        () -> climberSystem.runMotors(controller.getRightTriggerAxis() - controller.getLeftTriggerAxis()), // OnExedcute: call run motors
-                                        interrupted -> climberSystem.stop(), // OnEnd: stop motors
-                                        () -> false, // IsFinished: never finish
-                                        climberSystem)); // Required subsystem
+                () -> {
+                }, // OnInit: do nothing
+                () -> climberSystem.runMotors(controller.getRightTriggerAxis() - controller.getLeftTriggerAxis()), // OnExedcute:
+                                                                                                                   // call
+                                                                                                                   // run
+                                                                                                                   // motors
+                interrupted -> climberSystem.stop(), // OnEnd: stop motors
+                () -> false, // IsFinished: never finish
+                climberSystem)); // Required subsystem
     }
 
     public void disablePIDSubsystems() {

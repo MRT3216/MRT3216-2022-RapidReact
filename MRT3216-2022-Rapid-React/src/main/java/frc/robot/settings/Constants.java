@@ -10,6 +10,7 @@ package frc.robot.settings;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Filesystem;
 
 public final class Constants {
@@ -102,18 +103,19 @@ public final class Constants {
             public static final double kI = 0;
             // Derivative gain
             public static final double kD = 0;
-                        public static final double kF = 0.057;
+            public static final double kF = 0.057;
             public static final int kIzone = 300;
             public static final double kPeakOutput = 1.0;
             public static final int kSensorUnitsPerRotation = 2048;
-            /* These came from characterization but aren't currently used
-            public static final double kS = 0.67572;
-            public static final double kV = 0.14379;
-            public static final double kA = 0.014485;
-            */
+            /*
+             * These came from characterization but aren't currently used
+             * public static final double kS = 0.67572;
+             * public static final double kV = 0.14379;
+             * public static final double kA = 0.014485;
+             */
 
             public static final Gains kShooterGains = new Gains(kP, kI, kD, kF, kIzone, kPeakOutput);
-            
+
             /**
              * Which PID slot to pull gains from. Starting 2018, you can choose from 0,1,2
              * or 3. Only the first two (0,1) are visible in web-based configuration.
@@ -146,8 +148,8 @@ public final class Constants {
             public static final double kMaxHoodError = 1.0; // Degrees
 
             // TODO: Tune these values
-            // Proportional gain
-            public static final double kP = 0.00016899;
+            // Proportional gainaaaaaa
+            public static final double kP = 5;
             // Integral gainc
             public static final double kI = 0;
             // Derivative gain
@@ -156,19 +158,15 @@ public final class Constants {
             public static final double kG = -0.10972;
             public static final double kV = 1.4653;
             public static final double kA = 2.2813;
-            public static final double kMaxVelocity = 0.1;
+            public static final double kMaxVelocity = 0.5;
             public static final double kMaxAcceleration = 1;
             public static final double kEncoderDistancePerPulse = 8192;
-            public static final double kArmOffsetRads = 0;
+            public static final double kArmOffsetRads = -3.41;
             public final static double kVoltageCompSaturation = 10;
 
             // TODO: set these vals
-            public static final double hoodForwardLimit = 0;
-            public static final double hoodReverseLimit = 0;
-
-            // TODO: set this val
-            public static final double hoodOffset = 0;
-            public static final double hoodSpeed = 0.1;
+            public static final double hoodForwardLimit = -1.5;
+            public static final double hoodReverseLimit = 0.09;
         }
 
         public static final class Hopper {
@@ -203,6 +201,40 @@ public final class Constants {
 
     public static final class Limelight {
 
+    }
+
+    public static final class Projectile {
+        // Camera Constants
+        public final static double kCameraHeight = 0.721; // The vertical distance from the center of the camera to the
+                                                          // ground.
+        public final static double kCameraViewAngle = Units.degreesToRadians(50); // Angle (rads) of the center of POV
+                                                                                  // of the camera from horizontal.
+
+        public final static double kCameraOffsetFromFrame = 0.04; // The horizontal distance from the center of the
+        // camera to the front of the robot.
+
+        // Shooter Constants
+        public final static double kShooterOffsetFromFrame = 0.634; // The horizontal distance from the front of the
+                                                                    // robot to the shooter.
+        public final static double kShooterHeight = 0.688; // The vertical distance from the ground to the shooter.
+
+        // Goal Constants
+        public final static double kTargetHeight = 2.642; // The vertical distance from the vision tape to the ground.
+        public final static double kTargetGoalHorizontalOffest = 0.61; // The horiztonal distance from the vison tape
+                                                                       // to the center of the goal;
+
+        // Projectile Constant
+        public final static double kMaxProjectileHeight = 3.25; // The maximum height from the ground of the
+                                                                // projectile.
+        public final static double kMinPorjectileHoriztonalVelocity = 0.75; // The minimum horizontal velocity of the
+                                                                            // projectile. (m/s)
+        public final static double kAccelDueToGravity = 9.8; // The acceleration due to gravity (m/s^s)
+        public final static double kTargetHeightFromCamera = kTargetHeight - kCameraHeight; // The vertical distance
+        // from the camera to the shooter.
+
+        public final static double kInitVerticalVelocity = Math
+                .sqrt(2 * kAccelDueToGravity * (kMaxProjectileHeight - kShooterHeight)); // The initial vertical
+                                                                                         // velocity of the projectile.
     }
 
     public static final class Climber {
