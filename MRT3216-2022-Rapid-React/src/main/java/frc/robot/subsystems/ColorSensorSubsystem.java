@@ -21,15 +21,15 @@ public class ColorSensorSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        ShooterStateMachine.getInstance().set1stBall(getCurrentBall());
+        ShooterStateMachine.getInstance().setLastBall(getCurrentBall());
     }
 
-    public Ball getCurrentBall(){
-        if(!this.inRange()) {
+    public Ball getCurrentBall() {
+        if (!this.inRange()) {
             return Ball.NONE;
         } else if (this.isAllianceBall()) {
             return Ball.ALLIANCE;
-        } else{
+        } else {
             return Ball.OPPONENT;
         }
     }

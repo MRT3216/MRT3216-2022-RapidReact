@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.ShooterStateMachine;
 import frc.robot.settings.Configurations;
 import frc.robot.settings.Constants.Shooter.Indexer;
 import frc.robot.settings.RobotMap.ROBOT.SHOOTER;
@@ -35,6 +36,7 @@ public class IndexerSubsystem extends SubsystemBase {
             indexerMotor.set(TalonFXControlMode.Velocity, this.shootingVelocityUnitsPer100ms);
         } else if (!forward) {
             indexerMotor.set(TalonFXControlMode.PercentOutput, -1 * 0.4);
+            ShooterStateMachine.getInstance().reverseEject();
         }
     }
 

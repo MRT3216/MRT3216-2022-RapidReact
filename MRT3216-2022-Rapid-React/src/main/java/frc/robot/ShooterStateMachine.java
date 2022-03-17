@@ -1,6 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.settings.Constants;
@@ -11,24 +10,25 @@ import io.github.oblarg.oblog.Loggable;
 
 public class ShooterStateMachine implements Loggable {
     private static ShooterStateMachine instance;
-    private Ball ball1st;
-    private Ball ball2nd;
+    private Ball ball1;
+    private boolean ball1Changed;
+    private Ball ball2;
+    private boolean ball1InChute;
     private ShooterSubsystem shooterSystem;
     private ColorSensorSubsystem colorSystem;
     private double ballShotFilterThreshold;
-    private double ballShotDebounceTime;
 
     private ShooterStateMachine() {
         this.shooterSystem = ShooterSubsystem.getInstance();
         this.colorSystem = ColorSensorSubsystem.getInstance();
         this.ballShotFilterThreshold = Constants.Shooter.Flywheel.ballShotfilterThreshold;
-        this.ballShotDebounceTime = Constants.Shooter.Flywheel.ballShotDebounceTime;
-        ball1st = Ball.NONE;
-        ball2nd = Ball.NONE;
+        ball1 = Ball.NONE;
+        ball1Changed = false;
+        ball2 = Ball.NONE;
+        ball1InChute = false;
 
         new Trigger(
                 () -> shooterSystem.getFilterValue() < this.ballShotFilterThreshold)
-                        .debounce(this.ballShotDebounceTime, Debouncer.DebounceType.kRising)
                         .whileActiveOnce(new InstantCommand(() -> ballShot()));
 
         new Trigger(() -> colorSystem.inRange())
@@ -36,49 +36,74 @@ public class ShooterStateMachine implements Loggable {
     }
 
     public void ballShot() {
-        ball1st = ball2nd;
-        ball2nd = Ball.NONE;
+        ball1 = ball2;
+        ball2 = Ball.NONE;
+        setBallInChute(false);
+        System.out.println("Ball shot!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
 
     public void ballIndexed(boolean allianceBall) {
-        ball1st = allianceBall ? Ball.ALLIANCE : Ball.OPPONENT;
+        ball1 = allianceBall ? Ball.ALLIANCE : Ball.OPPONENT;
+        System.out.println("Ball indexed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
 
     public void reverseEject() {
-        ball1st = Ball.NONE;
-        ball2nd = Ball.NONE;
+        ball1 = Ball.NONE;
+        ball2 = Ball.NONE;
+        setBallInChute(false);
     }
 
-    public Ball get1stBall() {
-        return ball1st;
+    public Ball getBall1() {
+        return ball1;
     }
 
-    public String get1stBallString() {
-        return ball1st.toString();
+    public String getBall1String() {
+        return ball1.toString();
     }
 
-    public Ball get2ndBall() {
-        return ball2nd;
+    public Ball getBall2() {
+        return ball2;
     }
 
-    public String get2ndBallString() {
-        return ball2nd.toString();
+    public String getBall2String() {
+        return ball2.toString();
     }
 
-    public void set1stBall(Ball ball) {
-        this.ball1st = ball;
+    public void setBall1(Ball ball) {
+        this.ball1 = ball;
     }
 
-    public void set2ndBall(Ball ball) {
-        this.ball2nd = ball;
+    public void setBall2(Ball ball) {
+        this.ball2 = ball;
+    }
+
+    public void setLastBall(Ball ball) {
+        System.out.println("Set Last Ball to: " + ball.toString() + "  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        if (ball1InChute) {
+            ball2 = ball;
+            System.out.println("Set Ball 2 to: " + ball.toString() + "  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        } else {
+            if (ball1 != ball && ball1 != Ball.NONE) {
+                // ball1Changed = true;
+                setBallInChute(true);
+            } else {
+                ball1 = ball;
+            }
+        }
+        System.out.println("Set Ball 1 to: " + ball.toString() + "  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    }
+
+    public boolean getBallInChute() {
+        return this.ball1InChute;
+    }
+
+    public void setBallInChute(boolean isBall1InChute) {
+        System.out.println("Set Ball in chute from " + this.ball1InChute + " to " + isBall1InChute);
+        this.ball1InChute = isBall1InChute;
     }
 
     public void setBallFilterThreshold(double ballShotFilterThreshold) {
         this.ballShotFilterThreshold = ballShotFilterThreshold;
-    }
-
-    public void setBallShotDebounceTime(double ballShotDebounceTime) {
-        this.ballShotDebounceTime = ballShotDebounceTime;
     }
 
     public static ShooterStateMachine getInstance() {

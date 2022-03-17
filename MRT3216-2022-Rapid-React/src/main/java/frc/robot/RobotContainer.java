@@ -82,8 +82,9 @@ public class RobotContainer {
     @Config.NumberSlider(name = "Move Hood", methodName = "setAngle", methodTypes = {
             double.class }, defaultValue = Constants.Shooter.Hood.hoodReverseLimit, min = Constants.Shooter.Hood.hoodForwardLimit, max = Constants.Shooter.Hood.hoodReverseLimit, rowIndex = 5, columnIndex = 0)
     private HoodSubsystem hoodSystem;
-    @Log(name = "1st Ball", methodName = "get1stBallString", rowIndex = 4, columnIndex = 0)
-    @Log(name = "2nd Ball", methodName = "get2ndBallString", rowIndex = 4, columnIndex = 1)
+    @Log(name = "1st Ball", methodName = "getBall1String", rowIndex = 4, columnIndex = 0)
+    @Log(name = "2nd Ball", methodName = "getBall2String", rowIndex = 4, columnIndex = 1)
+    @Log.BooleanBox(name = "Ball in Chute", methodName = "getBallInChute", rowIndex = 4, columnIndex = 2)
     private ShooterStateMachine shooterStateMachine;
     private double translationExpo;
     private double rotationExpo;

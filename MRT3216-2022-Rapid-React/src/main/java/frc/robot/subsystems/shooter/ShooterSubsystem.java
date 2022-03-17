@@ -71,10 +71,12 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public boolean isReadyToShoot() {
-        System.out.println("Velocity: " + flywheelMotor.getSelectedSensorVelocity() + "   isReadyToShoot: "
-                + (flywheelMotor.getSelectedSensorVelocity() > acceptableShootingVelocityUnitsPer100ms)
-                + "  Acceptable: "
-                + acceptableShootingVelocityUnitsPer100ms);
+        // System.out.println("Velocity: " + flywheelMotor.getSelectedSensorVelocity() +
+        // " isReadyToShoot: "
+        // + (flywheelMotor.getSelectedSensorVelocity() >
+        // acceptableShootingVelocityUnitsPer100ms)
+        // + " Acceptable: "
+        // + acceptableShootingVelocityUnitsPer100ms);
         return flywheelMotor.getSelectedSensorVelocity() > acceptableShootingVelocityUnitsPer100ms;
     }
 
@@ -138,8 +140,9 @@ public class ShooterSubsystem extends SubsystemBase {
         this.targetShootingVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(rpm,
                 Flywheel.kSensorUnitsPerRotation);
         this.acceptableShootingVelocityUnitsPer100ms = this.targetShootingVelocityUnitsPer100ms * .9;
-        System.out.println("Target: " + this.targetShootingVelocityUnitsPer100ms + "  Acceptable: "
-                + this.acceptableShootingVelocityUnitsPer100ms);
+        // System.out.println("Target: " + this.targetShootingVelocityUnitsPer100ms + "
+        // Acceptable: "
+        // + this.acceptableShootingVelocityUnitsPer100ms);
     }
 
     public void setEjectRPM(double rpm) {
