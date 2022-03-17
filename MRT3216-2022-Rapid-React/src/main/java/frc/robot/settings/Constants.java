@@ -184,7 +184,7 @@ public final class Constants {
             public static final boolean INDEXER_MOTOR_INVERTED = false;
             public final static double kVoltageCompSaturation = 10;
             public static final double shootingRPM = 2000;
-            public static final double indexingRPM = 1500;
+            public static final double indexingRPM = 1000;
             public static final double RAMP_RATE = 0.3;
 
             /**
