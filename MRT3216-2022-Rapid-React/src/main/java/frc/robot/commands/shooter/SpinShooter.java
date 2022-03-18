@@ -16,6 +16,7 @@ public class SpinShooter extends CommandBase {
     private final BooleanSupplier eject;
 
     public SpinShooter(final ShooterSubsystem shooterSubsystem, BooleanSupplier isForward, BooleanSupplier eject) {
+        addRequirements(shooterSubsystem);
         this.shooterSubsystem = shooterSubsystem;
         this.isForward = isForward;
         this.eject = eject;

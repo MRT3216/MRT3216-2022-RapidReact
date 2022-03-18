@@ -17,6 +17,7 @@ public class RunIntake extends CommandBase {
     private final BooleanSupplier isForward;
 
     public RunIntake(IntakeSubsystem intake, BooleanSupplier isForward) {
+        addRequirements(intake);
         this.intake = intake;
         this.isForward = isForward;
     }

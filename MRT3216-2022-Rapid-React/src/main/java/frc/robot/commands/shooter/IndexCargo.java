@@ -18,6 +18,7 @@ public class IndexCargo extends CommandBase {
     private final BooleanSupplier hasIndexed;
 
     public IndexCargo(final IndexerSubsystem indexer, BooleanSupplier hasIndexed) {
+        addRequirements(indexer);
         this.indexer = indexer;
         this.hasIndexed = hasIndexed;
     }

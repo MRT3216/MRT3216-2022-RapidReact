@@ -20,6 +20,7 @@ public class RunIndexer extends CommandBase {
 
     public RunIndexer(final IndexerSubsystem indexer, final BooleanSupplier isForward, final BooleanSupplier run,
             final BooleanSupplier finish) {
+        addRequirements(indexer);
         this.indexer = indexer;
         this.isForward = isForward;
         this.run = run;

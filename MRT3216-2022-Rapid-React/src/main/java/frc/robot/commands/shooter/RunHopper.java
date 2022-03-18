@@ -17,6 +17,7 @@ public class RunHopper extends CommandBase {
     private final BooleanSupplier isForward;
 
     public RunHopper(HopperSubsystem hopper, BooleanSupplier isForward) {
+        addRequirements(hopper);
         this.hopper = hopper;
         this.isForward = isForward;
     }
