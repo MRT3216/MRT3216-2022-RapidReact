@@ -102,20 +102,6 @@ public class ShooterSubsystem extends SubsystemBase {
         flywheelMotor.getSensorCollection().setIntegratedSensorPosition(0, Flywheel.kTimeoutMs);
     }
 
-    public double getInitHoriztonalVelocity(double cameraAngle) {
-        return this.limeLightSystem.getHorizontalGoalDistance() + Projectile.kMinPorjectileHoriztonalVelocity;
-    }
-
-    public double getInitialVelocity() {
-        return Math.sqrt(
-                Math.pow(this.limeLightSystem.getHorizontalGoalDistance(), 2)
-                        + Math.pow(Projectile.kInitVerticalVelocity, 2));
-    }
-
-    public double getProjectileLaunchAngle() {
-        return Math.atan(this.limeLightSystem.getHorizontalGoalDistance() / Projectile.kInitVerticalVelocity);
-    }
-
     public double getShootingRPM() {
         return Utilities.convertUnitsPer100msToRPM(this.targetShootingVelocityUnitsPer100ms,
                 Flywheel.kSensorUnitsPerRotation);

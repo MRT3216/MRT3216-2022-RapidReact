@@ -180,6 +180,8 @@ public final class Constants {
             // TODO: set these vals
             public static final double hoodForwardLimit = -.9;
             public static final double hoodReverseLimit = 0;
+
+            public static final double hoodStowedAngle = Units.degreesToRadians(5);
         }
 
         public static final class Hopper {

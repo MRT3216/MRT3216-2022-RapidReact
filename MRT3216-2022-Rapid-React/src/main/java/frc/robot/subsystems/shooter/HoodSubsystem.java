@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 import frc.robot.settings.Constants.Shooter.Hood;
 import frc.robot.settings.RobotMap;
+import frc.robot.subsystems.LimelightSubsystem;
 
 /** A robot hood subsystem that moves with a motion profile. */
 public class HoodSubsystem extends ProfiledPIDSubsystem {
@@ -22,6 +23,8 @@ public class HoodSubsystem extends ProfiledPIDSubsystem {
     private final ArmFeedforward m_feedforward = new ArmFeedforward(
             Hood.kS, Hood.kG,
             Hood.kV, Hood.kA);
+
+    private LimelightSubsystem limelightSystem;
 
     /** Create a new HoodSubsystem. */
     private HoodSubsystem() {
@@ -40,6 +43,7 @@ public class HoodSubsystem extends ProfiledPIDSubsystem {
         m_encoder.setDistancePerRotation(2 * Math.PI);
         motor.setIdleMode(IdleMode.kBrake);
         this.stop();
+        limelightSystem = LimelightSubsystem.getInstance();
         // Start arm at rest in neutral position
         setGoal(Hood.hoodReverseLimit);
     }
@@ -79,6 +83,23 @@ public class HoodSubsystem extends ProfiledPIDSubsystem {
     public void setAngle(double rads) {
         setGoal(rads);
         enable();
+    }
+
+    public void setHoodAngle(double rads) {
+        System.out.println("Launch angle: " + rads);
+
+        double goalRads = -Math.PI / 2 + rads + Hood.hoodStowedAngle;
+
+        // setGoal(goalRads);
+        System.out.println("Goal radians: " + goalRads);
+    }
+
+    public double getProjectileLaunchAngle() {
+        // System.out.println("Initial Vert: " +
+        // this.limelightSystem.getInitVerticalVelocity() + " Init Horz: " +
+        // this.limelightSystem.getInitHoriztonalVelocity());
+        return Math.atan(
+                this.limelightSystem.getInitVerticalVelocity() / this.limelightSystem.getInitHoriztonalVelocity());
     }
 
     public static HoodSubsystem getInstance() {

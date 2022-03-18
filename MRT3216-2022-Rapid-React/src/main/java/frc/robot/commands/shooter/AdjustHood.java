@@ -5,16 +5,19 @@
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.shooter.HoodSubsystem;
 
 public class AdjustHood extends CommandBase {
     private HoodSubsystem hoodSystem;
+    private LimelightSubsystem limelightSystem;
 
     /** Creates a new AdjustHood. */
-    public AdjustHood(HoodSubsystem hoodSystem) {
+    public AdjustHood(HoodSubsystem hoodSystem, LimelightSubsystem limelightSystem) {
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(hoodSystem);
         this.hoodSystem = hoodSystem;
+        this.limelightSystem = limelightSystem;
     }
 
     // Called when the command is initially scheduled.
@@ -25,6 +28,8 @@ public class AdjustHood extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        double launchAngle = hoodSystem.getProjectileLaunchAngle();
+        hoodSystem.setHoodAngle(launchAngle);
     }
 
     // Called once the command ends or is interrupted.

@@ -10,6 +10,7 @@ import frc.robot.settings.Constants.LimeLight.CameraStream;
 import frc.robot.settings.Constants.LimeLight.LEDMode;
 import frc.robot.settings.Constants.Projectile;
 import io.github.oblarg.oblog.Loggable;
+import io.github.oblarg.oblog.annotations.Config.PIDController;
 
 public class LimelightSubsystem extends SubsystemBase implements Loggable {
 	private static LimelightSubsystem instance;
@@ -38,6 +39,26 @@ public class LimelightSubsystem extends SubsystemBase implements Loggable {
 		// The horizontal distance from the shooter to the center of the goal.
 		return robotXDistToGoal + Projectile.kShooterOffsetFromFrame;
 	}
+
+	public double getInitHoriztonalVelocity() {
+		//System.out.println("Horz Goal Distance (m): " + this.getHorizontalGoalDistance() + "Horz (Ft): " + Units.metersToFeet(this.getHorizontalGoalDistance()));
+        double goalFeet =(Units.metersToFeet(getHorizontalGoalDistance()) * 3/ 4 + 1);
+		return Units.feetToMeters(goalFeet);
+    }
+
+    public double getInitVerticalVelocity() {
+		double goalDistanceFeet = Units.metersToFeet(this.getHorizontalGoalDistance());
+		double goalHeightFeet = 10 + goalDistanceFeet/8;
+		double goalHeightMeters = Units.feetToMeters(goalHeightFeet);
+		double goalVelMeters = Math.sqrt(2 * Projectile.kAccelDueToGravity * (goalHeightMeters - Projectile.kShooterHeight));
+		return goalVelMeters;
+    }
+
+    public double getInitialVelocity() {
+        return Math.sqrt(
+                Math.pow(this.getInitHoriztonalVelocity(), 2)
+                        + Math.pow(this.getInitVerticalVelocity(), 2));
+    }
 
 	// ---------- getters ----------
 	/**
@@ -91,6 +112,27 @@ public class LimelightSubsystem extends SubsystemBase implements Loggable {
 		} catch (Exception e) {
 			return false;
 		}
+	}
+
+	public void setLEDModeByInt(int mode) {
+		LEDMode newMode = LEDMode.OFF;
+		
+		switch(mode){
+			case 0:
+				newMode = LEDMode.PIPELINE;
+				break;
+			case 1:
+				newMode = LEDMode.OFF;
+				break;
+			case 2: 
+				newMode = LEDMode.BLINK;
+				break;
+			case 3: 
+				newMode = LEDMode.ON;
+				break;
+		}
+
+		this.setLEDMode(newMode);		
 	}
 
 	// modes:

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.OI.Gamepad;
 import frc.robot.OI.OIUtils;
 import frc.robot.commands.TeleDrive;
+import frc.robot.commands.shooter.AdjustHood;
 import frc.robot.commands.shooter.FireCargo;
 import frc.robot.commands.shooter.IndexCargo;
 import frc.robot.commands.shooter.RunHopper;
@@ -18,6 +19,7 @@ import frc.robot.commands.shooter.RunIntake;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.settings.Constants;
 import frc.robot.settings.Constants.Drivetrain;
+import frc.robot.settings.Constants.LimeLight;
 import frc.robot.settings.RobotMap;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ColorSensorSubsystem;
@@ -55,27 +57,31 @@ public class RobotContainer {
             double.class }, rowIndex = 1, columnIndex = 9)
     @Config(name = "Flywheel F", defaultValueNumeric = Constants.Shooter.Flywheel.kF, methodName = "setFValue", methodTypes = {
             double.class }, rowIndex = 0, columnIndex = 9)
-    @Log.Graph(name = "Flywheel Velocity G", methodName = "getRPM", width = 4, height = 2, rowIndex = 0, columnIndex = 4)
+
     @Log(name = "Flywheel Velocity", methodName = "getRPM", rowIndex = 2, columnIndex = 8)
-    //@Log.Graph(name = "Flywheel Filter Value", methodName = "getFilterValue", width = 4, height = 2, rowIndex = 3, columnIndex = 4)
+    @Log.Graph(name = "Flywheel Velocity G", methodName = "getRPM", width = 4, height = 2, rowIndex = 0, columnIndex = 4)
+    // @Log.Graph(name = "Flywheel Filter Value", methodName = "getFilterValue",
+    // width = 4, height = 2, rowIndex = 3, columnIndex = 4)
     private ShooterSubsystem shooterSystem;
-    /*
-    @Config(name = "Indexer P", defaultValueNumeric = Constants.Shooter.Indexer.kP, methodName = "setPValue", methodTypes = {
-            double.class }, rowIndex = 3, columnIndex = 8)
-    @Config(name = "Indexer I", defaultValueNumeric = Constants.Shooter.Indexer.kI, methodName = "setIValue", methodTypes = {
-            double.class }, rowIndex = 4, columnIndex = 8)
-    @Config(name = "Indexer D", defaultValueNumeric = Constants.Shooter.Indexer.kD, methodName = "setDValue", methodTypes = {
-            double.class }, rowIndex = 4, columnIndex = 9)
-    @Config(name = "Indexer F", defaultValueNumeric = Constants.Shooter.Indexer.kF, methodName = "setFValue", methodTypes = {
-            double.class }, rowIndex = 3, columnIndex = 9)
-    */
+    // @Config(name = "Indexer P", defaultValueNumeric =
+    // Constants.Shooter.Indexer.kP, methodName = "setPValue", methodTypes = {
+    // double.class }, rowIndex = 3, columnIndex = 8)
+    // @Config(name = "Indexer I", defaultValueNumeric =
+    // Constants.Shooter.Indexer.kI, methodName = "setIValue", methodTypes = {
+    // double.class }, rowIndex = 4, columnIndex = 8)
+    // @Config(name = "Indexer D", defaultValueNumeric =
+    // Constants.Shooter.Indexer.kD, methodName = "setDValue", methodTypes = {
+    // double.class }, rowIndex = 4, columnIndex = 9)
+    // @Config(name = "Indexer F", defaultValueNumeric =
+    // Constants.Shooter.Indexer.kF, methodName = "setFValue", methodTypes = {
+    // double.class }, rowIndex = 3, columnIndex = 9)
     @Log(name = "Indexer Velocity", methodName = "getRPM", rowIndex = 2, columnIndex = 9)
     private IndexerSubsystem indexerSystem;
     private HopperSubsystem hopperSystem;
     private ClimberSubsystem climberSystem;
     private Gamepad controller;
-    @Config.NumberSlider(name = "Set LED Mode", methodName = "setLEDMode", methodTypes = {
-        Integer.class }, defaultValue = 1, min = 0, max = 1, rowIndex = 3, columnIndex = 5)
+    @Config(name = "Set LED Mode", methodName = "setLEDModeByInt", methodTypes = {
+        int.class },  rowIndex = 3, columnIndex = 5)
     @Log.BooleanBox(name = "Target Found", methodName = "hasTarget", rowIndex = 3, columnIndex = 6, width = 1, height = 1)
     @Log.NumberBar(name = "Hor. Goal Offset", methodName = "getHorizontalGoalDistance", rowIndex = 3, columnIndex = 7, height = 1, width = 1)
     @Log.NumberBar(name = "Vertical Offset", methodName = "getVerticalOffset", rowIndex = 3, columnIndex = 8, height = 1, width = 1)
@@ -181,6 +187,8 @@ public class RobotContainer {
                 interrupted -> climberSystem.stop(), // OnEnd: stop motors
                 () -> false, // IsFinished: never finish
                 climberSystem)); // Required subsystem
+
+        hoodSystem.setDefaultCommand(new AdjustHood(hoodSystem, limelightSystem));
     }
 
     public void disablePIDSubsystems() {

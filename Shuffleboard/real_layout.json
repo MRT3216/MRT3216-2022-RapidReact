@@ -128,26 +128,15 @@
               "imageWidth": -1,
               "imageHeight": -1
             }
-          },
-          "0,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///limelight/ledMode",
-              "_title": "/limelight/ledMode"
-            }
           }
         }
       }
     }
   ],
   "windowGeometry": {
-    "x": -1928.0,
-    "y": 353.0,
-    "width": 1936.0,
+    "x": 798.0,
+    "y": 138.0,
+    "width": 1488.0,
     "height": 1096.0
   }
 }
