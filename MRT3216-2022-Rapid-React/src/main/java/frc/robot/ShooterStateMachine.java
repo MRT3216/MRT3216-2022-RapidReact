@@ -6,12 +6,10 @@ import frc.robot.settings.Constants;
 import frc.robot.settings.Constants.Ball;
 import frc.robot.subsystems.ColorSensorSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
-import io.github.oblarg.oblog.Loggable;
 
-public class ShooterStateMachine implements Loggable {
+public class ShooterStateMachine {
     private static ShooterStateMachine instance;
     private Ball ball1;
-    private boolean ball1Changed;
     private Ball ball2;
     private boolean ball1InChute;
     private ShooterSubsystem shooterSystem;
@@ -23,7 +21,6 @@ public class ShooterStateMachine implements Loggable {
         this.colorSystem = ColorSensorSubsystem.getInstance();
         this.ballShotFilterThreshold = Constants.Shooter.Flywheel.ballShotfilterThreshold;
         ball1 = Ball.NONE;
-        ball1Changed = false;
         ball2 = Ball.NONE;
         ball1InChute = false;
 
@@ -39,12 +36,12 @@ public class ShooterStateMachine implements Loggable {
         ball1 = ball2;
         ball2 = Ball.NONE;
         setBallInChute(false);
-        //System.out.println("Ball shot!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        // System.out.println("Ball shot!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
 
     public void ballIndexed(boolean allianceBall) {
         ball1 = allianceBall ? Ball.ALLIANCE : Ball.OPPONENT;
-        //System.out.println("Ball indexed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        // System.out.println("Ball indexed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
 
     public void reverseEject() {
@@ -78,10 +75,12 @@ public class ShooterStateMachine implements Loggable {
     }
 
     public void setLastBall(Ball ball) {
-        //System.out.println("Set Last Ball to: " + ball.toString() + "  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        // System.out.println("Set Last Ball to: " + ball.toString() + "
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         if (ball1InChute) {
             ball2 = ball;
-            //System.out.println("Set Ball 2 to: " + ball.toString() + "  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            // System.out.println("Set Ball 2 to: " + ball.toString() + "
+            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         } else {
             if (ball1 != ball && ball1 != Ball.NONE) {
                 // ball1Changed = true;
@@ -90,7 +89,8 @@ public class ShooterStateMachine implements Loggable {
                 ball1 = ball;
             }
         }
-        //System.out.println("Set Ball 1 to: " + ball.toString() + "  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        // System.out.println("Set Ball 1 to: " + ball.toString() + "
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
 
     public boolean getBallInChute() {
@@ -98,7 +98,8 @@ public class ShooterStateMachine implements Loggable {
     }
 
     public void setBallInChute(boolean isBall1InChute) {
-        //System.out.println("Set Ball in chute from " + this.ball1InChute + " to " + isBall1InChute);
+        // System.out.println("Set Ball in chute from " + this.ball1InChute + " to " +
+        // isBall1InChute);
         this.ball1InChute = isBall1InChute;
     }
 

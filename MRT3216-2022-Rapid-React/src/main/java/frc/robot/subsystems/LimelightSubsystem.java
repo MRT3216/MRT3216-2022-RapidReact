@@ -9,9 +9,8 @@ import frc.robot.settings.Constants.LimeLight.CameraMode;
 import frc.robot.settings.Constants.LimeLight.CameraStream;
 import frc.robot.settings.Constants.LimeLight.LEDMode;
 import frc.robot.settings.Constants.Projectile;
-import io.github.oblarg.oblog.Loggable;
 
-public class LimelightSubsystem extends SubsystemBase implements Loggable {
+public class LimelightSubsystem extends SubsystemBase {
 	private static LimelightSubsystem instance;
 	private final NetworkTable limelightNT;
 
