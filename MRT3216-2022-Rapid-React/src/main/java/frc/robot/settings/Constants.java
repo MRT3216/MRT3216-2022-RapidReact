@@ -7,6 +7,9 @@
 
 package frc.robot.settings;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 
@@ -228,8 +231,34 @@ public final class Constants {
         }
     }
 
-    public static final class Vision {
+    public static final class LimeLight {
         public static final String NTtable = "limelight";
+
+        // modes:
+        // 0 = use the LED Mode set in the current pipeline
+        // 1 = force off
+        // 2 = force blink
+        // 3 = force on
+        public enum LEDMode {
+            PIPELINE, OFF, BLINK, ON;
+        }
+
+        // modes:
+        // 0 = vision processor
+        // 1 = driver camera
+        public enum CameraMode {
+            VISION, DRIVER
+        }
+
+        // Set stream:
+        // 0 = Standard - Side-by-side streams if a webcam is attached to Limelight
+        // 1 = PiP Main - The secondary camera stream is placed in the lower-right
+        // corner of the primary camera stream
+        // 2 = PiP Secondary - The primary camera stream is placed in the lower-right
+        // corner of the secondary camera stream
+        public enum CameraStream {
+            Standard, PiPMain, PiPSecondary
+        }
     }
 
     public static final class Sensors {
@@ -240,10 +269,6 @@ public final class Constants {
     public static final class Directories {
         public static final String deployDirectory = Filesystem.getDeployDirectory().getAbsolutePath();
         public static final String pathsDirectory = deployDirectory + "/paths/";
-    }
-
-    public static final class Limelight {
-
     }
 
     public static final class Projectile {
@@ -257,7 +282,7 @@ public final class Constants {
         // camera to the front of the robot.
 
         // Shooter Constants
-        public final static double kShooterOffsetFromFrame = 0.634; // The horizontal distance from the front of the
+        public final static double kShooterOffsetFromFrame = 0.2667; // The horizontal distance from the front of the
                                                                     // robot to the shooter.
         public final static double kShooterHeight = 0.688; // The vertical distance from the ground to the shooter.
 

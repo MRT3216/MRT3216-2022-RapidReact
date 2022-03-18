@@ -12,10 +12,12 @@ import frc.robot.settings.Constants.Projectile;
 import frc.robot.settings.Constants.Shooter.Flywheel;
 import frc.robot.settings.RobotMap.ROBOT.SHOOTER;
 import frc.robot.settings.Utilities;
+import frc.robot.subsystems.LimelightSubsystem;
 
 public class ShooterSubsystem extends SubsystemBase {
     private static ShooterSubsystem instance;
     private TalonFX flywheelMotor;
+    private LimelightSubsystem limeLightSystem;
     private double targetShootingVelocityUnitsPer100ms;
     private double acceptableShootingVelocityUnitsPer100ms;
     private double targetEjectVelocityUnitsPer100ms;
@@ -48,7 +50,7 @@ public class ShooterSubsystem extends SubsystemBase {
                 Flywheel.kSensorUnitsPerRotation);
 
         this.filter = LinearFilter.highPass(0.05, 0.02);
-
+        this.limeLightSystem = LimelightSubsystem.getInstance();
         this.zeroSensors();
     }
 
@@ -100,35 +102,18 @@ public class ShooterSubsystem extends SubsystemBase {
         flywheelMotor.getSensorCollection().setIntegratedSensorPosition(0, Flywheel.kTimeoutMs);
     }
 
-    /*
-     * Takes in the angle (rads) of the vision target from the camera's center of
-     * POV
-     * and returns the distance to the center of the goal.
-     */
-    public static double getHorizontalGoalDistance(double cameraAngle) {
-        // The horizontal distance from the center of the camera to the vision tape.
-        double cameraXDist = Projectile.kTargetHeightFromCamera / Math.tan(Projectile.kCameraViewAngle + cameraAngle);
-
-        // The horizontal distance from the front of the robot to the center of the
-        // goal.
-        double robotXDistToGoal = (cameraXDist - Projectile.kCameraOffsetFromFrame)
-                + Projectile.kTargetGoalHorizontalOffest;
-
-        // The horizontal distance from the shooter to the center of the goal.
-        return robotXDistToGoal + Projectile.kShooterOffsetFromFrame;
+    public double getInitHoriztonalVelocity(double cameraAngle) {
+        return this.limeLightSystem.getHorizontalGoalDistance() + Projectile.kMinPorjectileHoriztonalVelocity;
     }
 
-    public static double getInitHoriztonalVelocity(double cameraAngle) {
-        return getHorizontalGoalDistance(cameraAngle) + Projectile.kMinPorjectileHoriztonalVelocity;
-    }
-
-    public static double getInitialVelocity(double cameraAngle) {
+    public double getInitialVelocity() {
         return Math.sqrt(
-                Math.pow(getHorizontalGoalDistance(cameraAngle), 2) + Math.pow(Projectile.kInitVerticalVelocity, 2));
+                Math.pow(this.limeLightSystem.getHorizontalGoalDistance(), 2)
+                        + Math.pow(Projectile.kInitVerticalVelocity, 2));
     }
 
-    public static double getProjectileLaunchAngle(double cameraAngle) {
-        return Math.atan(getHorizontalGoalDistance(cameraAngle) / Projectile.kInitVerticalVelocity);
+    public double getProjectileLaunchAngle() {
+        return Math.atan(this.limeLightSystem.getHorizontalGoalDistance() / Projectile.kInitVerticalVelocity);
     }
 
     public double getShootingRPM() {
@@ -140,9 +125,6 @@ public class ShooterSubsystem extends SubsystemBase {
         this.targetShootingVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(rpm,
                 Flywheel.kSensorUnitsPerRotation);
         this.acceptableShootingVelocityUnitsPer100ms = this.targetShootingVelocityUnitsPer100ms * .9;
-        // System.out.println("Target: " + this.targetShootingVelocityUnitsPer100ms + "
-        // Acceptable: "
-        // + this.acceptableShootingVelocityUnitsPer100ms);
     }
 
     public void setEjectRPM(double rpm) {

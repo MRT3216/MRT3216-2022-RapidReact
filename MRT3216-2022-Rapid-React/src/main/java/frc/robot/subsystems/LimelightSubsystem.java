@@ -1,17 +1,42 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import io.github.oblarg.oblog.annotations.Log;
+import frc.robot.settings.Constants.LimeLight;
+import frc.robot.settings.Constants.LimeLight.CameraMode;
+import frc.robot.settings.Constants.LimeLight.CameraStream;
+import frc.robot.settings.Constants.LimeLight.LEDMode;
+import frc.robot.settings.Constants.Projectile;
+import io.github.oblarg.oblog.Loggable;
 
-public class LimelightSubsystem extends SubsystemBase {
+public class LimelightSubsystem extends SubsystemBase implements Loggable {
 	private static LimelightSubsystem instance;
 	private final NetworkTable limelightNT;
 
 	private LimelightSubsystem() {
-		NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+		NetworkTable table = NetworkTableInstance.getDefault().getTable(LimeLight.NTtable);
 		this.limelightNT = table;
+		System.out.println("Trying to turn off LED with value: " + LimeLight.LEDMode.OFF.ordinal());
+		this.setLEDMode(LimeLight.LEDMode.OFF);
+	}
+
+	/*
+	 *  Returns the horizontal distance to the center of the goal in meters.
+	 */
+	public double getHorizontalGoalDistance() {
+		double cameraAngle = Units.degreesToRadians(this.getVerticalOffset());
+		// The horizontal distance from the center of the camera to the vision tape.
+		double cameraXDist = Projectile.kTargetHeightFromCamera / Math.tan(Projectile.kCameraViewAngle + cameraAngle);
+
+		// The horizontal distance from the front of the robot to the center of the
+		// goal.
+		double robotXDistToGoal = (cameraXDist - Projectile.kCameraOffsetFromFrame)
+				+ Projectile.kTargetGoalHorizontalOffest;
+
+		// The horizontal distance from the shooter to the center of the goal.
+		return robotXDistToGoal + Projectile.kShooterOffsetFromFrame;
 	}
 
 	// ---------- getters ----------
@@ -30,9 +55,8 @@ public class LimelightSubsystem extends SubsystemBase {
 	 * 
 	 * @return horizontal offset to target (-27 degrees to 27 degrees)
 	 */
-	@Log.NumberBar(name = "tx", rowIndex = 1, columnIndex = 1, height = 1, width = 1)
 	public double getHorizontalOffset() {
-		return -limelightNT.getEntry("tx").getDouble(0.0);
+		return -limelightNT.getEntry("ty").getDouble(0.0);
 	}
 
 	/**
@@ -40,9 +64,8 @@ public class LimelightSubsystem extends SubsystemBase {
 	 * 
 	 * @return vertical offset to target (-20.5 degrees to 20.5 degrees)
 	 */
-	@Log.NumberBar(name = "ty", rowIndex = 1, columnIndex = 2, height = 1, width = 1)
 	public double getVerticalOffset() {
-		return limelightNT.getEntry("ty").getDouble(0.0);
+		return limelightNT.getEntry("tx").getDouble(0.0);
 	}
 
 	/**
@@ -60,10 +83,10 @@ public class LimelightSubsystem extends SubsystemBase {
 	// 0 = use the LED Mode set in the current pipeline
 	// 1 = force off
 	// 2 = force blink
-	// 3 = forece on
-	public boolean setLEDMode(int mode) {
+	// 3 = force on
+	public boolean setLEDMode(LEDMode mode) {
 		try {
-			limelightNT.getEntry("ledMode").setNumber(mode);
+			limelightNT.getEntry("ledMode").setNumber(mode.ordinal());
 			return true;
 		} catch (Exception e) {
 			return false;
@@ -73,9 +96,9 @@ public class LimelightSubsystem extends SubsystemBase {
 	// modes:
 	// 0 = vision processor
 	// 1 = driver camera
-	public boolean setCamMode(int mode) {
+	public boolean setCamMode(CameraMode mode) {
 		try {
-			limelightNT.getEntry("camMode").setNumber(mode);
+			limelightNT.getEntry("camMode").setNumber(mode.ordinal());
 			return true;
 		} catch (Exception e) {
 			return false;
@@ -98,9 +121,9 @@ public class LimelightSubsystem extends SubsystemBase {
 	// corner of the primary camera stream
 	// 2 = PiP Secondary - The primary camera stream is placed in the lower-right
 	// corner of the secondary camera stream
-	public boolean setStream(int stream) {
+	public boolean setStream(CameraStream stream) {
 		try {
-			limelightNT.getEntry("stream").setNumber(stream);
+			limelightNT.getEntry("stream").setNumber(stream.ordinal());
 			return true;
 		} catch (Exception e) {
 			return false;
