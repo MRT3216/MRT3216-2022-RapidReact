@@ -10,7 +10,6 @@ import frc.robot.settings.Constants.LimeLight.CameraStream;
 import frc.robot.settings.Constants.LimeLight.LEDMode;
 import frc.robot.settings.Constants.Projectile;
 import io.github.oblarg.oblog.Loggable;
-import io.github.oblarg.oblog.annotations.Config.PIDController;
 
 public class LimelightSubsystem extends SubsystemBase implements Loggable {
 	private static LimelightSubsystem instance;
@@ -19,12 +18,13 @@ public class LimelightSubsystem extends SubsystemBase implements Loggable {
 	private LimelightSubsystem() {
 		NetworkTable table = NetworkTableInstance.getDefault().getTable(LimeLight.NTtable);
 		this.limelightNT = table;
-		System.out.println("Trying to turn off LED with value: " + LimeLight.LEDMode.OFF.ordinal());
+		// System.out.println("Trying to turn off LED with value: " +
+		// LimeLight.LEDMode.OFF.ordinal());
 		this.setLEDMode(LimeLight.LEDMode.OFF);
 	}
 
 	/*
-	 *  Returns the horizontal distance to the center of the goal in meters.
+	 * Returns the horizontal distance to the center of the goal in meters.
 	 */
 	public double getHorizontalGoalDistance() {
 		double cameraAngle = Units.degreesToRadians(this.getVerticalOffset());
@@ -41,24 +41,27 @@ public class LimelightSubsystem extends SubsystemBase implements Loggable {
 	}
 
 	public double getInitHoriztonalVelocity() {
-		//System.out.println("Horz Goal Distance (m): " + this.getHorizontalGoalDistance() + "Horz (Ft): " + Units.metersToFeet(this.getHorizontalGoalDistance()));
-        double goalFeet =(Units.metersToFeet(getHorizontalGoalDistance()) * 3/ 4 + 1);
+		// System.out.println("Horz Goal Distance (m): " +
+		// this.getHorizontalGoalDistance() + "Horz (Ft): " +
+		// Units.metersToFeet(this.getHorizontalGoalDistance()));
+		double goalFeet = (Units.metersToFeet(getHorizontalGoalDistance()) * 3 / 4 + 1);
 		return Units.feetToMeters(goalFeet);
-    }
+	}
 
-    public double getInitVerticalVelocity() {
+	public double getInitVerticalVelocity() {
 		double goalDistanceFeet = Units.metersToFeet(this.getHorizontalGoalDistance());
-		double goalHeightFeet = 10 + goalDistanceFeet/8;
+		double goalHeightFeet = 10 + goalDistanceFeet / 8;
 		double goalHeightMeters = Units.feetToMeters(goalHeightFeet);
-		double goalVelMeters = Math.sqrt(2 * Projectile.kAccelDueToGravity * (goalHeightMeters - Projectile.kShooterHeight));
+		double goalVelMeters = Math
+				.sqrt(2 * Projectile.kAccelDueToGravity * (goalHeightMeters - Projectile.kShooterHeight));
 		return goalVelMeters;
-    }
+	}
 
-    public double getInitialVelocity() {
-        return Math.sqrt(
-                Math.pow(this.getInitHoriztonalVelocity(), 2)
-                        + Math.pow(this.getInitVerticalVelocity(), 2));
-    }
+	public double getInitialVelocity() {
+		return Math.sqrt(
+				Math.pow(this.getInitHoriztonalVelocity(), 2)
+						+ Math.pow(this.getInitVerticalVelocity(), 2));
+	}
 
 	// ---------- getters ----------
 	/**
@@ -116,23 +119,23 @@ public class LimelightSubsystem extends SubsystemBase implements Loggable {
 
 	public void setLEDModeByInt(int mode) {
 		LEDMode newMode = LEDMode.OFF;
-		
-		switch(mode){
+
+		switch (mode) {
 			case 0:
 				newMode = LEDMode.PIPELINE;
 				break;
 			case 1:
 				newMode = LEDMode.OFF;
 				break;
-			case 2: 
+			case 2:
 				newMode = LEDMode.BLINK;
 				break;
-			case 3: 
+			case 3:
 				newMode = LEDMode.ON;
 				break;
 		}
 
-		this.setLEDMode(newMode);		
+		this.setLEDMode(newMode);
 	}
 
 	// modes:

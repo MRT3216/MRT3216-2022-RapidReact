@@ -82,16 +82,16 @@ public class HoodSubsystem extends ProfiledPIDSubsystem {
 
     public void setAngle(double rads) {
         setGoal(rads);
-        enable();
     }
 
     public void setHoodAngle(double rads) {
-        System.out.println("Launch angle: " + rads);
+        if (limelightSystem.hasTarget()) {
+            System.out.println("Launch angle: " + rads);
+            double goalRads = -Math.PI / 2 + rads + Hood.hoodStowedAngle;
 
-        double goalRads = -Math.PI / 2 + rads + Hood.hoodStowedAngle;
-
-        // setGoal(goalRads);
-        System.out.println("Goal radians: " + goalRads);
+            setGoal(goalRads);
+            System.out.println("Goal radians: " + goalRads);
+        }
     }
 
     public double getProjectileLaunchAngle() {

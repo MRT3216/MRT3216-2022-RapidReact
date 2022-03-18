@@ -8,20 +8,16 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.settings.Configurations;
-import frc.robot.settings.Constants.Projectile;
 import frc.robot.settings.Constants.Shooter.Flywheel;
 import frc.robot.settings.RobotMap.ROBOT.SHOOTER;
 import frc.robot.settings.Utilities;
-import frc.robot.subsystems.LimelightSubsystem;
 
 public class ShooterSubsystem extends SubsystemBase {
     private static ShooterSubsystem instance;
     private TalonFX flywheelMotor;
-    private LimelightSubsystem limeLightSystem;
     private double targetShootingVelocityUnitsPer100ms;
     private double acceptableShootingVelocityUnitsPer100ms;
     private double targetEjectVelocityUnitsPer100ms;
-    private double acceptableEjectVelocityUnitsPer100ms;
     private LinearFilter filter;
     private double lastFilterValue;
 
@@ -46,11 +42,8 @@ public class ShooterSubsystem extends SubsystemBase {
                 Flywheel.kSensorUnitsPerRotation);
         this.targetEjectVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(Flywheel.targetEjectRPM,
                 Flywheel.kSensorUnitsPerRotation);
-        this.acceptableEjectVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(Flywheel.acceptableEjectRPM,
-                Flywheel.kSensorUnitsPerRotation);
 
         this.filter = LinearFilter.highPass(0.05, 0.02);
-        this.limeLightSystem = LimelightSubsystem.getInstance();
         this.zeroSensors();
     }
 
@@ -116,7 +109,6 @@ public class ShooterSubsystem extends SubsystemBase {
     public void setEjectRPM(double rpm) {
         this.targetEjectVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(rpm,
                 Flywheel.kSensorUnitsPerRotation);
-        this.acceptableEjectVelocityUnitsPer100ms = this.targetEjectVelocityUnitsPer100ms * .9;
     }
 
     public void setPValue(double p) {

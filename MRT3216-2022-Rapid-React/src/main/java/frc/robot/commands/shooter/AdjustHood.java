@@ -10,19 +10,19 @@ import frc.robot.subsystems.shooter.HoodSubsystem;
 
 public class AdjustHood extends CommandBase {
     private HoodSubsystem hoodSystem;
-    private LimelightSubsystem limelightSystem;
 
     /** Creates a new AdjustHood. */
     public AdjustHood(HoodSubsystem hoodSystem, LimelightSubsystem limelightSystem) {
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(hoodSystem);
         this.hoodSystem = hoodSystem;
-        this.limelightSystem = limelightSystem;
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        hoodSystem.setGoal(0);
+        hoodSystem.enable();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
