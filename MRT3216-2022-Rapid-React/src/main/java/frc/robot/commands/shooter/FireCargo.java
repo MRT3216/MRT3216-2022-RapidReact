@@ -9,6 +9,7 @@ package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.subsystems.ColorSensorSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.shooter.HopperSubsystem;
 import frc.robot.subsystems.shooter.IndexerSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
@@ -22,12 +23,12 @@ public class FireCargo extends ParallelCommandGroup {
      * Creates a new FirePowerCells.
      */
     public FireCargo(ShooterSubsystem shooterSystem, IndexerSubsystem indexer, HopperSubsystem hopper,
-            ColorSensorSubsystem colorSensor) {
+            ColorSensorSubsystem colorSensor, LimelightSubsystem limelightSystem) {
         super(
                 new RunHopper(hopper, () -> true),
                 new RunIndexer(indexer, () -> true,
                         () -> shooterSystem.isReadyToShoot(),
                         () -> colorSensor.isOpponentBall()),
-                new SpinShooter(shooterSystem, () -> true, () -> false));
+                new SpinShooter(shooterSystem, () -> true, () -> false, limelightSystem::getInitialRPM));
     }
 }

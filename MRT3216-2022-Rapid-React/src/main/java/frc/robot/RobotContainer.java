@@ -169,7 +169,7 @@ public class RobotContainer {
                 new SpinShooter(this.shooterSystem, () -> true, () -> true)));
 
         controller.LB.whileHeld(
-                new FireCargo(this.shooterSystem, this.indexerSystem, this.hopperSystem, this.colorSensorSystem));
+                new FireCargo(this.shooterSystem, this.indexerSystem, this.hopperSystem, this.colorSensorSystem, limelightSystem));
 
         controller.X.whileHeld(new ParallelCommandGroup(new RunHopper(this.hopperSystem, () -> false),
                 new RunIndexer(this.indexerSystem, () -> false, () -> true, () -> false),

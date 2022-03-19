@@ -59,10 +59,8 @@ public class LimelightSubsystem extends SubsystemBase {
 		return goalVelMeters;
 	}
 
-	public double getInitialVelocity() {
-		return Math.sqrt(
-				Math.pow(this.getInitHoriztonalVelocity(), 2)
-						+ Math.pow(this.getInitVerticalVelocity(), 2));
+	public double getInitialRPM() {
+		return 165.83*getHorizontalGoalDistance()+1971.2;
 	}
 
 	// ---------- getters ----------
