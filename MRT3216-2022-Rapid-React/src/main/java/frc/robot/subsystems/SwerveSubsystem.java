@@ -39,7 +39,9 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.settings.Constants.Auto;
 import frc.robot.settings.Constants.Drivetrain;
+import frc.robot.settings.Gains;
 import io.github.oblarg.oblog.Loggable;
 import io.github.oblarg.oblog.annotations.Config;
 import io.github.oblarg.oblog.annotations.Log;;
@@ -70,7 +72,7 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
 
     private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
-    private double thetaP;
+    private Gains thetaGains;
 
     private SwerveSubsystem() {
         m_navx = new AHRS(SerialPort.Port.kUSB1);
@@ -115,6 +117,8 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
         m_swerveModules = new SwerveModule[] { m_frontLeftModule, m_frontRightModule,
                 m_backLeftModule,
                 m_backRightModule };
+
+        thetaGains = Auto.kAutoThetaGains;
     }
 
     /**
@@ -167,6 +171,8 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
 
     @Override
     public void periodic() {
+        System.out.println(m_chassisSpeeds.toString());
+
         SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(states, Drivetrain.MAX_VELOCITY_METERS_PER_SECOND);
 
@@ -269,7 +275,7 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
         return m_chassisSpeeds.omegaRadiansPerSecond;
     }
 
-    @Log.BooleanBox(name = "Gyro Int?", rowIndex = 1, columnIndex = 1)
+    @Log.BooleanBox(name = "Gyro Int?", rowIndex = 3, columnIndex = 2)
     public boolean getGyroInterference() {
         return this.m_navx.isMagneticDisturbance();
     }
@@ -290,13 +296,28 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
         }
     }
 
-    @Config.NumberSlider(name = "Theta P", defaultValue = 5, rowIndex = 2, columnIndex = 4, height = 1, width = 1)
-    public void setThetaP(double thetaP) {
-        this.thetaP = thetaP;
+    public Gains getThetaGains() {
+        return this.thetaGains;
     }
 
-    public double getThetaP() {
-        return this.thetaP;
+    @Config.NumberSlider(name = "Theta P", defaultValue = Auto.kThetaP, min = 0, max = 20, rowIndex = 1, columnIndex = 0, height = 1, width = 1)
+    public void setThetaP(double thetaP) {
+        this.thetaGains.kP = thetaP;
+    }
+
+    @Config.NumberSlider(name = "Theta I", defaultValue = Auto.kThetaI, min = 0, max = 1, rowIndex = 1, columnIndex = 1, height = 1, width = 1)
+    public void setThetaI(double thetaI) {
+        this.thetaGains.kI = thetaI;
+    }
+
+    @Config.NumberSlider(name = "Theta D", defaultValue = Auto.kThetaD, min = 0, max = 1, rowIndex = 1, columnIndex = 2, height = 1, width = 1)
+    public void setThetaD(double thetaD) {
+        this.thetaGains.kD = thetaD;
+    }
+
+    @Log.Graph(name = "Gyro Angle",  width = 4, height = 2, rowIndex = 4, columnIndex = 4)
+    public double getGyroDegrees() {
+        return this.getGyroscopeRotation().getDegrees();
     }
 
     // endregion

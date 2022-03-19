@@ -7,10 +7,12 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.OI.Gamepad;
 import frc.robot.OI.OIUtils;
 import frc.robot.commands.TeleDrive;
 import frc.robot.commands.shooter.AdjustHood;
+import frc.robot.commands.shooter.AimDrivebase;
 import frc.robot.commands.shooter.FireCargo;
 import frc.robot.commands.shooter.IndexCargo;
 import frc.robot.commands.shooter.RunHopper;
@@ -19,7 +21,6 @@ import frc.robot.commands.shooter.RunIntake;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.settings.Constants;
 import frc.robot.settings.Constants.Drivetrain;
-import frc.robot.settings.Constants.LimeLight;
 import frc.robot.settings.RobotMap;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ColorSensorSubsystem;
@@ -57,7 +58,6 @@ public class RobotContainer {
             double.class }, rowIndex = 1, columnIndex = 9)
     @Config(name = "Flywheel F", defaultValueNumeric = Constants.Shooter.Flywheel.kF, methodName = "setFValue", methodTypes = {
             double.class }, rowIndex = 0, columnIndex = 9)
-
     @Log(name = "Flywheel Velocity", methodName = "getRPM", rowIndex = 2, columnIndex = 8)
     @Log.Graph(name = "Flywheel Velocity G", methodName = "getRPM", width = 4, height = 2, rowIndex = 0, columnIndex = 4)
     // @Log.Graph(name = "Flywheel Filter Value", methodName = "getFilterValue",
@@ -81,10 +81,11 @@ public class RobotContainer {
     private ClimberSubsystem climberSystem;
     private Gamepad controller;
     @Config(name = "Set LED Mode", methodName = "setLEDModeByInt", methodTypes = {
-        int.class },  rowIndex = 3, columnIndex = 5)
+            int.class }, rowIndex = 3, columnIndex = 5)
     @Log.BooleanBox(name = "Target Found", methodName = "hasTarget", rowIndex = 3, columnIndex = 6, width = 1, height = 1)
-    @Log.NumberBar(name = "Hor. Goal Offset", methodName = "getHorizontalGoalDistance", rowIndex = 3, columnIndex = 7, height = 1, width = 1)
-    @Log.NumberBar(name = "Vertical Offset", methodName = "getVerticalOffset", rowIndex = 3, columnIndex = 8, height = 1, width = 1)
+    @Log.Dial(name = "Hor. Goal Distance", methodName = "getHorizontalGoalDistance", min = -90, max = 90, rowIndex = 3, columnIndex = 7, height = 1, width = 1)
+    @Log.Dial(name = "Horizontal Offset", methodName = "getHorizontalOffset", min = -90, max = 90, rowIndex = 3, columnIndex = 8, height = 1, width = 1)
+    @Log.Dial(name = "Vertical Offset", methodName = "getVerticalOffset", min = -90, max = 90, rowIndex = 3, columnIndex = 9, height = 1, width = 1)
     private LimelightSubsystem limelightSystem;
     @Log.BooleanBox(name = "Red Detected", methodName = "isRed", rowIndex = 3, columnIndex = 0)
     @Log.BooleanBox(name = "Blue Detected", methodName = "isBlue", rowIndex = 3, columnIndex = 1)
@@ -169,13 +170,20 @@ public class RobotContainer {
                 new RunIndexer(this.indexerSystem, () -> false, () -> true, () -> false),
                 new SpinShooter(this.shooterSystem, () -> false, () -> false)));
 
-        controller.A.whenPressed(new Runnable() {
+        controller.Y.whenPressed(new Runnable() {
             @Override
             public void run() {
                 RobotContainer.getInstance().getDriveSystem().resetGyroAndOdometry(true);
             }
 
         }, driveSystem);
+
+        controller.A
+                .whileHeld(new ParallelCommandGroup(
+                        new StartEndCommand(() -> limelightSystem.setLEDMode(Constants.LimeLight.LEDMode.PIPELINE),
+                                () -> limelightSystem.setLEDMode(Constants.LimeLight.LEDMode.OFF)),
+                        new AdjustHood(hoodSystem),
+                        new AimDrivebase(driveSystem, limelightSystem)));
 
         climberSystem.setDefaultCommand(new FunctionalCommand(
                 () -> {
@@ -187,8 +195,6 @@ public class RobotContainer {
                 interrupted -> climberSystem.stop(), // OnEnd: stop motors
                 () -> false, // IsFinished: never finish
                 climberSystem)); // Required subsystem
-
-        hoodSystem.setDefaultCommand(new AdjustHood(hoodSystem, limelightSystem));
     }
 
     public void disablePIDSubsystems() {

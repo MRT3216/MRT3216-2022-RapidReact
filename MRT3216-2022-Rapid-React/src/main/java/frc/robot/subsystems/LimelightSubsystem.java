@@ -79,7 +79,7 @@ public class LimelightSubsystem extends SubsystemBase {
 	 * @return horizontal offset to target (-27 degrees to 27 degrees)
 	 */
 	public double getHorizontalOffset() {
-		return -limelightNT.getEntry("ty").getDouble(0.0);
+		return limelightNT.getEntry("ty").getDouble(0.0);
 	}
 
 	/**

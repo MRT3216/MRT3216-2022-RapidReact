@@ -14,6 +14,7 @@ public class ShooterStateMachine {
     private boolean ball1InChute;
     private ShooterSubsystem shooterSystem;
     private ColorSensorSubsystem colorSystem;
+    
     private double ballShotFilterThreshold;
 
     private ShooterStateMachine() {

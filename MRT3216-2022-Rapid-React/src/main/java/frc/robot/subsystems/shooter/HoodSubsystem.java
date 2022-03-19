@@ -102,6 +102,10 @@ public class HoodSubsystem extends ProfiledPIDSubsystem {
                 this.limelightSystem.getInitVerticalVelocity() / this.limelightSystem.getInitHoriztonalVelocity());
     }
 
+    public boolean atGoal() {
+        return super.getController().atGoal();
+    }
+
     public static HoodSubsystem getInstance() {
         if (instance == null) {
             // if instance is null, initialize

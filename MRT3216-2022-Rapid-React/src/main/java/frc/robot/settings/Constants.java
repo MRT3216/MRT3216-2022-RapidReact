@@ -75,8 +75,24 @@ public final class Constants {
         public static double delayTime = 1;
         public static double driveTime = 1;
         // TODO: Tune these values
-        public static final Gains kAutoPositionGains = new Gains(.69, 0, 0);
-        public static final Gains kAutoThetaGains = new Gains(2, 0, 0);
+        // Proportional gain
+        public static final double kPositionP = 0.001;
+        // Integral gain
+        public static final double kPositionI = 0;
+        // Derivative gain
+        public static final double kPositionD = 0;
+        // Proportional gain
+        public static final double kThetaP = 10;
+        // Integral gain
+        public static final double kThetaI = 0;
+        // Derivative gain
+        public static final double kThetaD = 0.6;
+
+        public static final Gains kAutoPositionGains = new Gains(kPositionP, kPositionI, kThetaD);
+        public static final Gains kAutoThetaGains = new Gains(kThetaP, kThetaI, kThetaD);
+
+        public static final double kMaxTurnError = 1; // degrees
+        public static final double kMaxTurnRateError = 1; // Degrees per second
     }
 
     public static final class OI {
@@ -285,7 +301,7 @@ public final class Constants {
 
         // Shooter Constants
         public final static double kShooterOffsetFromFrame = 0.2667; // The horizontal distance from the front of the
-                                                                    // robot to the shooter.
+                                                                     // robot to the shooter.
         public final static double kShooterHeight = 0.688; // The vertical distance from the ground to the shooter.
 
         // Goal Constants
