@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -13,10 +14,12 @@ import frc.robot.settings.Constants.Projectile;
 public class LimelightSubsystem extends SubsystemBase {
 	private static LimelightSubsystem instance;
 	private final NetworkTable limelightNT;
+	private final LinearFilter horizontalFilter;
 
 	private LimelightSubsystem() {
 		NetworkTable table = NetworkTableInstance.getDefault().getTable(LimeLight.NTtable);
 		this.limelightNT = table;
+		this.horizontalFilter = LinearFilter.movingAverage(5);
 		// System.out.println("Trying to turn off LED with value: " +
 		// LimeLight.LEDMode.OFF.ordinal());
 		this.setLEDMode(LimeLight.LEDMode.OFF);
@@ -73,13 +76,22 @@ public class LimelightSubsystem extends SubsystemBase {
 	}
 
 	/**
+	 * Returns whether the limelight has any valid targets (0 or 1)
+	 * 
+	 * @return whether the limelight has any valid targets
+	 */
+	public double getLatency() {
+		return limelightNT.getEntry("tl").getDouble(0);
+	}
+
+	/**
 	 * Returns Horizontal Offset From Crosshair To Target (-27 degrees to 27
 	 * degrees)
 	 * 
 	 * @return horizontal offset to target (-27 degrees to 27 degrees)
 	 */
 	public double getHorizontalOffset() {
-		return limelightNT.getEntry("ty").getDouble(0.0);
+		return horizontalFilter.calculate(limelightNT.getEntry("ty").getDouble(0.0));
 	}
 
 	/**

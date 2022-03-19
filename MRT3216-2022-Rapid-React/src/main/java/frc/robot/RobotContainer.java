@@ -184,7 +184,7 @@ public class RobotContainer {
         controller.A
                 .whenHeld(new ParallelCommandGroup(
                         new StartEndCommand(() -> limelightSystem.setLEDMode(Constants.LimeLight.LEDMode.PIPELINE),
-                                () -> limelightSystem.setLEDMode(Constants.LimeLight.LEDMode.OFF)),
+                                () -> {}/*limelightSystem.setLEDMode(Constants.LimeLight.LEDMode.OFF)*/),
                         new AdjustHood(hoodSystem),
                         new AimDrivebase(driveSystem, limelightSystem)));
 
