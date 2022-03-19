@@ -5,7 +5,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.OI.Gamepad;
@@ -186,7 +188,8 @@ public class RobotContainer {
                         new StartEndCommand(() -> limelightSystem.setLEDMode(Constants.LimeLight.LEDMode.PIPELINE),
                                 () -> {}/*limelightSystem.setLEDMode(Constants.LimeLight.LEDMode.OFF)*/),
                         new AdjustHood(hoodSystem),
-                        new AimDrivebase(driveSystem, limelightSystem)));
+                        new ConditionalCommand(new AimDrivebase(driveSystem, limelightSystem), new InstantCommand(), limelightSystem::hasTarget)
+                        ));
 
         climberSystem.setDefaultCommand(new FunctionalCommand(
                 () -> {
