@@ -21,6 +21,8 @@ import frc.robot.commands.shooter.RunIntake;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.settings.Constants;
 import frc.robot.settings.Constants.Drivetrain;
+import frc.robot.settings.Constants.LimeLight.CameraMode;
+import frc.robot.settings.Constants.LimeLight.CameraStream;
 import frc.robot.settings.RobotMap;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ColorSensorSubsystem;
@@ -135,6 +137,7 @@ public class RobotContainer {
         this.shooterSystem = ShooterSubsystem.getInstance();
         this.controller = new Gamepad(RobotMap.DRIVE_STATION.USB_XBOX_CONTROLLER);
         this.limelightSystem = LimelightSubsystem.getInstance();
+        this.limelightSystem.setStream(CameraStream.PiPSecondary);
         this.colorSensorSystem = ColorSensorSubsystem.getInstance();
         this.shooterStateMachine = ShooterStateMachine.getInstance();
     }
@@ -179,7 +182,7 @@ public class RobotContainer {
         }, driveSystem);
 
         controller.A
-                .whileHeld(new ParallelCommandGroup(
+                .whenHeld(new ParallelCommandGroup(
                         new StartEndCommand(() -> limelightSystem.setLEDMode(Constants.LimeLight.LEDMode.PIPELINE),
                                 () -> limelightSystem.setLEDMode(Constants.LimeLight.LEDMode.OFF)),
                         new AdjustHood(hoodSystem),

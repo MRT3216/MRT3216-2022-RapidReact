@@ -11,7 +11,7 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "3,3": {
+          "8,0": {
             "size": [
               3,
               1
@@ -22,7 +22,7 @@
               "_title": "FMS Info"
             }
           },
-          "2,3": {
+          "0,0": {
             "size": [
               1,
               1
@@ -35,29 +35,7 @@
               "Colors/Color when false": "#0000FFFF"
             }
           },
-          "6,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///chameleon-vision/PS Eye/targetPitch",
-              "_title": "Target Pitch"
-            }
-          },
-          "7,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///chameleon-vision/PS Eye/targetYaw",
-              "_title": "Target Yaw"
-            }
-          },
-          "6,0": {
+          "8,1": {
             "size": [
               2,
               1
@@ -73,18 +51,7 @@
               "Visuals/Number of tick marks": 5
             }
           },
-          "6,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///Shuffleboard/RobotContainer/Hood Angle",
-              "_title": "Hood Angle"
-            }
-          },
-          "7,2": {
+          "1,0": {
             "size": [
               1,
               1
@@ -95,10 +62,10 @@
               "_title": "Autonomous"
             }
           },
-          "3,0": {
+          "2,0": {
             "size": [
-              3,
-              3
+              6,
+              6
             ],
             "content": {
               "_type": "Camera Stream",

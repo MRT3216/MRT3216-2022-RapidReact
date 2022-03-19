@@ -171,7 +171,7 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
 
     @Override
     public void periodic() {
-        System.out.println(m_chassisSpeeds.toString());
+        //System.out.println(m_chassisSpeeds.toString());
 
         SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(states, Drivetrain.MAX_VELOCITY_METERS_PER_SECOND);

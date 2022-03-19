@@ -22,6 +22,7 @@ public class AimDrivebase extends CommandBase {
     private SwerveSubsystem swerveSystem;
     private LimelightSubsystem limelightSystem;
     private ProfiledPIDController controller;
+    private boolean hasSeenTarget = false;
 
     /** Creates a new AimDrivebase. */
     public AimDrivebase(SwerveSubsystem swerveSystem, LimelightSubsystem limelightSystem) {
@@ -44,22 +45,31 @@ public class AimDrivebase extends CommandBase {
         this.controller.setP(swerveSystem.getThetaGains().kP);
         this.controller.setI(swerveSystem.getThetaGains().kI);
         this.controller.setD(swerveSystem.getThetaGains().kD);
+        this.hasSeenTarget = false;
     }
 
     @Override
     public void execute() {
         if (limelightSystem.hasTarget()) {
-            Rotation2d offset2d =  Rotation2d.fromDegrees(limelightSystem.getHorizontalOffset());
+            Rotation2d offset2d = Rotation2d.fromDegrees(limelightSystem.getHorizontalOffset());
             Rotation2d r2d = swerveSystem.getGyroscopeRotation().rotateBy(offset2d);
 
-            this.controller
-                    .setGoal(r2d.getDegrees());
+            this.controller.setGoal(r2d.getDegrees());
+            System.out.println("Target: " + r2d.getDegrees() + "   P: " + controller.getP());
+            hasSeenTarget = true;
         }
+        if (hasSeenTarget) {
+            double omega = this.controller.calculate(swerveSystem.getGyroscopeRotation().getDegrees());
 
-        double omega = this.controller.calculate(swerveSystem.getGyroscopeRotation().getDegrees());
-        System.out.println("Omega: " + omega + "   P: " + controller.getP());
-        ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0, Units.degreesToRadians(omega));
-        swerveSystem.drive(chassisSpeeds);
+            ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0, Units.degreesToRadians(omega));
+            swerveSystem.drive(chassisSpeeds);
+        }
+    }
+
+    @Override
+    public void end(boolean interrupted){
+        super.end(interrupted);
+        hasSeenTarget = false;
     }
 
     // Returns true when the command should end.
