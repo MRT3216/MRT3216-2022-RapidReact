@@ -173,25 +173,14 @@ public class RobotContainer {
                     true));
         }
 
+        controller.LB.whileHeld(
+            new FireCargo(this.shooterSystem, this.indexerSystem, this.hopperSystem,
+                    this.colorSensorSystem, this.limelightSystem));
+
         controller.RB.whileHeld(new ParallelCommandGroup(new RunIntake(this.intakeSystem, () -> true),
                 new RunHopper(this.hopperSystem, () -> true),
-                new IndexCargo(this.indexerSystem, () -> this.colorSensorSystem.isAllianceBall())));
-
-        controller.LB.whileHeld(
-                new FireCargo(this.shooterSystem, this.indexerSystem, this.hopperSystem,
-                        this.colorSensorSystem,
-                        limelightSystem));
-
-        controller.X.whileHeld(new ParallelCommandGroup(new RunHopper(this.hopperSystem, () -> false),
-                new RunIndexer(this.indexerSystem, () -> false, () -> true, () -> false),
-                new SpinShooter(this.shooterSystem, () -> false, () -> false)));
-
-        controller.Y.whenPressed(new Runnable() {
-            @Override
-            public void run() {
-                RobotContainer.getInstance().getDriveSystem().resetGyroAndOdometry(true);
-            }
-        }, driveSystem);
+                new IndexCargo(this.indexerSystem, () -> this.colorSensorSystem.isAllianceBall()),
+                new SpinShooter(this.shooterSystem, () -> true, () -> true)));
 
         controller.A
                 .whenHeld(new ParallelCommandGroup(
@@ -204,6 +193,17 @@ public class RobotContainer {
                         new ConditionalCommand(new AimDrivebase(driveSystem, limelightSystem),
                                 new InstantCommand(),
                                 limelightSystem::hasTarget)));
+
+        controller.X.whileHeld(new ParallelCommandGroup(new RunHopper(this.hopperSystem, () -> false),
+                new RunIndexer(this.indexerSystem, () -> false, () -> true, () -> false),
+                new SpinShooter(this.shooterSystem, () -> false, () -> false)));
+
+        controller.Y.whenPressed(new Runnable() {
+            @Override
+            public void run() {
+                RobotContainer.getInstance().getDriveSystem().resetGyroAndOdometry(true);
+            }
+        }, driveSystem);
 
         climberSystem.setDefaultCommand(new FunctionalCommand(
                 () -> {

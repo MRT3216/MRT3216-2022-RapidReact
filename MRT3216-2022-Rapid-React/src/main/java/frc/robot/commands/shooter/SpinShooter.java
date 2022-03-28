@@ -25,7 +25,8 @@ public class SpinShooter extends CommandBase {
         this.targetRPM = null;
     }
 
-    public SpinShooter(final ShooterSubsystem shooterSubsystem, BooleanSupplier isForward, BooleanSupplier eject, DoubleSupplier targetRPM) {
+    public SpinShooter(final ShooterSubsystem shooterSubsystem, BooleanSupplier isForward, BooleanSupplier eject,
+            DoubleSupplier targetRPM) {
         addRequirements(shooterSubsystem);
         this.shooterSubsystem = shooterSubsystem;
         this.isForward = isForward;
@@ -36,10 +37,9 @@ public class SpinShooter extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        if(this.targetRPM != null) {
+        if (this.targetRPM != null) {
             this.shooterSubsystem.setShootingRPM(targetRPM.getAsDouble());
         }
-
     }
 
     @Override
