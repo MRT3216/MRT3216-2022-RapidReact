@@ -9,7 +9,6 @@ package frc.robot.settings;
 
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
-
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Filesystem;
 
@@ -93,6 +92,9 @@ public final class Constants {
 
         public static final double kMaxTurnErrorAuto = 5;
         public static final double kMaxTurnRateErrorAuto = 5;
+
+        public static final int kMaxFetchVelocity = 8;
+        public static final int kMaxFetchAcc = kMaxFetchVelocity / 2;
     }
 
     public static final class OI {
