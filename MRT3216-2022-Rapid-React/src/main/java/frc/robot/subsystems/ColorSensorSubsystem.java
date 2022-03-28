@@ -74,7 +74,7 @@ public class ColorSensorSubsystem extends SubsystemBase {
     }
 
     private double getProximity() {
-        System.out.println("Proximity: " + sensor.getProximity() + "   Color: " + sensor.getColor());
+        // System.out.println("Proximity: " + sensor.getProximity() + "   Color: " + sensor.getColor());
         return sensor.getProximity(); // get proximity
     }
 

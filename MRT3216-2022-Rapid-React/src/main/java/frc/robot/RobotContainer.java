@@ -178,14 +178,17 @@ public class RobotContainer {
                 new FireCargo(this.shooterSystem, this.indexerSystem, this.hopperSystem,
                         this.colorSensorSystem, this.limelightSystem));
 
-        // 
+        // Runs the intake, hopper, and indexer
+        // The indexer and shooter will vary behaviour depending on whether an alliance
+        // or opponent ball has been pulled in
         controller.RB.whileHeld(new ParallelCommandGroup(
                 new RunIntake(this.intakeSystem, () -> true),
                 new RunHopper(this.hopperSystem, () -> true),
                 new IndexCargo(this.indexerSystem, () -> this.colorSensorSystem.isAllianceBall()),
-                new SpinShooter(this.shooterSystem, () -> true, () -> true)));
+                new SpinShooter(this.shooterSystem, () -> true, () -> this.colorSensorSystem.isOpponentBall())));
 
-        // Turns the Limelight LEDs on, adjusts the hood, and then aims the drivebase if a target is acquired
+        // Turns the Limelight LEDs on, adjusts the hood, and then aims the drivebase if
+        // a target is acquired
         controller.A.whenHeld(new ParallelCommandGroup(
                 new StartEndCommand(
                         () -> limelightSystem.setLEDMode(Constants.LimeLight.LEDMode.PIPELINE),
@@ -210,26 +213,11 @@ public class RobotContainer {
             }
         }, driveSystem);
 
-        controller.LeftJoy.whenPressed(
-                () -> this.climberSystem.tethered(!this.climberSystem.isTethered())
-        );
-
-        controller.RightJoy.whenPressed(
-                () -> this.climberSystem.invert()
-        );
-
         climberSystem.setDefaultCommand(new FunctionalCommand(
                 () -> {
                 }, // OnInit: do nothing
-                () -> {
-                    if (!climberSystem.isTethered()) {
-                        climberSystem.runLeftMotor(controller.getLeftTriggerAxis());
-                        climberSystem.runRightMotor(controller.getRightTriggerAxis());
-                    }
-                    else {
-                        climberSystem.runMotors(controller.getRightTriggerAxis()-controller.getLeftTriggerAxis());
-                    }
-                }, // OnExecute:
+                () -> climberSystem.runMotors(
+                        controller.getRightTriggerAxis() - controller.getLeftTriggerAxis()), // OnExecute:
                                                                                              // call
                                                                                              // run
                                                                                              // motors
