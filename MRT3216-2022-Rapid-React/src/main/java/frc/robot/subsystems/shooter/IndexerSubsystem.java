@@ -3,7 +3,6 @@ package frc.robot.subsystems.shooter;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.ShooterStateMachine;
 import frc.robot.settings.Configurations;
@@ -28,7 +27,7 @@ public class IndexerSubsystem extends SubsystemBase {
         this.stopIndexer();
 
         // TODO: Check that this doesn't break shooting (previously the shooting velocity was getting overwritten with the index velocity)
-        this.shootingVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(Indexer.shootingRPM, Indexer.kSensorUnitsPerRotation);
+        this.shootingVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(Indexer.indexingRPM, Indexer.kSensorUnitsPerRotation);
         this.indexingVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(Indexer.indexingRPM, Indexer.kSensorUnitsPerRotation);
     }
 

@@ -169,14 +169,19 @@ public class RobotContainer {
                 new RunIntake(this.intakeSystem, () -> true),
                 new RunHopper(this.hopperSystem, () -> true),
                 new IndexCargo(this.indexerSystem, () -> this.colorSensorSystem.isAllianceBall()),
-                new SpinShooter(this.shooterSystem, () -> true, () -> this.colorSensorSystem.isOpponentBall())));
+                new ConditionalCommand(
+                        new SpinShooter(this.shooterSystem, () -> true, () -> false),
+                        new InstantCommand(),
+                        () -> this.colorSensorSystem.isOpponentBall()
+                )));
 
         // Turns the Limelight LEDs on, adjusts the hood, and then aims the drivebase if
         // a target is acquired
         controller.A.whenHeld(new ParallelCommandGroup(
                 new StartEndCommand(
                         () -> limelightSystem.setLEDMode(Constants.LimeLight.LEDMode.PIPELINE),
-                        () -> limelightSystem.setLEDMode(Constants.LimeLight.LEDMode.OFF)),
+                        () -> {
+                        }),
                 new AdjustHood(hoodSystem),
                 new ConditionalCommand(
                         new AimDrivebase(driveSystem, limelightSystem),
