@@ -10,9 +10,6 @@ import java.nio.file.Path;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-import com.pathplanner.lib.PathPlanner;
-
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -20,7 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.auto.*;
+import frc.robot.commands.auto.AutoAimAndShoot;
 import frc.robot.settings.Constants.Directories;
 import frc.robot.subsystems.ColorSensorSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -99,17 +96,23 @@ public class AutoChooser {
                                         * new DriveDifferentialTrajectory(swerveSystem,
                                         * PathPlanner.loadPath("Bounce 1", 2, 1)));
                                         */
-/*        chooser.addOption("3, Holonomic Trajectory",
-                new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("3", 2, 1))
-                        .andThen(new DriveConstantHeadingTrajectory(swerveSystem, PathPlanner.loadPath("2", 2, 1),
-                                Rotation2d.fromDegrees(60))));
-        chooser.addOption("2, Holonomic Trajectory",
-                new DriveConstantHeadingTrajectory(swerveSystem, PathPlanner.loadPath("2", 2, 1),
-                        Rotation2d.fromDegrees(60)));
-        chooser.addOption("Bounce Path, Holonomic Trajectory",
-                new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Bounce 1", 2, 1)));
-        chooser.addOption("Bounce Path, Constant Heading", new DriveConstantHeadingTrajectory(swerveSystem,
-                PathPlanner.loadPath("Bounce 1", 2, 1), Rotation2d.fromDegrees(45)));*/
+        /*
+         * chooser.addOption("3, Holonomic Trajectory",
+         * new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("3", 2, 1))
+         * .andThen(new DriveConstantHeadingTrajectory(swerveSystem,
+         * PathPlanner.loadPath("2", 2, 1),
+         * Rotation2d.fromDegrees(60))));
+         * chooser.addOption("2, Holonomic Trajectory",
+         * new DriveConstantHeadingTrajectory(swerveSystem, PathPlanner.loadPath("2", 2,
+         * 1),
+         * Rotation2d.fromDegrees(60)));
+         * chooser.addOption("Bounce Path, Holonomic Trajectory",
+         * new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Bounce 1",
+         * 2, 1)));
+         * chooser.addOption("Bounce Path, Constant Heading", new
+         * DriveConstantHeadingTrajectory(swerveSystem,
+         * PathPlanner.loadPath("Bounce 1", 2, 1), Rotation2d.fromDegrees(45)));
+         */
         /*
          * chooser.addOption("Crazy, Targetted",
          * new DriveSupplyHeadingTrajectory(swerveSystem, PathPlanner.loadPath("Crazy",
@@ -117,12 +120,16 @@ public class AutoChooser {
          * () -> (limelightSystem.hasTarget() ? limelightSystem.getHorizontalOffset()
          * : swerveSystem.getGyroscopeRotation().getDegrees())));
          */
-/*        chooser.addOption("Side 2 Side, Holonomic",
-                new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Side", 2, 1)));
-        chooser.addOption("Side 2 Side, Targetted",
-                new DriveSupplyHeadingTrajectory(swerveSystem, PathPlanner.loadPath("Side", 2, 1),
-                        () -> (limelightSystem.hasTarget() ? limelightSystem.getHorizontalOffset()
-                                : swerveSystem.getGyroscopeRotation().getDegrees())));*/
+        /*
+         * chooser.addOption("Side 2 Side, Holonomic",
+         * new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Side", 2,
+         * 1)));
+         * chooser.addOption("Side 2 Side, Targetted",
+         * new DriveSupplyHeadingTrajectory(swerveSystem, PathPlanner.loadPath("Side",
+         * 2, 1),
+         * () -> (limelightSystem.hasTarget() ? limelightSystem.getHorizontalOffset()
+         * : swerveSystem.getGyroscopeRotation().getDegrees())));
+         */
 
         chooser.addOption("Just shoot",
                 new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,

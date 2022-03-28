@@ -275,7 +275,7 @@ public final class Constants {
     }
 
     public static final class Sensors {
-        public static final double ColorRange = 100;
+        public static final double ColorRange = 50;
 
     }
 

@@ -53,56 +53,66 @@ public class RobotContainer {
     private static RobotContainer instance;
     private SwerveSubsystem driveSystem;
     private IntakeSubsystem intakeSystem;
-    @Config(name = "Flywheel P", defaultValueNumeric = Constants.Shooter.Flywheel.kP, methodName = "setPValue", methodTypes = {
-            double.class }, rowIndex = 0, columnIndex = 8)
-    @Config(name = "Flywheel I", defaultValueNumeric = Constants.Shooter.Flywheel.kI, methodName = "setIValue", methodTypes = {
-            double.class }, rowIndex = 1, columnIndex = 8)
-    @Config(name = "Flywheel D", defaultValueNumeric = Constants.Shooter.Flywheel.kD, methodName = "setDValue", methodTypes = {
-            double.class }, rowIndex = 1, columnIndex = 9)
-    @Config(name = "Flywheel F", defaultValueNumeric = Constants.Shooter.Flywheel.kF, methodName = "setFValue", methodTypes = {
-            double.class }, rowIndex = 0, columnIndex = 9)
-    @Log(name = "Flywheel Velocity", methodName = "getRPM", rowIndex = 2, columnIndex = 8)
-    @Log.Graph(name = "Flywheel Velocity G", methodName = "getRPM", width = 4, height = 2, rowIndex = 0, columnIndex = 4)
-    // @Log.Graph(name = "Flywheel Filter Value", methodName = "getFilterValue",
-    // width = 4, height = 2, rowIndex = 3, columnIndex = 4)
+    // @Config(name = "Flywheel P", tabName = "Tuning", defaultValueNumeric =
+    // Constants.Shooter.Flywheel.kP, methodName = "setPValue", methodTypes = {
+    // double.class }, rowIndex = 0, columnIndex = 8)
+    // @Config(name = "Flywheel I", tabName = "Tuning", defaultValueNumeric =
+    // Constants.Shooter.Flywheel.kI, methodName = "setIValue", methodTypes = {
+    // double.class }, rowIndex = 1, columnIndex = 8)
+    // @Config(name = "Flywheel D", tabName = "Tuning", defaultValueNumeric =
+    // Constants.Shooter.Flywheel.kD, methodName = "setDValue", methodTypes = {
+    // double.class }, rowIndex = 1, columnIndex = 9)
+    // @Config(name = "Flywheel F", tabName = "Tuning", defaultValueNumeric =
+    // Constants.Shooter.Flywheel.kF, methodName = "setFValue", methodTypes = {
+    // double.class }, rowIndex = 0, columnIndex = 9)
+    // @Log(name = "Flywheel Velocity", tabName = "Tuning", methodName = "getRPM",
+    // rowIndex = 2, columnIndex = 8)
+    // @Log.Graph(name = "Flywheel Velocity G", tabName = "Tuning", methodName =
+    // "getRPM", width = 4, height = 3, rowIndex = 0, columnIndex = 4)
+    // @Log.Graph(name = "Flywheel Filter Value", tabName = "Tuning", methodName =
+    // "getFilterValue", width = 4, height = 3, rowIndex = 3, columnIndex = 4)
     private ShooterSubsystem shooterSystem;
-    // @Config(name = "Indexer P", defaultValueNumeric =
+    // @Config(name = "Indexer P", tabName = "Tuning", defaultValueNumeric =
     // Constants.Shooter.Indexer.kP, methodName = "setPValue", methodTypes = {
     // double.class }, rowIndex = 3, columnIndex = 8)
-    // @Config(name = "Indexer I", defaultValueNumeric =
+    // @Config(name = "Indexer I", tabName = "Tuning", defaultValueNumeric =
     // Constants.Shooter.Indexer.kI, methodName = "setIValue", methodTypes = {
     // double.class }, rowIndex = 4, columnIndex = 8)
-    // @Config(name = "Indexer D", defaultValueNumeric =
+    // @Config(name = "Indexer D", tabName = "Tuning", defaultValueNumeric =
     // Constants.Shooter.Indexer.kD, methodName = "setDValue", methodTypes = {
     // double.class }, rowIndex = 4, columnIndex = 9)
-    // @Config(name = "Indexer F", defaultValueNumeric =
+    // @Config(name = "Indexer F", tabName = "Tuning", defaultValueNumeric =
     // Constants.Shooter.Indexer.kF, methodName = "setFValue", methodTypes = {
     // double.class }, rowIndex = 3, columnIndex = 9)
-    // @Log(name = "Indexer Velocity", methodName = "getRPM", rowIndex = 2,
-    // columnIndex = 9)
+    // @Log(name = "Indexer Velocity", tabName = "Tuning", methodName = "getRPM",
+    // rowIndex = 2, columnIndex = 9)
     private IndexerSubsystem indexerSystem;
     private HopperSubsystem hopperSystem;
     private ClimberSubsystem climberSystem;
     private Gamepad controller;
-    @Config(name = "Set LED Mode", methodName = "setLEDModeByInt", methodTypes = {
-            int.class }, rowIndex = 3, columnIndex = 5)
-    @Log.BooleanBox(name = "Target Found", methodName = "hasTarget", rowIndex = 3, columnIndex = 6, width = 1, height = 1)
-    @Log.Dial(name = "Hor. Goal Distance", methodName = "getHorizontalGoalDistance", min = -90, max = 90, rowIndex = 3, columnIndex = 7, height = 1, width = 1)
-    @Log.Dial(name = "Horizontal Offset", methodName = "getHorizontalOffset", min = -90, max = 90, rowIndex = 3, columnIndex = 8, height = 1, width = 1)
-    @Log.Dial(name = "Vertical Offset", methodName = "getVerticalOffset", min = -90, max = 90, rowIndex = 3, columnIndex = 9, height = 1, width = 1)
+    @Config(name = "Set LED Mode", tabName = "Tuning", methodName = "setLEDModeByInt", methodTypes = {
+            int.class }, rowIndex = 3, columnIndex = 3)
+    @Log.BooleanBox(name = "Target Found", methodName = "hasTarget", rowIndex = 0, columnIndex = 3, width = 1, height = 1)
+    @Log.Dial(name = "Hor. Goal Distance", methodName = "getHorizontalGoalDistance", min = -90, max = 90, rowIndex = 0, columnIndex = 6, height = 1, width = 1)
+    @Log.Dial(name = "Horizontal Offset", methodName = "getHorizontalOffset", min = -90, max = 90, rowIndex = 0, columnIndex = 4, height = 1, width = 1)
+    @Log.Dial(name = "Vertical Offset", methodName = "getVerticalOffset", min = -90, max = 90, rowIndex = 0, columnIndex = 5, height = 1, width = 1)
     private LimelightSubsystem limelightSystem;
-    @Log.BooleanBox(name = "Red Detected", methodName = "isRed", rowIndex = 3, columnIndex = 0)
-    @Log.BooleanBox(name = "Blue Detected", methodName = "isBlue", rowIndex = 3, columnIndex = 1)
-    @Log.BooleanBox(name = "Opponent Ball", methodName = "isOpponentBall", rowIndex = 3, columnIndex = 2)
-    @Log.BooleanBox(name = "Alliance Ball", methodName = "isAllianceBall", rowIndex = 3, columnIndex = 3)
+    @Log.BooleanBox(name = "Red Detected", methodName = "isRed", rowIndex = 0, columnIndex = 0)
+    @Log.BooleanBox(name = "Blue Detected", methodName = "isBlue", rowIndex = 0, columnIndex = 1)
+    @Log.BooleanBox(name = "Alliance Ball", methodName = "isAllianceBall", rowIndex = 1, columnIndex = 0)
+    @Log.BooleanBox(name = "Opponent Ball", methodName = "isOpponentBall", rowIndex = 1, columnIndex = 1)
     private ColorSensorSubsystem colorSensorSystem;
-    @Log(name = "Hood Position", methodName = "getMeasurement", rowIndex = 5, columnIndex = 2)
-    @Config.NumberSlider(name = "Move Hood", methodName = "setAngle", methodTypes = {
-            double.class }, defaultValue = Constants.Shooter.Hood.hoodReverseLimit, min = Constants.Shooter.Hood.hoodForwardLimit, max = Constants.Shooter.Hood.hoodReverseLimit, rowIndex = 5, columnIndex = 0)
+    // @Log(name = "Hood Position", tabName = "Tuning", methodName =
+    // "getMeasurement", rowIndex = 3, columnIndex = 2)
+    // @Config.NumberSlider(name = "Move Hood", tabName = "Tuning", methodName =
+    // "setAngle", methodTypes = {
+    // double.class }, defaultValue = Constants.Shooter.Hood.hoodReverseLimit, min =
+    // Constants.Shooter.Hood.hoodForwardLimit, max =
+    // Constants.Shooter.Hood.hoodReverseLimit, rowIndex = 3, columnIndex = 0)
     private HoodSubsystem hoodSystem;
-    @Log(name = "1st Ball", methodName = "getBall1String", rowIndex = 4, columnIndex = 0)
-    @Log(name = "2nd Ball", methodName = "getBall2String", rowIndex = 4, columnIndex = 1)
-    @Log.BooleanBox(name = "Ball in Chute", methodName = "getBallInChute", rowIndex = 4, columnIndex = 2)
+    @Log(name = "1st Ball", methodName = "getBall1String", rowIndex = 2, columnIndex = 0)
+    @Log(name = "2nd Ball", methodName = "getBall2String", rowIndex = 2, columnIndex = 1)
+    @Log.BooleanBox(name = "Ball in Chute", methodName = "getBallInChute", rowIndex = 1, columnIndex = 2)
     private ShooterStateMachine shooterStateMachine;
     private double translationExpo;
     private double rotationExpo;
@@ -121,8 +131,8 @@ public class RobotContainer {
         // The first argument is the root container
         // The second argument is whether logging and config should be given separate
         // tabs
-        Logger.configureLoggingAndConfig(this, false);
-        // Logger.configureLogging(this);
+        // Logger.configureLoggingAndConfig(this, false);
+        Logger.configureLogging(this);
 
         // Configure the button bindings
         configureButtonBindings();
@@ -168,7 +178,8 @@ public class RobotContainer {
                 new IndexCargo(this.indexerSystem, () -> this.colorSensorSystem.isAllianceBall())));
 
         controller.LB.whileHeld(
-                new FireCargo(this.shooterSystem, this.indexerSystem, this.hopperSystem, this.colorSensorSystem,
+                new FireCargo(this.shooterSystem, this.indexerSystem, this.hopperSystem,
+                        this.colorSensorSystem,
                         limelightSystem));
 
         controller.X.whileHeld(new ParallelCommandGroup(new RunHopper(this.hopperSystem, () -> false),
@@ -184,20 +195,24 @@ public class RobotContainer {
 
         controller.A
                 .whenHeld(new ParallelCommandGroup(
-                        new StartEndCommand(() -> limelightSystem.setLEDMode(Constants.LimeLight.LEDMode.PIPELINE),
+                        new StartEndCommand(
+                                () -> limelightSystem.setLEDMode(
+                                        Constants.LimeLight.LEDMode.PIPELINE),
                                 () -> {
                                 }),
                         new AdjustHood(hoodSystem),
-                        new ConditionalCommand(new AimDrivebase(driveSystem, limelightSystem), new InstantCommand(),
+                        new ConditionalCommand(new AimDrivebase(driveSystem, limelightSystem),
+                                new InstantCommand(),
                                 limelightSystem::hasTarget)));
 
         climberSystem.setDefaultCommand(new FunctionalCommand(
                 () -> {
                 }, // OnInit: do nothing
-                () -> climberSystem.runMotors(controller.getRightTriggerAxis() - controller.getLeftTriggerAxis()), // OnExedcute:
-                                                                                                                   // call
-                                                                                                                   // run
-                                                                                                                   // motors
+                () -> climberSystem.runMotors(
+                        controller.getRightTriggerAxis() - controller.getLeftTriggerAxis()), // OnExedcute:
+                                                                                             // call
+                                                                                             // run
+                                                                                             // motors
                 interrupted -> climberSystem.stop(), // OnEnd: stop motors
                 () -> false, // IsFinished: never finish
                 climberSystem)); // Required subsystem
@@ -231,68 +246,67 @@ public class RobotContainer {
         return driveSystem;
     }
 
-    // @Config.NumberSlider(name = "F Intake Speed", defaultValue =
-    // Constants.Intake.kForwardIntakeSpeed, min = 0, max = 1, blockIncrement =
-    // 0.05, tabName = "RobotContainer", rowIndex = 0, columnIndex = 0, height = 1,
-    // width = 1)
+    // @Config.NumberSlider(name = "F Intake Speed", tabName = "Tuning",
+    // defaultValue = Constants.Intake.kForwardIntakeSpeed, min = 0, max = 1,
+    // blockIncrement = 0.05, rowIndex = 0, columnIndex = 0, height = 1, width = 1)
     // public void setForwardPercentOutput(double output) {
     // this.intakeSystem.setForwardPercentOutput(output);
     // }
 
-    // @Config.NumberSlider(name = "R Intake Speed", defaultValue =
-    // Constants.Intake.kReverseIntakeSpeed, min = 0, max = 1, blockIncrement =
-    // 0.05, tabName = "RobotContainer", rowIndex = 1, columnIndex = 0, height = 1,
-    // width = 1)
+    // @Config.NumberSlider(name = "R Intake Speed", tabName = "Tuning",
+    // defaultValue = Constants.Intake.kReverseIntakeSpeed, min = 0, max = 1,
+    // blockIncrement = 0.05, rowIndex = 1, columnIndex = 0, height = 1, width = 1)
     // public void setReversePercentOutput(double output) {
     // this.intakeSystem.setReversePercentOutput(output);
     // }
 
-    // @Config.NumberSlider(name = "Hopper Speed", defaultValue =
-    // Constants.Shooter.Hopper.kHopperSpeed, min = 0, max = 1, blockIncrement =
-    // 0.05, tabName = "RobotContainer", rowIndex = 0, columnIndex = 1, height = 1,
-    // width = 1)
+    // @Config.NumberSlider(name = "Hopper Speed", tabName = "Tuning", defaultValue
+    // = Constants.Shooter.Hopper.kHopperSpeed, min = 0, max = 1, blockIncrement =
+    // 0.05, rowIndex = 0, columnIndex = 1, height = 1, width = 1)
     // public void setPercentOutput(double output) {
     // this.hopperSystem.setPercentOutput(output);
     // }
 
-    // @Config.NumberSlider(name = "Ind. Shoot RPM", defaultValue =
-    // Constants.Shooter.Indexer.shootingRPM, min = 1000, max = 4000, blockIncrement
-    // = 50, rowIndex = 0, columnIndex = 2, height = 1, width = 1)
+    // @Config.NumberSlider(name = "Ind. Shoot RPM", tabName = "Tuning",
+    // defaultValue = Constants.Shooter.Indexer.shootingRPM, min = 1000, max = 4000,
+    // blockIncrement = 50, rowIndex = 0, columnIndex = 2, height = 1, width = 1)
     // public void setIndexerShootingRPM(double rPM) {
     // this.indexerSystem.setShootingRPM(rPM);
     // }
 
-    // @Config.NumberSlider(name = "Ind. Index RPM", defaultValue =
-    // Constants.Shooter.Indexer.indexingRPM, min = 1000, max = 4000, blockIncrement
-    // = 50, rowIndex = 1, columnIndex = 2, height = 1, width = 1)
+    // @Config.NumberSlider(name = "Ind. Index RPM", tabName = "Tuning",
+    // defaultValue = Constants.Shooter.Indexer.indexingRPM, min = 1000, max = 4000,
+    // blockIncrement = 50, rowIndex = 1, columnIndex = 2, height = 1, width = 1)
     // public void setIndexerIndexRPM(double rPM) {
     // this.indexerSystem.setIndexingRPM(rPM);
     // }
 
-    // // @Config.NumberSlider(name = "Sho. Shoot RPM", defaultValue =
-    // Constants.Shooter.Flywheel.targetShootingRPM, min = 1000, max = 4000,
-    // blockIncrement = 50, rowIndex = 0, columnIndex = 3, height = 1, width = 1)
+    // @Config.NumberSlider(name = "Sho. Shoot RPM", tabName = "Tuning",
+    // defaultValue = Constants.Shooter.Flywheel.targetShootingRPM, min = 1000, max
+    // = 4000, blockIncrement = 50, rowIndex = 0, columnIndex = 3, height = 1, width
+    // = 1)
     // public void setShooterShootingRPM(double rPM) {
     // this.shooterSystem.setShootingRPM(rPM);
     // }
 
-    // // @Config.NumberSlider(name = "Sho. Eject RPM", defaultValue =
-    // Constants.Shooter.Flywheel.targetEjectRPM, min = 1000, max = 4000,
-    // blockIncrement = 50, rowIndex = 1, columnIndex = 3, height = 1, width = 1)
+    // @Config.NumberSlider(name = "Sho. Eject RPM", tabName = "Tuning",
+    // defaultValue = Constants.Shooter.Flywheel.targetEjectRPM, min = 1000, max =
+    // 4000, blockIncrement = 50, rowIndex = 1, columnIndex = 3, height = 1, width =
+    // 1)
     // public void setEjectRPM(double rPM) {
     // this.shooterSystem.setEjectRPM(rPM);
     // }
 
-    // @Config.NumberSlider(name = "Trans. Expo", defaultValue =
+    // @Config.NumberSlider(name = "Trans. Expo", tabName = "Tuning", defaultValue =
     // Constants.OI.kTranslationExpo, min = 0, max = 100, blockIncrement = 1,
     // rowIndex = 2, columnIndex = 0, height = 1, width = 1)
     // public void setTranslationExpo(double expo) {
     // this.translationExpo = expo;
     // }
 
-    // @Config.NumberSlider(name = "Rotation Expo", defaultValue =
-    // Constants.OI.kRotationnExpo, min = 0, max = 100, blockIncrement = 1, rowIndex
-    // = 2, columnIndex = 1, height = 1, width = 1)
+    // @Config.NumberSlider(name = "Rotation Expo", tabName = "Tuning", defaultValue
+    // = Constants.OI.kRotationnExpo, min = 0, max = 100, blockIncrement = 1,
+    // rowIndex = 2, columnIndex = 1, height = 1, width = 1)
     // public void setRotationExpo(double expo) {
     // this.rotationExpo = expo;
     // }

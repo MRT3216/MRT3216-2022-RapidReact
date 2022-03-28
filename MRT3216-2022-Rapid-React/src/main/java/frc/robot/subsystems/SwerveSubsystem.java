@@ -35,18 +35,12 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SerialPort;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.settings.Constants.Auto;
 import frc.robot.settings.Constants.Drivetrain;
 import frc.robot.settings.Gains;
-import io.github.oblarg.oblog.Loggable;
-import io.github.oblarg.oblog.annotations.Config;
-import io.github.oblarg.oblog.annotations.Log;
 
-public class SwerveSubsystem extends SubsystemBase implements Loggable {
+public class SwerveSubsystem extends SubsystemBase  {
     private static SwerveSubsystem instance;
     private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
             // Front left
@@ -77,13 +71,13 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
     private SwerveSubsystem() {
         m_navx = new AHRS(SerialPort.Port.kUSB1);
 
-        ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
+        // ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
         m_frontLeftModule = Mk3SwerveModuleHelper.createFalcon500(
                 // This parameter is optional, but will allow you to see the current state of
                 // the module on the dashboard.
-                tab.getLayout("Front Left Module", BuiltInLayouts.kList).withSize(2,
-                        4).withPosition(0, 0),
+                // tab.getLayout("Front Left Module", BuiltInLayouts.kList).withSize(2,
+                // 4).withPosition(0, 0),
                 // This can either be STANDARD or FAST depending on your gear configuration
                 Mk3SwerveModuleHelper.GearRatio.STANDARD,
                 // This is the ID of the drive motor
@@ -98,19 +92,20 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
 
         // We will do the same for the other modules
         m_frontRightModule = Mk3SwerveModuleHelper.createFalcon500(
-                tab.getLayout("Front Right Module", BuiltInLayouts.kList).withSize(2, 4).withPosition(2, 0),
+                // tab.getLayout("Front Right Module", BuiltInLayouts.kList).withSize(2,
+                // 4).withPosition(2, 0),
                 Mk3SwerveModuleHelper.GearRatio.STANDARD, RIGHT_FRONT_DRIVE, RIGHT_FRONT_ANGLE,
                 RIGHT_FRONT_CANCODER, RIGHT_FRONT_STEER_OFFSET);
 
         m_backLeftModule = Mk3SwerveModuleHelper.createFalcon500(
-                tab.getLayout("Back Left Module", BuiltInLayouts.kList).withSize(2,
-                        4).withPosition(4, 0),
+                // tab.getLayout("Back Left Module", BuiltInLayouts.kList).withSize(2,
+                // 4).withPosition(4, 0),
                 Mk3SwerveModuleHelper.GearRatio.STANDARD, LEFT_REAR_DRIVE, LEFT_REAR_ANGLE,
                 LEFT_REAR_CANCODER, LEFT_REAR_STEER_OFFSET);
 
         m_backRightModule = Mk3SwerveModuleHelper.createFalcon500(
-                tab.getLayout("Back Right Module", BuiltInLayouts.kList).withSize(2,
-                        4).withPosition(6, 0),
+                // tab.getLayout("Back Right Module", BuiltInLayouts.kList).withSize(2,
+                // 4).withPosition(6, 0),
                 Mk3SwerveModuleHelper.GearRatio.STANDARD, RIGHT_REAR_DRIVE, RIGHT_REAR_ANGLE,
                 RIGHT_REAR_CANCODER, RIGHT_REAR_STEER_OFFSET);
 
@@ -199,88 +194,12 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
         return new SwerveModuleState(module.getDriveVelocity(), new Rotation2d(module.getSteerAngle()));
     }
 
-    // region Logging
-
-    @Log.Gyro(name = "Robot Angle", rowIndex = 0, columnIndex = 5)
-    private AHRS getGyro() {
-        return m_navx;
+    public Gains getThetaGains() {
+        return this.thetaGains;
     }
 
-    @Log.NumberBar(name = "FL Velocity", min = -5, max = 5, rowIndex = 0, columnIndex = 4, height = 1, width = 1)
-    public double getFrontLeftSpeed() {
-        return m_frontLeftModule.getDriveVelocity();
-    }
-
-    @Log.Dial(name = "FL Angle", min = -90, max = 90, rowIndex = 0, columnIndex = 3, height = 1, width = 1)
-    public double getFrontLeftAngle() {
-        return Math.IEEEremainder(Math.toDegrees(m_frontLeftModule.getSteerAngle()),
-                180);
-    }
-
-    @Log.NumberBar(name = "FR Velocity", min = -5, max = 5, rowIndex = 0, columnIndex = 7, height = 1, width = 1)
-    public double getFrontRightSpeed() {
-        return m_frontRightModule.getDriveVelocity();
-    }
-
-    @Log.Dial(name = "FR Angle", min = -90, max = 90, rowIndex = 0, columnIndex = 8, height = 1, width = 1)
-    public double getFrontRightAngle() {
-        return Math.IEEEremainder(Math.toDegrees(m_frontRightModule.getSteerAngle()),
-                180);
-    }
-
-    @Log.NumberBar(name = "BL Velocity", min = -5, max = 5, rowIndex = 1, columnIndex = 4, height = 1, width = 1)
-    public double getBackLeftSpeed() {
-        return m_backLeftModule.getDriveVelocity();
-    }
-
-    @Log.Dial(name = "BL Angle", min = -90, max = 90, rowIndex = 1, columnIndex = 3, height = 1, width = 1)
-    public double getBackLeftAngle() {
-        return Math.IEEEremainder(Math.toDegrees(m_backLeftModule.getSteerAngle()),
-                180);
-    }
-
-    @Log.NumberBar(name = "BR Velocity", min = -5, max = 5, rowIndex = 1, columnIndex = 7, height = 1, width = 1)
-    public double getBackRightSpeed() {
-        return m_backRightModule.getDriveVelocity();
-    }
-
-    @Log.Dial(name = "BR Angle", min = -90, max = 90, rowIndex = 1, columnIndex = 8, height = 1, width = 1)
-    public double getBackRightAngle() {
-        return Math.IEEEremainder(Math.toDegrees(m_backRightModule.getSteerAngle()),
-                180);
-    }
-
-    @Log(name = "y-Position", rowIndex = 2, columnIndex = 5, height = 1, width = 1)
-    public double getXPos() {
-        return m_odometry.getPoseMeters().getX();
-    }
-
-    @Log(name = "x-Position", rowIndex = 2, columnIndex = 6, height = 1, width = 1)
-    public double getYPos() {
-        return m_odometry.getPoseMeters().getY();
-    }
-
-    @Log(name = "x-Velocity", rowIndex = 3, columnIndex = 5, height = 1, width = 1)
-    public double getRobotXVelocity() {
-        return m_chassisSpeeds.vxMetersPerSecond;
-    }
-
-    @Log(name = "y-Velocity", rowIndex = 3, columnIndex = 6, height = 1, width = 1)
-    public double getRobotYVelocity() {
-        return m_chassisSpeeds.vyMetersPerSecond;
-    }
-
-    @Log(name = "Theta-Velocity", rowIndex = 3, columnIndex = 4, height = 1, width = 1)
-    public double getRobotThetaVelocity() {
-        return m_chassisSpeeds.omegaRadiansPerSecond;
-    }
-
-    @Log.BooleanBox(name = "Gyro Int?", rowIndex = 3, columnIndex = 2)
-    public boolean getGyroInterference() {
-        return this.m_navx.isMagneticDisturbance();
-    }
-
-    @Config.ToggleButton(name = "ResetGyroAndOdometry", defaultValue = false, rowIndex = 2, columnIndex = 0, height = 1, width = 2)
+    // @Config.ToggleButton(name = "ResetGyroAndOdometry", defaultValue = false,
+    // rowIndex = 3, columnIndex = 0, height = 1, width = 2)
     public void resetGyroAndOdometry(boolean _input) {
         if (_input) {
             this.zeroGyroscope();
@@ -288,37 +207,141 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
         }
     }
 
-    @Config.ToggleButton(name = "ResetPosition", defaultValue = false, rowIndex = 3, columnIndex = 0, height = 1, width = 2)
-    public void resetPosition(boolean _input) {
-        if (_input) {
-            this.resetXYPosition();
-            _input = false;
-        }
-    }
+    // region Logging
 
-    public Gains getThetaGains() {
-        return this.thetaGains;
-    }
+    // @Log.Gyro(name = "Robot Angle", rowIndex = 0, columnIndex = 3)
+    // private AHRS getGyro() {
+    // return m_navx;
+    // }
 
-    @Config.NumberSlider(name = "Theta P", defaultValue = Auto.kThetaP, min = 0, max = 20, rowIndex = 1, columnIndex = 0, height = 1, width = 1)
-    public void setThetaP(double thetaP) {
-        this.thetaGains.kP = thetaP;
-    }
+    // @Log.NumberBar(name = "FL Velocity", min = -5, max = 5, rowIndex = 0,
+    // columnIndex = 2, height = 1, width = 1)
+    // public double getFrontLeftSpeed() {
+    // return m_frontLeftModule.getDriveVelocity();
+    // }
 
-    @Config.NumberSlider(name = "Theta I", defaultValue = Auto.kThetaI, min = 0, max = 1, rowIndex = 1, columnIndex = 1, height = 1, width = 1)
-    public void setThetaI(double thetaI) {
-        this.thetaGains.kI = thetaI;
-    }
+    // @Log.Dial(name = "FL Angle", min = -90, max = 90, rowIndex = 0, columnIndex =
+    // 1, height = 1, width = 1)
+    // public double getFrontLeftAngle() {
+    // return Math.IEEEremainder(Math.toDegrees(m_frontLeftModule.getSteerAngle()),
+    // 180);
+    // }
 
-    @Config.NumberSlider(name = "Theta D", defaultValue = Auto.kThetaD, min = 0, max = 1, rowIndex = 1, columnIndex = 2, height = 1, width = 1)
-    public void setThetaD(double thetaD) {
-        this.thetaGains.kD = thetaD;
-    }
+    // @Log.NumberBar(name = "FR Velocity", min = -5, max = 5, rowIndex = 0,
+    // columnIndex = 5, height = 1, width = 1)
+    // public double getFrontRightSpeed() {
+    // return m_frontRightModule.getDriveVelocity();
+    // }
 
-    @Log.Graph(name = "Gyro Angle", width = 4, height = 2, rowIndex = 4, columnIndex = 4)
-    public double getGyroDegrees() {
-        return this.getGyroscopeRotation().getDegrees();
-    }
+    // @Log.Dial(name = "FR Angle", min = -90, max = 90, rowIndex = 0, columnIndex =
+    // 6, height = 1, width = 1)
+    // public double getFrontRightAngle() {
+    // return Math.IEEEremainder(Math.toDegrees(m_frontRightModule.getSteerAngle()),
+    // 180);
+    // }
+
+    // @Log.Dial(name = "BL Angle", min = -90, max = 90, rowIndex = 1, columnIndex =
+    // 1, height = 1, width = 1)
+    // public double getBackLeftAngle() {
+    // return Math.IEEEremainder(Math.toDegrees(m_backLeftModule.getSteerAngle()),
+    // 180);
+    // }
+
+    // @Log.NumberBar(name = "BL Velocity", min = -5, max = 5, rowIndex = 1,
+    // columnIndex = 2, height = 1, width = 1)
+    // public double getBackLeftSpeed() {
+    // return m_backLeftModule.getDriveVelocity();
+    // }
+
+    // @Log.NumberBar(name = "BR Velocity", min = -5, max = 5, rowIndex = 1,
+    // columnIndex = 5, height = 1, width = 1)
+    // public double getBackRightSpeed() {
+    // return m_backRightModule.getDriveVelocity();
+    // }
+
+    // @Log.Dial(name = "BR Angle", min = -90, max = 90, rowIndex = 1, columnIndex =
+    // 6, height = 1, width = 1)
+    // public double getBackRightAngle() {
+    // return Math.IEEEremainder(Math.toDegrees(m_backRightModule.getSteerAngle()),
+    // 180);
+    // }
+
+    // @Log(name = "x-Position", rowIndex = 2, columnIndex = 6, height = 1, width =
+    // 1)
+    // public double getYPos() {
+    // return m_odometry.getPoseMeters().getY();
+    // }
+
+    // @Log(name = "y-Position", rowIndex = 3, columnIndex = 6, height = 1, width =
+    // 1)
+    // public double getXPos() {
+    // return m_odometry.getPoseMeters().getX();
+    // }
+
+    // @Log(name = "theta-Position", rowIndex = 4, columnIndex = 6, height = 1,
+    // width = 1)
+    // public double getThetaPos() {
+    // return m_odometry.getPoseMeters().getRotation().getDegrees();
+    // }
+
+    // @Log(name = "x-Velocity", rowIndex = 2, columnIndex = 7, height = 1, width =
+    // 1)
+    // public double getRobotXVelocity() {
+    // return m_chassisSpeeds.vxMetersPerSecond;
+    // }
+
+    // @Log(name = "y-Velocity", rowIndex = 3, columnIndex = 7, height = 1, width =
+    // 1)
+    // public double getRobotYVelocity() {
+    // return m_chassisSpeeds.vyMetersPerSecond;
+    // }
+
+    // @Log(name = "theta-Velocity", rowIndex = 4, columnIndex = 7, height = 1,
+    // width = 1)
+    // public double getRobotThetaVelocity() {
+    // return m_chassisSpeeds.omegaRadiansPerSecond;
+    // }
+
+    // @Log.BooleanBox(name = "Gyro Int?", rowIndex = 0, columnIndex = 0)
+    // public boolean getGyroInterference() {
+    // return this.m_navx.isMagneticDisturbance();
+    // }
+
+    // @Config.ToggleButton(name = "ResetPosition", defaultValue = false, rowIndex =
+    // 4, columnIndex = 0, height = 1, width = 2)
+    // public void resetPosition(boolean _input) {
+    // if (_input) {
+    // this.resetXYPosition();
+    // _input = false;
+    // }
+    // }
+
+    // @Config.NumberSlider(name = "Theta P", tabName = "Tuning", defaultValue =
+    // Auto.kThetaP, min = 0, max = 20, rowIndex = 5, columnIndex = 0, height = 1,
+    // width = 1)
+    // public void setThetaP(double thetaP) {
+    // this.thetaGains.kP = thetaP;
+    // }
+
+    // @Config.NumberSlider(name = "Theta I", tabName = "Tuning", defaultValue =
+    // Auto.kThetaI, min = 0, max = 1, rowIndex = 5, columnIndex = 1, height = 1,
+    // width = 1)
+    // public void setThetaI(double thetaI) {
+    // this.thetaGains.kI = thetaI;
+    // }
+
+    // @Config.NumberSlider(name = "Theta D", tabName = "Tuning", defaultValue =
+    // Auto.kThetaD, min = 0, max = 1, rowIndex = 5, columnIndex = 2, height = 1,
+    // width = 1)
+    // public void setThetaD(double thetaD) {
+    // this.thetaGains.kD = thetaD;
+    // }
+
+    // @Log.Graph(name = "Gyro Angle", width = 4, height = 2, rowIndex = 2,
+    // columnIndex = 2)
+    // public double getGyroDegrees() {
+    // return this.getGyroscopeRotation().getDegrees();
+    // }
 
     // endregion
 

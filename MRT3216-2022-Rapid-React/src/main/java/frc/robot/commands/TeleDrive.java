@@ -17,7 +17,6 @@ public class TeleDrive extends CommandBase {
     private DoubleSupplier translationXSupplier;
     private DoubleSupplier translationYSupplier;
     private DoubleSupplier rotationSupplier;
-    private boolean fieldRelative;
 
     /**
      * Creates a new DefaultDrive.
@@ -34,7 +33,6 @@ public class TeleDrive extends CommandBase {
         this.translationXSupplier = translationXSupplier;
         this.translationYSupplier = translationYSupplier;
         this.rotationSupplier = rotationSupplier;
-        this.fieldRelative = fieldRelative;
 
         addRequirements(swerveSubsystem);
     }
