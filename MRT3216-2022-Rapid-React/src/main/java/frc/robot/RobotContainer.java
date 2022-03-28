@@ -210,11 +210,26 @@ public class RobotContainer {
             }
         }, driveSystem);
 
+        controller.LeftJoy.whenPressed(
+                () -> this.climberSystem.tethered(!this.climberSystem.isTethered())
+        );
+
+        controller.RightJoy.whenPressed(
+                () -> this.climberSystem.invert()
+        );
+
         climberSystem.setDefaultCommand(new FunctionalCommand(
                 () -> {
                 }, // OnInit: do nothing
-                () -> climberSystem.runMotors(
-                        controller.getRightTriggerAxis() - controller.getLeftTriggerAxis()), // OnExecute:
+                () -> {
+                    if (!climberSystem.isTethered()) {
+                        climberSystem.runLeftMotor(controller.getLeftTriggerAxis());
+                        climberSystem.runRightMotor(controller.getRightTriggerAxis());
+                    }
+                    else {
+                        climberSystem.runMotors(controller.getRightTriggerAxis()-controller.getLeftTriggerAxis());
+                    }
+                }, // OnExecute:
                                                                                              // call
                                                                                              // run
                                                                                              // motors

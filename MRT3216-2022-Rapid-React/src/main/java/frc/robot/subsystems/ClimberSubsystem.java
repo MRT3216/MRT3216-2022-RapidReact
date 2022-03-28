@@ -16,6 +16,9 @@ public class ClimberSubsystem extends SubsystemBase {
     private DigitalInput rightSwitch;
     private DigitalInput leftSwitch;
 
+    private boolean inverted;
+    private boolean tethered;
+
     private ClimberSubsystem() {
         leftSwitch = new DigitalInput(CLIMBER.LEFT_SWITCH);
         rightSwitch = new DigitalInput(CLIMBER.RIGHT_SWITCH);
@@ -38,13 +41,38 @@ public class ClimberSubsystem extends SubsystemBase {
     }
 
     public void runMotors(double speed) {
-        if (!rightSwitch.get() || speed >= 0) {
-            rightMotor.set(speed);
-        }
+        rightMotor.set(speed);
+        leftMotor.set(speed);
+    }
 
-        if (!leftSwitch.get() || speed >= 0) {
+    public void runLeftMotor(double speed) {
+        if (!this.inverted)
             leftMotor.set(speed);
-        }
+        else
+            leftMotor.set(-speed);
+    }
+
+    public void runRightMotor(double speed) {
+        if (!this.inverted)
+            rightMotor.set(speed);
+        else
+            rightMotor.set(-speed);
+    }
+
+    public boolean isInverted() {
+        return this.inverted;
+    }
+
+    public void invert() {
+        this.inverted = !this.inverted;
+    }
+
+    public void tethered(boolean tethered) {
+        this.tethered = tethered;
+    }
+
+    public boolean isTethered() {
+        return this.tethered;
     }
 
     public void stop() {
