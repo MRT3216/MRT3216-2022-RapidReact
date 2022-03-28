@@ -22,7 +22,7 @@
               "_title": "FMS Info"
             }
           },
-          "0,0": {
+          "1,0": {
             "size": [
               1,
               1
@@ -35,9 +35,9 @@
               "Colors/Color when false": "#0000FFFF"
             }
           },
-          "1,0": {
+          "8,1": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -64,15 +64,28 @@
               "imageWidth": -1,
               "imageHeight": -1
             }
+          },
+          "1,1": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/RobotContainer/Target Found",
+              "_title": "Target Found",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#FF0000FF"
+            }
           }
         }
       }
     }
   ],
   "windowGeometry": {
-    "x": 54.0,
-    "y": -8.0,
-    "width": 2514.0,
-    "height": 1456.0
+    "x": 779.0,
+    "y": 163.0,
+    "width": 1632.0,
+    "height": 1011.0
   }
 }
