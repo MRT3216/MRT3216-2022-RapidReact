@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.shooter.HoodSubsystem;
 
 public class AdjustHood extends CommandBase {
-    private HoodSubsystem hoodSystem;
+    private final HoodSubsystem hoodSystem;
 
     /** Creates a new AdjustHood. */
     public AdjustHood(HoodSubsystem hoodSystem) {

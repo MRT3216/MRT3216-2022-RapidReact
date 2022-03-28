@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.settings.Constants.Climber;
@@ -10,11 +9,11 @@ import frc.robot.settings.RobotMap.ROBOT.CLIMBER;
 
 public class ClimberSubsystem extends SubsystemBase {
     private static ClimberSubsystem instance;
-    private CANSparkMax leftMotor;
-    private CANSparkMax rightMotor;
+    private final CANSparkMax leftMotor;
+    private final CANSparkMax rightMotor;
 
-    private DigitalInput rightSwitch;
-    private DigitalInput leftSwitch;
+    private final DigitalInput rightSwitch;
+    private final DigitalInput leftSwitch;
 
     private boolean inverted;
     private boolean tethered;

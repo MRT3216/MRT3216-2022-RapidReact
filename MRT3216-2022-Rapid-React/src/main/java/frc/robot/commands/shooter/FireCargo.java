@@ -28,8 +28,8 @@ public class FireCargo extends ParallelCommandGroup {
         super(
                 new RunHopper(hopper, () -> true),
                 new RunIndexer(indexer, () -> true,
-                        () -> shooterSystem.isReadyToShoot(),
-                        () -> colorSensor.isOpponentBall()),
+                        shooterSystem::isReadyToShoot,
+                        colorSensor::isOpponentBall),
                 new AutoSpinShooter(shooterSystem, () -> true, () -> false, limelightSystem::getInitialRPM));
     }
 }

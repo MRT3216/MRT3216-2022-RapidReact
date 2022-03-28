@@ -19,12 +19,14 @@ import frc.robot.subsystems.SwerveSubsystem;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutoAimDrivebase extends CommandBase {
-    private SwerveSubsystem swerveSystem;
-    private LimelightSubsystem limelightSystem;
+    private final SwerveSubsystem swerveSystem;
+    private final LimelightSubsystem limelightSystem;
     private ProfiledPIDController controller;
     private boolean neverSawTarget = true;
 
-    /** Creates a new AimDrivebase. */
+    /**
+     * Creates a new AimDrivebase.
+     */
     public AutoAimDrivebase(SwerveSubsystem swerveSystem, LimelightSubsystem limelightSystem) {
         this.swerveSystem = swerveSystem;
         this.limelightSystem = limelightSystem;

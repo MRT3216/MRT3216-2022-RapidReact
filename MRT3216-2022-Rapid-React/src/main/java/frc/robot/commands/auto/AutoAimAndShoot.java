@@ -1,7 +1,10 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.*;
-import frc.robot.commands.shooter.*;
+import frc.robot.commands.shooter.AdjustHood;
+import frc.robot.commands.shooter.FireCargo;
+import frc.robot.commands.shooter.RunIndexer;
+import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.subsystems.ColorSensorSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -23,8 +26,8 @@ public class AutoAimAndShoot extends CommandBase {
                 ),
                 new FireCargo(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem, limelightSystem),
                 new RunIndexer(indexerSystem, () -> true,
-                        () -> shooterSystem.isReadyToShoot(),
-                        () -> colorSensorSystem.isOpponentBall()),
+                        shooterSystem::isReadyToShoot,
+                        colorSensorSystem::isOpponentBall),
                 new SpinShooter(shooterSystem, () -> true, () -> false, limelightSystem::getInitialRPM)
         );
     }

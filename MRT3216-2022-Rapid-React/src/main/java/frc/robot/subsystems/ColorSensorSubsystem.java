@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.ColorSensorV3;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.util.Color;
@@ -13,7 +12,7 @@ import frc.robot.settings.RobotMap.ROBOT.SENSORS;
 
 public class ColorSensorSubsystem extends SubsystemBase {
     private static ColorSensorSubsystem instance;
-    private ColorSensorV3 sensor;
+    private final ColorSensorV3 sensor;
 
     private ColorSensorSubsystem() {
         sensor = new ColorSensorV3(SENSORS.COLOR_SENSOR);

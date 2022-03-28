@@ -70,7 +70,7 @@ public class LimelightSubsystem extends SubsystemBase {
 	 * @return whether the limelight has any valid targets
 	 */
 	public boolean hasTarget() {
-		return limelightNT.getEntry("tv").getDouble(0) == 1 ? true : false;
+		return limelightNT.getEntry("tv").getDouble(0) == 1;
 	}
 
 	/**

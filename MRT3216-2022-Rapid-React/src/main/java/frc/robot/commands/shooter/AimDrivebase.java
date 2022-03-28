@@ -19,12 +19,14 @@ import frc.robot.subsystems.SwerveSubsystem;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AimDrivebase extends CommandBase {
-    private SwerveSubsystem swerveSystem;
-    private LimelightSubsystem limelightSystem;
+    private final SwerveSubsystem swerveSystem;
+    private final LimelightSubsystem limelightSystem;
     private ProfiledPIDController controller;
     private boolean neverSawTarget = true;
 
-    /** Creates a new AimDrivebase. */
+    /**
+     * Creates a new AimDrivebase.
+     */
     public AimDrivebase(SwerveSubsystem swerveSystem, LimelightSubsystem limelightSystem) {
         this.swerveSystem = swerveSystem;
         this.limelightSystem = limelightSystem;
@@ -56,8 +58,6 @@ public class AimDrivebase extends CommandBase {
             Rotation2d r2d = swerveSystem.getGyroscopeRotation().rotateBy(offset2d);
             this.controller.setGoal(r2d.getDegrees());
             // System.out.println("Initial Target: " + this.controller.getGoal().position + "   P: " + controller.getP());
-        } else {
-            // System.out.println("No Target found: " + this.controller.getGoal().position);
         }
     }
 
