@@ -78,7 +78,8 @@ public class RobotContainer {
     // @Config(name = "Indexer F", defaultValueNumeric =
     // Constants.Shooter.Indexer.kF, methodName = "setFValue", methodTypes = {
     // double.class }, rowIndex = 3, columnIndex = 9)
-    // @Log(name = "Indexer Velocity", methodName = "getRPM", rowIndex = 2, columnIndex = 9)
+    // @Log(name = "Indexer Velocity", methodName = "getRPM", rowIndex = 2,
+    // columnIndex = 9)
     private IndexerSubsystem indexerSystem;
     private HopperSubsystem hopperSystem;
     private ClimberSubsystem climberSystem;
@@ -185,7 +186,7 @@ public class RobotContainer {
                 .whenHeld(new ParallelCommandGroup(
                         new StartEndCommand(() -> limelightSystem.setLEDMode(Constants.LimeLight.LEDMode.PIPELINE),
                                 () -> {
-                                }/* limelightSystem.setLEDMode(Constants.LimeLight.LEDMode.OFF) */),
+                                }),
                         new AdjustHood(hoodSystem),
                         new ConditionalCommand(new AimDrivebase(driveSystem, limelightSystem), new InstantCommand(),
                                 limelightSystem::hasTarget)));

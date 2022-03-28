@@ -81,12 +81,8 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        // robotContainer.initSubsystems();
         m_autonomousCommand = robotContainer.getAutonomousCommand();
         if (robotContainer.getDriveSystem() != null) {
-            // TODO: Do we need this???
-            // robotContainer.getDriveSystem().resetDriveEncoders();
-
             // schedule the autonomous command
             if (m_autonomousCommand != null) {
                 m_autonomousCommand.schedule();
