@@ -45,10 +45,14 @@ public class ColorSensorSubsystem extends SubsystemBase {
 
     public boolean isAllianceBall() {
         Alliance currentAlliance = DriverStation.getAlliance();
-        if (currentAlliance == Alliance.Blue) {
-            return this.isBlue();
+        if (this.sensor.isConnected()) {
+            if (currentAlliance == Alliance.Blue) {
+                return this.isBlue();
+            } else {
+                return this.isRed();
+            }
         } else {
-            return this.isRed();
+            return true;
         }
     }
 

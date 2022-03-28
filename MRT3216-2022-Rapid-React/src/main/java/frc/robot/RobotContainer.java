@@ -23,7 +23,6 @@ import frc.robot.commands.shooter.RunIntake;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.settings.Constants;
 import frc.robot.settings.Constants.Drivetrain;
-import frc.robot.settings.Constants.LimeLight.CameraMode;
 import frc.robot.settings.Constants.LimeLight.CameraStream;
 import frc.robot.settings.RobotMap;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -165,11 +164,11 @@ public class RobotContainer {
 
         controller.RB.whileHeld(new ParallelCommandGroup(new RunIntake(this.intakeSystem, () -> true),
                 new RunHopper(this.hopperSystem, () -> true),
-                new IndexCargo(this.indexerSystem, () -> this.colorSensorSystem.isAllianceBall()),
-                new SpinShooter(this.shooterSystem, () -> true, () -> true)));
+                new IndexCargo(this.indexerSystem, () -> this.colorSensorSystem.isAllianceBall())));
 
         controller.LB.whileHeld(
-                new FireCargo(this.shooterSystem, this.indexerSystem, this.hopperSystem, this.colorSensorSystem, limelightSystem));
+                new FireCargo(this.shooterSystem, this.indexerSystem, this.hopperSystem, this.colorSensorSystem,
+                        limelightSystem));
 
         controller.X.whileHeld(new ParallelCommandGroup(new RunHopper(this.hopperSystem, () -> false),
                 new RunIndexer(this.indexerSystem, () -> false, () -> true, () -> false),
@@ -180,16 +179,16 @@ public class RobotContainer {
             public void run() {
                 RobotContainer.getInstance().getDriveSystem().resetGyroAndOdometry(true);
             }
-
         }, driveSystem);
 
         controller.A
                 .whenHeld(new ParallelCommandGroup(
                         new StartEndCommand(() -> limelightSystem.setLEDMode(Constants.LimeLight.LEDMode.PIPELINE),
-                                () -> {}/*limelightSystem.setLEDMode(Constants.LimeLight.LEDMode.OFF)*/),
+                                () -> {
+                                }/* limelightSystem.setLEDMode(Constants.LimeLight.LEDMode.OFF) */),
                         new AdjustHood(hoodSystem),
-                        new ConditionalCommand(new AimDrivebase(driveSystem, limelightSystem), new InstantCommand(), limelightSystem::hasTarget)
-                        ));
+                        new ConditionalCommand(new AimDrivebase(driveSystem, limelightSystem), new InstantCommand(),
+                                limelightSystem::hasTarget)));
 
         climberSystem.setDefaultCommand(new FunctionalCommand(
                 () -> {

@@ -3,9 +3,7 @@ package frc.robot.settings;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
-import frc.robot.settings.Constants.Intake;
 import frc.robot.settings.Constants.Shooter.Flywheel;
-import frc.robot.settings.Constants.Shooter.Hood;
 import frc.robot.settings.Constants.Shooter.Hopper;
 import frc.robot.settings.Constants.Shooter.Indexer;
 

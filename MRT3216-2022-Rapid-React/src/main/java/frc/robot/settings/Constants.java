@@ -7,9 +7,6 @@
 
 package frc.robot.settings;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 
