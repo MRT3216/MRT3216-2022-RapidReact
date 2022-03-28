@@ -44,7 +44,7 @@ import frc.robot.settings.Constants.Drivetrain;
 import frc.robot.settings.Gains;
 import io.github.oblarg.oblog.Loggable;
 import io.github.oblarg.oblog.annotations.Config;
-import io.github.oblarg.oblog.annotations.Log;;
+import io.github.oblarg.oblog.annotations.Log;
 
 public class SwerveSubsystem extends SubsystemBase implements Loggable {
     private static SwerveSubsystem instance;
@@ -160,8 +160,8 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
     }
 
     public void stop() {
-        for (int i = 0; i < m_swerveModules.length; i++) {
-            m_swerveModules[i].set(0, m_swerveModules[i].getSteerAngle());
+        for (SwerveModule m_swerveModule : m_swerveModules) {
+            m_swerveModule.set(0, m_swerveModule.getSteerAngle());
         }
     }
 

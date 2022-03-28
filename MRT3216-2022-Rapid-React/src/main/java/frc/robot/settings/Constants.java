@@ -90,6 +90,9 @@ public final class Constants {
 
         public static final double kMaxTurnError = 1; // degrees
         public static final double kMaxTurnRateError = 1; // Degrees per second
+
+        public static final double kMaxTurnErrorAuto = 5;
+        public static final double kMaxTurnRateErrorAuto = 5;
     }
 
     public static final class OI {

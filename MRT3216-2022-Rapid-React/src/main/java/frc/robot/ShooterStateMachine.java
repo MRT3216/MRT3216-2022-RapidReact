@@ -14,6 +14,7 @@ public class ShooterStateMachine {
     private boolean ball1InChute;
     private ShooterSubsystem shooterSystem;
     private ColorSensorSubsystem colorSystem;
+    private boolean hasShot;
     
     private double ballShotFilterThreshold;
 
@@ -37,7 +38,16 @@ public class ShooterStateMachine {
         ball1 = ball2;
         ball2 = Ball.NONE;
         setBallInChute(false);
+        hasShot = true;
         // System.out.println("Ball shot!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    }
+
+    public boolean hasShot() {
+        return this.hasShot();
+    }
+
+    public void resetShot() {
+        this.hasShot = false;
     }
 
     public void ballIndexed(boolean allianceBall) {
