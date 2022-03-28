@@ -22,13 +22,14 @@ public final class Constants {
     };
 
     public static final class Drivetrain {
-        public static final double LEFT_FRONT_STEER_OFFSET = -Math.toRadians(19.33); // TODO: set these values
-        public static final double RIGHT_FRONT_STEER_OFFSET = -Math.toRadians(276.86); // TODO: set these values
-        public static final double LEFT_REAR_STEER_OFFSET = -Math.toRadians(113.02); // TODO: set these values
-        public static final double RIGHT_REAR_STEER_OFFSET = -Math.toRadians(47.62); // TODO: set these values
+        // TODO: set these values
+        public static final double LEFT_FRONT_STEER_OFFSET = -Math.toRadians(19.33); 
+        public static final double RIGHT_FRONT_STEER_OFFSET = -Math.toRadians(276.86);
+        public static final double LEFT_REAR_STEER_OFFSET = -Math.toRadians(113.02);
+        public static final double RIGHT_REAR_STEER_OFFSET = -Math.toRadians(47.62);
 
-        public static final double WHEELBASE_METERS = 0.5461; // TODO: check this value
-        public static final double TRACKWIDTH_METERS = 0.5588; // TODO check this value
+        public static final double WHEELBASE_METERS = 0.5461;
+        public static final double TRACKWIDTH_METERS = 0.5588;
 
         /**
          * The maximum voltage that will be delivered to the drive motors.
@@ -71,7 +72,6 @@ public final class Constants {
     public static final class Auto {
         public static double delayTime = 1;
         public static double driveTime = 1;
-        // TODO: Tune these values
         // Proportional gain
         public static final double kPositionP = 0.001;
         // Integral gain
@@ -114,7 +114,6 @@ public final class Constants {
             public static final double ballShotfilterThreshold = -250;
             public static final double ballShotDebounceTime = 0.5;
 
-            // TODO: Determine optimal speed
             public static final double targetShootingRPM = 2800;
             public static final double acceptableShootingRPM = 2750;
             public static final double targetEjectRPM = 1500;
@@ -122,7 +121,6 @@ public final class Constants {
 
             public static final double RAMP_RATE = 0.3;
 
-            // TODO: Tune these values
             // Proportional gain
             public static final double kP = .0085355;
             // Integral gainc
@@ -173,8 +171,7 @@ public final class Constants {
             public static final boolean HOOD_MOTOR_INVERTED = true;
             public static final double kMaxHoodError = 1.0; // Degrees
 
-            // TODO: Tune these values
-            // Proportional gainaaaaaa
+            // Proportional gain
             public static final double kP = 20;
             // Integral gainc
             public static final double kI = 0;
@@ -190,7 +187,6 @@ public final class Constants {
             public static final double kArmOffsetRads = -3.41;
             public final static double kVoltageCompSaturation = 10;
 
-            // TODO: set these vals
             public static final double hoodForwardLimit = -.9;
             public static final double hoodReverseLimit = 0;
 
@@ -217,7 +213,6 @@ public final class Constants {
              */
             public static final int kSlotIdx = 0;
 
-            // TODO: Tune these values
             // Proportional gain
             public static final double kP = 0.00000038864;
             // Integral gainc

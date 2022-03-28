@@ -57,7 +57,6 @@ public class HoodSubsystem extends ProfiledPIDSubsystem {
         // Add the feedforward to the PID output to get the motor output
         double outputVoltage = output + feedforward;
 
-        // TODO: Check signs
         if (outputVoltage < 0 && getMeasurement() < Hood.hoodForwardLimit) {
             motor.setVoltage(0);
             return;
@@ -86,11 +85,11 @@ public class HoodSubsystem extends ProfiledPIDSubsystem {
 
     public void setHoodAngle(double rads) {
         if (limelightSystem.hasTarget()) {
-            //System.out.println("Launch angle: " + rads);
+            // System.out.println("Launch angle: " + rads);
             double goalRads = -Math.PI / 2 + rads + Hood.hoodStowedAngle;
 
             setGoal(goalRads);
-            //System.out.println("Goal radians: " + goalRads);
+            // System.out.println("Goal radians: " + goalRads);
         }
     }
 
