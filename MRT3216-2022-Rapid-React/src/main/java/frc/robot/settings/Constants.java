@@ -18,7 +18,7 @@ public final class Constants {
 
     public enum Ball {
         ALLIANCE, OPPONENT, NONE
-    };
+    }
 
     public static final class Drivetrain {
         // TODO: set these values
@@ -95,6 +95,9 @@ public final class Constants {
 
         public static final int kMaxFetchVelocity = 8;
         public static final int kMaxFetchAcc = kMaxFetchVelocity / 2;
+
+        public static final double kDriveToShootDelay = 0.2; // seconds
+        public static final double kmaxShootTime = 100000; // seconds
     }
 
     public static final class OI {
@@ -255,7 +258,7 @@ public final class Constants {
         // 2 = force blink
         // 3 = force on
         public enum LEDMode {
-            PIPELINE, OFF, BLINK, ON;
+            PIPELINE, OFF, BLINK, ON
         }
 
         // modes:
