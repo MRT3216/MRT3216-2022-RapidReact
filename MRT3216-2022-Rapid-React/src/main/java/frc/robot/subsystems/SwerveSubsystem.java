@@ -40,7 +40,7 @@ import frc.robot.settings.Constants.Auto;
 import frc.robot.settings.Constants.Drivetrain;
 import frc.robot.settings.Gains;
 
-public class SwerveSubsystem extends SubsystemBase  {
+public class SwerveSubsystem extends SubsystemBase {
     private static SwerveSubsystem instance;
     private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
             // Front left
@@ -127,10 +127,9 @@ public class SwerveSubsystem extends SubsystemBase  {
         m_odometry.resetPosition(m_odometry.getPoseMeters(), new Rotation2d());
     }
 
-    public void resetXYPosition() {
-        // Reset the odometry with new 0 heading and zero Position.
-        m_odometry.resetPosition(new Pose2d(), new Rotation2d());
-    }
+    // public void resetXYPosition() {
+    //
+    // }
 
     /**
      * Calibrates the gyroscope. This should only be called on robotinit because
@@ -311,7 +310,8 @@ public class SwerveSubsystem extends SubsystemBase  {
     // 4, columnIndex = 0, height = 1, width = 2)
     // public void resetPosition(boolean _input) {
     // if (_input) {
-    // this.resetXYPosition();
+    // // Reset the odometry with new 0 heading and zero Position.
+    // m_odometry.resetPosition(new Pose2d(), new Rotation2d());
     // _input = false;
     // }
     // }

@@ -19,12 +19,11 @@ import frc.robot.subsystems.SwerveSubsystem;
 
 /* Abstract class to drive trajectories with a swerve drive robot */
 public abstract class DriveTrajectory extends CommandBase {
-
-    private final SwerveSubsystem swerveSubsystem;
-    private final Timer timer;
+    protected final SwerveSubsystem swerveSubsystem;
+    protected final Timer timer;
 
     private final HolonomicDriveController controller;
-    private final Trajectory trajectory;
+    protected final Trajectory trajectory;
 
     /** Creates a new DriveHolonomicTrajectory. */
     public DriveTrajectory(final SwerveSubsystem swerveSubsystem, Trajectory trajectory) {

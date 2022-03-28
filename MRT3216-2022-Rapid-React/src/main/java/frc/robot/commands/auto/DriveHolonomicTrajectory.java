@@ -7,21 +7,30 @@ package frc.robot.commands.auto;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import frc.robot.subsystems.SwerveSubsystem;
 
 /* Given a Path Planner Trajectory, the robot will drive with separate translation and rotation vectors. */
 public class DriveHolonomicTrajectory extends DriveTrajectory {
-  /** Creates a new DriveHolonomicTrajectory. */
-  public DriveHolonomicTrajectory(final SwerveSubsystem swerveSubsystem, PathPlannerTrajectory trajectory) {
-    super(swerveSubsystem, trajectory);
-    // Use addRequirements() here to declare subsystem dependencies.
-  }
+    /** Creates a new DriveHolonomicTrajectory. */
+    public DriveHolonomicTrajectory(final SwerveSubsystem swerveSubsystem, PathPlannerTrajectory trajectory) {
+        super(swerveSubsystem, trajectory);
+        // Use addRequirements() here to declare subsystem dependencies.
+    }
 
-  @Override
-  public Rotation2d getHeading(State goalState) {
-      var goal = (PathPlannerState) goalState;
-      return goal.holonomicRotation;
-  }
+    @Override
+    public void initialize() {
+        PathPlannerState pPS = (PathPlannerState) trajectory.sample(0);
+        Pose2d initialPose = new Pose2d(trajectory.getInitialPose().getTranslation(), pPS.holonomicRotation);
+        swerveSubsystem.setCurrentRobotPose(initialPose);
+        timer.start();
+    }
+
+    @Override
+    public Rotation2d getHeading(State goalState) {
+        var goal = (PathPlannerState) goalState;
+        return goal.holonomicRotation;
+    }
 }
