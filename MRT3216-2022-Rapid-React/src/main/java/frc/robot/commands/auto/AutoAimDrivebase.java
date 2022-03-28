@@ -43,7 +43,7 @@ public class AutoAimDrivebase extends CommandBase {
                                                                                                                      // angular
         // acceleration
         this.controller.enableContinuousInput(-180, 180);
-        controller.setTolerance(Auto.kMaxTurnError, Auto.kMaxTurnRateError);
+        controller.setTolerance(Auto.kMaxTurnRateErrorAuto, Auto.kMaxTurnRateErrorAuto);
 
         this.controller.setP(swerveSystem.getThetaGains().kP);
         this.controller.setI(swerveSystem.getThetaGains().kI);
