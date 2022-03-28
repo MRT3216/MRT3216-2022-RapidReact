@@ -8,7 +8,6 @@ import frc.robot.settings.Constants.Shooter.Hopper;
 import frc.robot.settings.Constants.Shooter.Indexer;
 
 public class Configurations {
-    private TalonFXConfiguration intakeMotorConfiguration;
     private TalonFXConfiguration hopperMotorConfiguration;
     private TalonFXConfiguration indexerMotorConfiguration;
     private TalonFXConfiguration flywheelMotorConfiguration;

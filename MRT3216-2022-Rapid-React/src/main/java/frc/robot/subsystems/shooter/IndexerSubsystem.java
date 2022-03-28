@@ -27,8 +27,9 @@ public class IndexerSubsystem extends SubsystemBase {
         this.indexerMotor.enableVoltageCompensation(true);
         this.stopIndexer();
 
+        // TODO: Check that this doesn't brake shooting (previously the shooting velocity was getting overwritten with the index velocity)
         this.shootingVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(Indexer.shootingRPM, Indexer.kSensorUnitsPerRotation);
-        this.shootingVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(Indexer.indexingRPM, Indexer.kSensorUnitsPerRotation);
+        this.indexingVelocityUnitsPer100ms = Utilities.convertRPMsToUnitsPer100ms(Indexer.indexingRPM, Indexer.kSensorUnitsPerRotation);
     }
 
     public void runIndexer(boolean forward) {

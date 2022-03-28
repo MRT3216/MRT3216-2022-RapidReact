@@ -171,7 +171,7 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
 
     @Override
     public void periodic() {
-        //System.out.println(m_chassisSpeeds.toString());
+        // System.out.println(m_chassisSpeeds.toString());
 
         SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(states, Drivetrain.MAX_VELOCITY_METERS_PER_SECOND);
@@ -315,7 +315,7 @@ public class SwerveSubsystem extends SubsystemBase implements Loggable {
         this.thetaGains.kD = thetaD;
     }
 
-    @Log.Graph(name = "Gyro Angle",  width = 4, height = 2, rowIndex = 4, columnIndex = 4)
+    @Log.Graph(name = "Gyro Angle", width = 4, height = 2, rowIndex = 4, columnIndex = 4)
     public double getGyroDegrees() {
         return this.getGyroscopeRotation().getDegrees();
     }

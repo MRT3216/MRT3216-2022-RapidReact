@@ -78,7 +78,7 @@ public class RobotContainer {
     // @Config(name = "Indexer F", defaultValueNumeric =
     // Constants.Shooter.Indexer.kF, methodName = "setFValue", methodTypes = {
     // double.class }, rowIndex = 3, columnIndex = 9)
-    @Log(name = "Indexer Velocity", methodName = "getRPM", rowIndex = 2, columnIndex = 9)
+    // @Log(name = "Indexer Velocity", methodName = "getRPM", rowIndex = 2, columnIndex = 9)
     private IndexerSubsystem indexerSystem;
     private HopperSubsystem hopperSystem;
     private ClimberSubsystem climberSystem;
@@ -230,48 +230,69 @@ public class RobotContainer {
         return driveSystem;
     }
 
-    @Config.NumberSlider(name = "F Intake Speed", defaultValue = Constants.Intake.kForwardIntakeSpeed, min = 0, max = 1, blockIncrement = 0.05, tabName = "RobotContainer", rowIndex = 0, columnIndex = 0, height = 1, width = 1)
-    public void setForwardPercentOutput(double output) {
-        this.intakeSystem.setForwardPercentOutput(output);
-    }
+    // @Config.NumberSlider(name = "F Intake Speed", defaultValue =
+    // Constants.Intake.kForwardIntakeSpeed, min = 0, max = 1, blockIncrement =
+    // 0.05, tabName = "RobotContainer", rowIndex = 0, columnIndex = 0, height = 1,
+    // width = 1)
+    // public void setForwardPercentOutput(double output) {
+    // this.intakeSystem.setForwardPercentOutput(output);
+    // }
 
-    @Config.NumberSlider(name = "R Intake Speed", defaultValue = Constants.Intake.kReverseIntakeSpeed, min = 0, max = 1, blockIncrement = 0.05, tabName = "RobotContainer", rowIndex = 1, columnIndex = 0, height = 1, width = 1)
-    public void setReversePercentOutput(double output) {
-        this.intakeSystem.setReversePercentOutput(output);
-    }
+    // @Config.NumberSlider(name = "R Intake Speed", defaultValue =
+    // Constants.Intake.kReverseIntakeSpeed, min = 0, max = 1, blockIncrement =
+    // 0.05, tabName = "RobotContainer", rowIndex = 1, columnIndex = 0, height = 1,
+    // width = 1)
+    // public void setReversePercentOutput(double output) {
+    // this.intakeSystem.setReversePercentOutput(output);
+    // }
 
-    @Config.NumberSlider(name = "Hopper Speed", defaultValue = Constants.Shooter.Hopper.kHopperSpeed, min = 0, max = 1, blockIncrement = 0.05, tabName = "RobotContainer", rowIndex = 0, columnIndex = 1, height = 1, width = 1)
-    public void setPercentOutput(double output) {
-        this.hopperSystem.setPercentOutput(output);
-    }
+    // @Config.NumberSlider(name = "Hopper Speed", defaultValue =
+    // Constants.Shooter.Hopper.kHopperSpeed, min = 0, max = 1, blockIncrement =
+    // 0.05, tabName = "RobotContainer", rowIndex = 0, columnIndex = 1, height = 1,
+    // width = 1)
+    // public void setPercentOutput(double output) {
+    // this.hopperSystem.setPercentOutput(output);
+    // }
 
-    @Config.NumberSlider(name = "Ind. Shoot RPM", defaultValue = Constants.Shooter.Indexer.shootingRPM, min = 1000, max = 4000, blockIncrement = 50, rowIndex = 0, columnIndex = 2, height = 1, width = 1)
-    public void setIndexerShootingRPM(double rPM) {
-        this.indexerSystem.setShootingRPM(rPM);
-    }
+    // @Config.NumberSlider(name = "Ind. Shoot RPM", defaultValue =
+    // Constants.Shooter.Indexer.shootingRPM, min = 1000, max = 4000, blockIncrement
+    // = 50, rowIndex = 0, columnIndex = 2, height = 1, width = 1)
+    // public void setIndexerShootingRPM(double rPM) {
+    // this.indexerSystem.setShootingRPM(rPM);
+    // }
 
-    @Config.NumberSlider(name = "Ind. Index RPM", defaultValue = Constants.Shooter.Indexer.indexingRPM, min = 1000, max = 4000, blockIncrement = 50, rowIndex = 1, columnIndex = 2, height = 1, width = 1)
-    public void setIndexerIndexRPM(double rPM) {
-        this.indexerSystem.setIndexingRPM(rPM);
-    }
+    // @Config.NumberSlider(name = "Ind. Index RPM", defaultValue =
+    // Constants.Shooter.Indexer.indexingRPM, min = 1000, max = 4000, blockIncrement
+    // = 50, rowIndex = 1, columnIndex = 2, height = 1, width = 1)
+    // public void setIndexerIndexRPM(double rPM) {
+    // this.indexerSystem.setIndexingRPM(rPM);
+    // }
 
-    @Config.NumberSlider(name = "Sho. Shoot RPM", defaultValue = Constants.Shooter.Flywheel.targetShootingRPM, min = 1000, max = 4000, blockIncrement = 50, rowIndex = 0, columnIndex = 3, height = 1, width = 1)
-    public void setShooterShootingRPM(double rPM) {
-        this.shooterSystem.setShootingRPM(rPM);
-    }
+    // // @Config.NumberSlider(name = "Sho. Shoot RPM", defaultValue =
+    // Constants.Shooter.Flywheel.targetShootingRPM, min = 1000, max = 4000,
+    // blockIncrement = 50, rowIndex = 0, columnIndex = 3, height = 1, width = 1)
+    // public void setShooterShootingRPM(double rPM) {
+    // this.shooterSystem.setShootingRPM(rPM);
+    // }
 
-    @Config.NumberSlider(name = "Sho. Eject RPM", defaultValue = Constants.Shooter.Flywheel.targetEjectRPM, min = 1000, max = 4000, blockIncrement = 50, rowIndex = 1, columnIndex = 3, height = 1, width = 1)
-    public void setEjectRPM(double rPM) {
-        this.shooterSystem.setEjectRPM(rPM);
-    }
+    // // @Config.NumberSlider(name = "Sho. Eject RPM", defaultValue =
+    // Constants.Shooter.Flywheel.targetEjectRPM, min = 1000, max = 4000,
+    // blockIncrement = 50, rowIndex = 1, columnIndex = 3, height = 1, width = 1)
+    // public void setEjectRPM(double rPM) {
+    // this.shooterSystem.setEjectRPM(rPM);
+    // }
 
-    @Config.NumberSlider(name = "Trans. Expo", defaultValue = Constants.OI.kTranslationExpo, min = 0, max = 100, blockIncrement = 1, rowIndex = 2, columnIndex = 0, height = 1, width = 1)
-    public void setTranslationExpo(double expo) {
-        this.translationExpo = expo;
-    }
+    // @Config.NumberSlider(name = "Trans. Expo", defaultValue =
+    // Constants.OI.kTranslationExpo, min = 0, max = 100, blockIncrement = 1,
+    // rowIndex = 2, columnIndex = 0, height = 1, width = 1)
+    // public void setTranslationExpo(double expo) {
+    // this.translationExpo = expo;
+    // }
 
-    @Config.NumberSlider(name = "Rotation Expo", defaultValue = Constants.OI.kRotationnExpo, min = 0, max = 100, blockIncrement = 1, rowIndex = 2, columnIndex = 1, height = 1, width = 1)
-    public void setRotationExpo(double expo) {
-        this.rotationExpo = expo;
-    }
+    // @Config.NumberSlider(name = "Rotation Expo", defaultValue =
+    // Constants.OI.kRotationnExpo, min = 0, max = 100, blockIncrement = 1, rowIndex
+    // = 2, columnIndex = 1, height = 1, width = 1)
+    // public void setRotationExpo(double expo) {
+    // this.rotationExpo = expo;
+    // }
 }
