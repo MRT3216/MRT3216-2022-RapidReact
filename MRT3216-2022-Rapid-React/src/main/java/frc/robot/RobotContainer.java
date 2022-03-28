@@ -174,30 +174,31 @@ public class RobotContainer {
         }
 
         controller.LB.whileHeld(
-            new FireCargo(this.shooterSystem, this.indexerSystem, this.hopperSystem,
-                    this.colorSensorSystem, this.limelightSystem));
+                new FireCargo(this.shooterSystem, this.indexerSystem, this.hopperSystem,
+                        this.colorSensorSystem, this.limelightSystem));
 
         controller.RB.whileHeld(new ParallelCommandGroup(new RunIntake(this.intakeSystem, () -> true),
                 new RunHopper(this.hopperSystem, () -> true),
                 new IndexCargo(this.indexerSystem, () -> this.colorSensorSystem.isAllianceBall()),
                 new SpinShooter(this.shooterSystem, () -> true, () -> true)));
 
-        controller.A
-                .whenHeld(new ParallelCommandGroup(
-                        new StartEndCommand(
-                                () -> limelightSystem.setLEDMode(
-                                        Constants.LimeLight.LEDMode.PIPELINE),
-                                () -> {
-                                }),
-                        new AdjustHood(hoodSystem),
-                        new ConditionalCommand(new AimDrivebase(driveSystem, limelightSystem),
-                                new InstantCommand(),
-                                limelightSystem::hasTarget)));
+        controller.A.whenHeld(new ParallelCommandGroup(
+                new StartEndCommand(
+                        () -> limelightSystem.setLEDMode(Constants.LimeLight.LEDMode.PIPELINE),
+                        () -> limelightSystem.setLEDMode(Constants.LimeLight.LEDMode.OFF)),
+                new AdjustHood(hoodSystem),
+                new ConditionalCommand(
+                        new AimDrivebase(driveSystem, limelightSystem),
+                        new InstantCommand(),
+                        limelightSystem::hasTarget)));
 
-        controller.X.whileHeld(new ParallelCommandGroup(new RunHopper(this.hopperSystem, () -> false),
+        // This is to run things in reverse to remove balls
+        controller.X.whileHeld(new ParallelCommandGroup(
+                new RunHopper(this.hopperSystem, () -> false),
                 new RunIndexer(this.indexerSystem, () -> false, () -> true, () -> false),
                 new SpinShooter(this.shooterSystem, () -> false, () -> false)));
 
+        // Resets the Robots Odometry and Gyro values
         controller.Y.whenPressed(new Runnable() {
             @Override
             public void run() {
@@ -209,7 +210,7 @@ public class RobotContainer {
                 () -> {
                 }, // OnInit: do nothing
                 () -> climberSystem.runMotors(
-                        controller.getRightTriggerAxis() - controller.getLeftTriggerAxis()), // OnExedcute:
+                        controller.getRightTriggerAxis() - controller.getLeftTriggerAxis()), // OnExecute:
                                                                                              // call
                                                                                              // run
                                                                                              // motors
