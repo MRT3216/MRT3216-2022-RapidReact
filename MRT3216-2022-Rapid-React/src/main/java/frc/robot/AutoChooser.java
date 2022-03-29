@@ -4,12 +4,6 @@
 
 package frc.robot;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Dictionary;
-import java.util.Hashtable;
-
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -21,13 +15,19 @@ import frc.robot.commands.auto.AutoAimAndShoot;
 import frc.robot.commands.auto.autoProcedures.TwoBall;
 import frc.robot.settings.Constants.Directories;
 import frc.robot.subsystems.ColorSensorSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.shooter.HoodSubsystem;
 import frc.robot.subsystems.shooter.HopperSubsystem;
 import frc.robot.subsystems.shooter.IndexerSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
-import frc.robot.commands.auto.*;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 /** Add your docs here. */
 public class AutoChooser {
@@ -43,6 +43,7 @@ public class AutoChooser {
     private HopperSubsystem hopperSystem;
     private ColorSensorSubsystem colorSensorSystem;
     private HoodSubsystem hoodSystem;
+    private IntakeSubsystem intakeSystem;
 
     private AutoChooser() {
         chooser = new SendableChooser<>();
@@ -55,6 +56,7 @@ public class AutoChooser {
         this.hopperSystem = HopperSubsystem.getInstance();
         this.colorSensorSystem = ColorSensorSubsystem.getInstance();
         this.hoodSystem = HoodSubsystem.getInstance();
+        this.intakeSystem = IntakeSubsystem.getInstance();
     }
 
     public static AutoChooser getInstance() {
@@ -136,6 +138,9 @@ public class AutoChooser {
         chooser.addOption("Just shoot",
                 new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,
                         limelightSystem, swerveSystem, hoodSystem));
+        chooser.addOption("two ball",
+                new TwoBall(this.swerveSystem, this.indexerSystem, this.colorSensorSystem, this.hopperSystem,
+                        this.intakeSystem, this.shooterSystem, this.limelightSystem, this.hoodSystem));
         SmartDashboard.putData(chooser);
     }
 
