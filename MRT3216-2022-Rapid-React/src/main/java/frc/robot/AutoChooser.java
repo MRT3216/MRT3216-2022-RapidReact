@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.auto.AutoAimAndShoot;
 import frc.robot.commands.auto.autoProcedures.TwoBall;
+import frc.robot.settings.Constants;
 import frc.robot.settings.Constants.Directories;
 import frc.robot.subsystems.ColorSensorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -44,6 +45,7 @@ public class AutoChooser {
     private ColorSensorSubsystem colorSensorSystem;
     private HoodSubsystem hoodSystem;
     private IntakeSubsystem intakeSystem;
+    private double startDelayTime;
 
     private AutoChooser() {
         chooser = new SendableChooser<>();
@@ -57,6 +59,7 @@ public class AutoChooser {
         this.colorSensorSystem = ColorSensorSubsystem.getInstance();
         this.hoodSystem = HoodSubsystem.getInstance();
         this.intakeSystem = IntakeSubsystem.getInstance();
+        this.startDelayTime = Constants.Auto.kStartDelayTime;
     }
 
     public static AutoChooser getInstance() {

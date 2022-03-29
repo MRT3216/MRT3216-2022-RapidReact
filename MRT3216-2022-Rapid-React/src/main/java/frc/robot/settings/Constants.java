@@ -69,8 +69,6 @@ public final class Constants {
     }
 
     public static final class Auto {
-        public static double delayTime = 1;
-        public static double driveTime = 1;
         // Proportional gain
         public static final double kPositionP = 0.001;
         // Integral gain
@@ -96,6 +94,7 @@ public final class Constants {
         public static final int kMaxFetchVelocity = 8;
         public static final int kMaxFetchAcc = kMaxFetchVelocity / 2;
 
+        public static final double kStartDelayTime = 0;
         public static final double kDriveToShootDelay = 0.2; // seconds
         public static final double kmaxShootTime = 100000; // seconds
     }
