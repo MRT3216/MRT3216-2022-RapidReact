@@ -36,7 +36,6 @@ public class AimDrivebase extends CommandBase {
 
     @Override
     public void initialize() {
-        // System.out.println("INITIALIZING AIM DRIVE BASE COMMAND !!!!!!!!!");
         this.controller = new ProfiledPIDController(swerveSystem.getThetaGains().kP, swerveSystem.getThetaGains().kI,
                 swerveSystem.getThetaGains().kD, // Theta
                 // controller
