@@ -89,15 +89,15 @@
               "_title": "Stream"
             }
           },
-          "9,2": {
+          "9,3": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///Shuffleboard/Driver/Set Auto Delay",
-              "_title": "Shuffleboard/Driver/Set Auto Delay"
+              "_source0": "network_table:///Shuffleboard/Tuning/Auto Delay",
+              "_title": "Auto Delay"
             }
           }
         }

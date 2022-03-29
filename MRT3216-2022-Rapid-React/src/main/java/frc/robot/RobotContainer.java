@@ -125,11 +125,7 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     private RobotContainer() {
-        System.out.println(
-                "---------------------Initialize Auto Delay time: " + autoStartDelayTime + "---------------------");
         this.autoStartDelayTime = Constants.Auto.kStartDelayTime;
-        System.out.println(
-                "---------------------Initialize Auto Delay time: " + autoStartDelayTime + "---------------------");
         this.translationExpo = Constants.OI.kTranslationExpo;
         this.rotationExpo = Constants.OI.kRotationnExpo;
 
@@ -310,15 +306,13 @@ public class RobotContainer {
         this.shooterSystem.setEjectRPM(rPM);
     }
 
-    @Config(name = "Set Auto Delay", tabName = "Driver", methodName = "setStartDelayTime", defaultValueNumeric = Auto.kStartDelayTime, methodTypes = {
+    @Config(name = "Auto Delay", tabName = "Tuning", methodName = "setStartDelayTime", defaultValueNumeric = Auto.kStartDelayTime, methodTypes = {
             double.class }, rowIndex = 4, columnIndex = 3)
     public void setStartDelayTime(double startDelayTime) {
         this.autoStartDelayTime = startDelayTime;
-        System.out.println("---------------------Set Auto Delay time: " + autoStartDelayTime + "---------------------");
     }
 
     public double getAutoStartDelayTime() {
-        System.out.println("---------------------Get Auto Delay time: " + autoStartDelayTime + "---------------------");
         return this.autoStartDelayTime;
     }
 
