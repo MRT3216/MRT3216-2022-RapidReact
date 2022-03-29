@@ -78,17 +78,6 @@
               "Colors/Color when false": "#FF0000FF"
             }
           },
-          "0,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///limelight/pipeline",
-              "_title": "Pipeline"
-            }
-          },
           "0,1": {
             "size": [
               1,
@@ -105,8 +94,8 @@
     }
   ],
   "windowGeometry": {
-    "x": 2743.0,
-    "y": 292.0,
+    "x": 2747.0,
+    "y": 316.0,
     "width": 1596.0,
     "height": 935.0
   }

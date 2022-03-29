@@ -43,9 +43,6 @@ public class LimelightSubsystem extends SubsystemBase {
 	}
 
 	public double getInitHoriztonalVelocity() {
-		// System.out.println("Horz Goal Distance (m): " +
-		// this.getHorizontalGoalDistance() + "Horz (Ft): " +
-		// Units.metersToFeet(this.getHorizontalGoalDistance()));
 		double goalFeet = (Units.metersToFeet(getHorizontalGoalDistance()) * 3 / 4 + 1);
 		return Units.feetToMeters(goalFeet);
 	}
