@@ -15,7 +15,6 @@ import frc.robot.subsystems.shooter.IndexerSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 
 public class TwoBall extends SequentialCommandGroup {
-
     public TwoBall(SwerveSubsystem swerveSystem, IndexerSubsystem indexerSystem,
             ColorSensorSubsystem colorSensorSystem,
             HopperSubsystem hopperSystem, IntakeSubsystem intakeSystem, ShooterSubsystem shooterSystem,
@@ -27,8 +26,6 @@ public class TwoBall extends SequentialCommandGroup {
                         "2Ball1.1"),
                 new WaitCommand(Constants.Auto.kDriveToShootDelay),
                 new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,
-                        limelightSystem,
-                        swerveSystem, hoodSystem)
-                        );
+                        limelightSystem, swerveSystem, hoodSystem, 2));
     }
 }

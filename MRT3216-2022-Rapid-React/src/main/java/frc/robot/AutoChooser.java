@@ -140,7 +140,7 @@ public class AutoChooser {
 
         chooser.addOption("Just shoot",
                 new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,
-                        limelightSystem, swerveSystem, hoodSystem));
+                        limelightSystem, swerveSystem, hoodSystem, 1));
         chooser.addOption("two ball",
                 new TwoBall(this.swerveSystem, this.indexerSystem, this.colorSensorSystem, this.hopperSystem,
                         this.intakeSystem, this.shooterSystem, this.limelightSystem, this.hoodSystem, startDelayTime));

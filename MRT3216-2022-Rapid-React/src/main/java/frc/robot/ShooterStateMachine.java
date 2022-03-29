@@ -14,7 +14,7 @@ public class ShooterStateMachine {
     private boolean ball1InChute;
     private ShooterSubsystem shooterSystem;
     private ColorSensorSubsystem colorSystem;
-    private boolean hasShot;
+    private int ballsShot;
     private double ballShotFilterThreshold;
 
     private ShooterStateMachine() {
@@ -24,7 +24,7 @@ public class ShooterStateMachine {
         this.ball1 = Ball.NONE;
         this.ball2 = Ball.NONE;
         this.ball1InChute = false;
-        this.hasShot = false;
+        this.ballsShot = 0;
 
         new Trigger(
                 () -> shooterSystem.getFilterValue() < this.ballShotFilterThreshold)
@@ -47,12 +47,12 @@ public class ShooterStateMachine {
         }
     }
 
-    public boolean hasShot() {
-        return this.hasShot;
+    public int ballsShot() {
+        return this.ballsShot;
     }
 
     public void resetShot() {
-        this.hasShot = false;
+        this.ballsShot = 0;
     }
 
     public void reverseEject() {
@@ -84,7 +84,7 @@ public class ShooterStateMachine {
         ball1 = ball2;
         ball2 = Ball.NONE;
         setBallInChute(false);
-        hasShot = true;
+        ballsShot++;
     }
 
     private void setBallInChute(boolean isBall1InChute) {

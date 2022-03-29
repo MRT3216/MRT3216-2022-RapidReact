@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.shooter.AdjustHood;
 import frc.robot.commands.shooter.RunHopper;
 import frc.robot.commands.shooter.RunIndexer;
+import frc.robot.settings.Constants.Auto;
 import frc.robot.subsystems.ColorSensorSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -20,8 +21,7 @@ public class AutoAimAndShoot extends SequentialCommandGroup {
     public AutoAimAndShoot(ShooterSubsystem shooterSystem, IndexerSubsystem indexerSystem,
             HopperSubsystem hopperSystem, ColorSensorSubsystem colorSensorSystem,
             LimelightSubsystem limelightSystem, SwerveSubsystem swerveSystem,
-            HoodSubsystem hoodSystem) {
-
+            HoodSubsystem hoodSystem, int numBalls) {
         super(
                 new ParallelCommandGroup(
                         new ConditionalCommand(
@@ -30,8 +30,8 @@ public class AutoAimAndShoot extends SequentialCommandGroup {
                                 limelightSystem::hasTarget),
                         new AdjustHood(hoodSystem)),
                 new ParallelDeadlineGroup(
-                        new AutoSpinShooter(shooterSystem, () -> true, () -> false,
-                                limelightSystem::getInitialRPM),
+                        new AutoSpinShooter(shooterSystem, () -> true, () -> false, numBalls,
+                                limelightSystem::getInitialRPM).withTimeout(Auto.kMaxShootTime),
                         new RunHopper(hopperSystem, () -> true),
                         new RunIndexer(indexerSystem, () -> true,
                                 shooterSystem::isReadyToShoot,

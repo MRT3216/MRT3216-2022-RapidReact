@@ -96,7 +96,7 @@ public final class Constants {
 
         public static final double kStartDelayTime = 0;
         public static final double kDriveToShootDelay = 0; // seconds
-        public static final double kmaxShootTime = 100000; // seconds
+        public static final double kMaxShootTime = 2; // seconds
     }
 
     public static final class OI {

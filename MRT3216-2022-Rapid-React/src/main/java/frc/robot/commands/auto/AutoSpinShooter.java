@@ -18,23 +18,27 @@ public class AutoSpinShooter extends CommandBase {
     private final BooleanSupplier eject;
     private final DoubleSupplier targetRPM;
     private ShooterStateMachine shooterStateMachine;
+    private int numBalls = 0;
 
-    public AutoSpinShooter(final ShooterSubsystem shooterSubsystem, BooleanSupplier isForward, BooleanSupplier eject) {
+    public AutoSpinShooter(final ShooterSubsystem shooterSubsystem, BooleanSupplier isForward, BooleanSupplier eject,
+            int numBalls) {
         addRequirements(shooterSubsystem);
         this.shooterSubsystem = shooterSubsystem;
         this.shooterStateMachine = ShooterStateMachine.getInstance();
         this.isForward = isForward;
         this.eject = eject;
         this.targetRPM = null;
+        this.numBalls = numBalls;
     }
 
     public AutoSpinShooter(final ShooterSubsystem shooterSubsystem, BooleanSupplier isForward, BooleanSupplier eject,
-            DoubleSupplier targetRPM) {
+            int numBalls, DoubleSupplier targetRPM) {
         addRequirements(shooterSubsystem);
         this.shooterSubsystem = shooterSubsystem;
         this.shooterStateMachine = ShooterStateMachine.getInstance();
         this.isForward = isForward;
         this.eject = eject;
+        this.numBalls = numBalls;
         this.targetRPM = targetRPM;
     }
 
@@ -57,9 +61,9 @@ public class AutoSpinShooter extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if (this.shooterStateMachine.hasShot()) {
+        if (this.shooterStateMachine.ballsShot() == this.numBalls) {
             this.shooterStateMachine.resetShot();
-            return !this.shooterStateMachine.hasShot();
+            return true;
         }
         return false;
     }
