@@ -127,10 +127,6 @@ public class SwerveSubsystem extends SubsystemBase {
         m_odometry.resetPosition(m_odometry.getPoseMeters(), new Rotation2d());
     }
 
-    // public void resetXYPosition() {
-    //
-    // }
-
     /**
      * Calibrates the gyroscope. This should only be called on robotinit because
      * it takes some time to run.
