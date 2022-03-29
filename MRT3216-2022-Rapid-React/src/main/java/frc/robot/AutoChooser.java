@@ -143,7 +143,7 @@ public class AutoChooser {
                         limelightSystem, swerveSystem, hoodSystem));
         chooser.addOption("two ball",
                 new TwoBall(this.swerveSystem, this.indexerSystem, this.colorSensorSystem, this.hopperSystem,
-                        this.intakeSystem, this.shooterSystem, this.limelightSystem, this.hoodSystem));
+                        this.intakeSystem, this.shooterSystem, this.limelightSystem, this.hoodSystem, startDelayTime));
         SmartDashboard.putData(chooser);
     }
 

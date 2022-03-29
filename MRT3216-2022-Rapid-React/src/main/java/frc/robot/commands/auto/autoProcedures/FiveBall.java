@@ -14,21 +14,28 @@ import frc.robot.subsystems.shooter.ShooterSubsystem;
 
 public class FiveBall extends SequentialCommandGroup {
 
-    public FiveBall(SwerveSubsystem swerveSystem, IndexerSubsystem indexerSystem, ColorSensorSubsystem colorSensorSystem,
-                    HopperSubsystem hopperSystem, IntakeSubsystem intakeSystem, ShooterSubsystem shooterSystem,
-                    LimelightSubsystem limelightSystem, HoodSubsystem hoodSystem) {
+    public FiveBall(SwerveSubsystem swerveSystem, IndexerSubsystem indexerSystem,
+            ColorSensorSubsystem colorSensorSystem,
+            HopperSubsystem hopperSystem, IntakeSubsystem intakeSystem, ShooterSubsystem shooterSystem,
+            LimelightSubsystem limelightSystem, HoodSubsystem hoodSystem, double startDelay) {
         super(
-                new GoFetch(swerveSystem, indexerSystem, hopperSystem, colorSensorSystem, intakeSystem, shooterSystem, "5Ball1.1"),
-                new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem, limelightSystem,
+                new GoFetch(swerveSystem, indexerSystem, hopperSystem, colorSensorSystem, intakeSystem,
+                        shooterSystem, "5Ball1.1"),
+                new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,
+                        limelightSystem,
                         swerveSystem, hoodSystem),
-                new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem, limelightSystem,
+                new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,
+                        limelightSystem,
                         swerveSystem, hoodSystem),
-                new GoFetch(swerveSystem, indexerSystem, hopperSystem, colorSensorSystem, intakeSystem, shooterSystem, "5Ball1.2"),
-                new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem, limelightSystem,
+                new GoFetch(swerveSystem, indexerSystem, hopperSystem, colorSensorSystem, intakeSystem,
+                        shooterSystem, "5Ball1.2"),
+                new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,
+                        limelightSystem,
                         swerveSystem, hoodSystem),
-                new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem, limelightSystem,
+                new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,
+                        limelightSystem,
                         swerveSystem, hoodSystem),
-                new GoFetch(swerveSystem, indexerSystem, hopperSystem, colorSensorSystem, intakeSystem, shooterSystem, "5Ball1.3")
-        );
+                new GoFetch(swerveSystem, indexerSystem, hopperSystem, colorSensorSystem, intakeSystem,
+                        shooterSystem, "5Ball1.3"));
     }
 }

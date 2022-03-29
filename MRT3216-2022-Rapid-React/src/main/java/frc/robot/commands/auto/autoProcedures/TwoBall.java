@@ -25,6 +25,6 @@ public class TwoBall extends SequentialCommandGroup {
                         "2Ball1.1"),
                 new WaitCommand(Constants.Auto.kDriveToShootDelay),
                 new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem, limelightSystem,
-                        swerveSystem, hoodSystem, startDelayTime));
+                        swerveSystem, hoodSystem));
     }
 }
