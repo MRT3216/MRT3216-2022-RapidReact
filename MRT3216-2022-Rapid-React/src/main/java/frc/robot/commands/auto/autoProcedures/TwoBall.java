@@ -17,14 +17,14 @@ import frc.robot.subsystems.shooter.ShooterSubsystem;
 public class TwoBall extends SequentialCommandGroup {
 
     public TwoBall(SwerveSubsystem swerveSystem, IndexerSubsystem indexerSystem, ColorSensorSubsystem colorSensorSystem,
-                   HopperSubsystem hopperSystem, IntakeSubsystem intakeSystem, ShooterSubsystem shooterSystem,
-                   LimelightSubsystem limelightSystem, HoodSubsystem hoodSystem) {
+            HopperSubsystem hopperSystem, IntakeSubsystem intakeSystem, ShooterSubsystem shooterSystem,
+            LimelightSubsystem limelightSystem, HoodSubsystem hoodSystem, double startDelayTime) {
         super(
+                new WaitCommand(startDelayTime),
                 new GoFetch(swerveSystem, indexerSystem, hopperSystem, colorSensorSystem, intakeSystem, shooterSystem,
                         "2Ball1.1"),
                 new WaitCommand(Constants.Auto.kDriveToShootDelay),
                 new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem, limelightSystem,
-                        swerveSystem, hoodSystem)
-        );
+                        swerveSystem, hoodSystem, startDelayTime));
     }
 }
