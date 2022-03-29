@@ -15,6 +15,7 @@ public class ShooterStateMachine {
     private ShooterSubsystem shooterSystem;
     private ColorSensorSubsystem colorSystem;
     private boolean hasShot;
+    private boolean lastBallIsAllianceBall;
     
     private double ballShotFilterThreshold;
 

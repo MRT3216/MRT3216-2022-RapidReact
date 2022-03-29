@@ -197,14 +197,23 @@ public class RobotContainer {
         // Resets the Robots Odometry and Gyro values
         controller.Y.whenPressed(() -> RobotContainer.getInstance().getDriveSystem().resetGyroAndOdometry(true), driveSystem);
 
+        controller.RightJoy.whenPressed(() -> climberSystem.invert());
+        controller.LeftJoy.whenPressed(() -> climberSystem.tethered(!climberSystem.isTethered()));
+
         climberSystem.setDefaultCommand(new FunctionalCommand(
                 () -> {
                 }, // OnInit: do nothing
-                () -> climberSystem.runMotors(
-                        controller.getRightTriggerAxis() - controller.getLeftTriggerAxis()), // OnExecute:
-                                                                                             // call
-                                                                                             // run
-                                                                                             // motors
+                () -> {
+                    if (climberSystem.isTethered()) {
+                        climberSystem.runMotors(controller.getRightTriggerAxis() - controller.getLeftTriggerAxis());
+                    } else {
+                        climberSystem.runLeftMotor(controller.getLeftTriggerAxis());
+                        climberSystem.runRightMotor(controller.getRightTriggerAxis());
+                    }
+                }, // OnExecute:
+                // call
+                // run
+                // motors
                 interrupted -> climberSystem.stop(), // OnEnd: stop motors
                 () -> false, // IsFinished: never finish
                 climberSystem)); // Required subsystem
