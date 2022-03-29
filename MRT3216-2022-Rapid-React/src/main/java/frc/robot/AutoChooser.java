@@ -4,6 +4,13 @@
 
 package frc.robot;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.function.Supplier;
+
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -13,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.auto.AutoAimAndShoot;
 import frc.robot.commands.auto.autoProcedures.TwoBall;
-import frc.robot.settings.Constants;
 import frc.robot.settings.Constants.Directories;
 import frc.robot.subsystems.ColorSensorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -24,19 +30,12 @@ import frc.robot.subsystems.shooter.HopperSubsystem;
 import frc.robot.subsystems.shooter.IndexerSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Dictionary;
-import java.util.Hashtable;
-
 /** Add your docs here. */
 public class AutoChooser {
 
     private static AutoChooser instance;
     private Dictionary<String, Trajectory> trajectories;
-    private SendableChooser<Command> chooser;
-    private RobotContainer robotContainer;
+    private SendableChooser<Supplier<Command>> chooser;
     private SwerveSubsystem swerveSystem;
     private LimelightSubsystem limelightSystem;
     private ShooterSubsystem shooterSystem;
@@ -45,13 +44,11 @@ public class AutoChooser {
     private ColorSensorSubsystem colorSensorSystem;
     private HoodSubsystem hoodSystem;
     private IntakeSubsystem intakeSystem;
-    private double startDelayTime;
 
     private AutoChooser() {
         chooser = new SendableChooser<>();
-        chooser.setDefaultOption("Do Nothing", new WaitCommand(0));
-        this.robotContainer = RobotContainer.getInstance();
-        this.swerveSystem = robotContainer.getDriveSystem();
+        chooser.setDefaultOption("Do Nothing", () -> new WaitCommand(0));
+        this.swerveSystem = SwerveSubsystem.getInstance();
         this.limelightSystem = LimelightSubsystem.getInstance();
         this.shooterSystem = ShooterSubsystem.getInstance();
         this.indexerSystem = IndexerSubsystem.getInstance();
@@ -59,7 +56,6 @@ public class AutoChooser {
         this.colorSensorSystem = ColorSensorSubsystem.getInstance();
         this.hoodSystem = HoodSubsystem.getInstance();
         this.intakeSystem = IntakeSubsystem.getInstance();
-        this.startDelayTime = Constants.Auto.kStartDelayTime;
     }
 
     public static AutoChooser getInstance() {
@@ -86,68 +82,18 @@ public class AutoChooser {
         }
     }
 
-    public void populateAutoChooser() {/*
-                                        * chooser.addOption("Crazy, Holonomic Trajectory",
-                                        * new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Crazy", 2,
-                                        * 1)));
-                                        * chooser.addOption("Straight, Holonomic Trajectory",
-                                        * new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Straight",
-                                        * 1, .5)));
-                                        * chooser.addOption("Square Path, Holonomic Trajectory",
-                                        * new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Square 1",
-                                        * 2, 1)));
-                                        * chooser.addOption("Square Path, Constant Heading", new
-                                        * DriveConstantHeadingTrajectory(swerveSystem,
-                                        * PathPlanner.loadPath("Square 1", 2, 1), Rotation2d.fromDegrees(45)));
-                                        * chooser.addOption("Bounce Path, Differential Trajectory",
-                                        * new DriveDifferentialTrajectory(swerveSystem,
-                                        * PathPlanner.loadPath("Bounce 1", 2, 1)));
-                                        */
-        /*
-         * chooser.addOption("3, Holonomic Trajectory",
-         * new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("3", 2, 1))
-         * .andThen(new DriveConstantHeadingTrajectory(swerveSystem,
-         * PathPlanner.loadPath("2", 2, 1),
-         * Rotation2d.fromDegrees(60))));
-         * chooser.addOption("2, Holonomic Trajectory",
-         * new DriveConstantHeadingTrajectory(swerveSystem, PathPlanner.loadPath("2", 2,
-         * 1),
-         * Rotation2d.fromDegrees(60)));
-         * chooser.addOption("Bounce Path, Holonomic Trajectory",
-         * new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Bounce 1",
-         * 2, 1)));
-         * chooser.addOption("Bounce Path, Constant Heading", new
-         * DriveConstantHeadingTrajectory(swerveSystem,
-         * PathPlanner.loadPath("Bounce 1", 2, 1), Rotation2d.fromDegrees(45)));
-         */
-        /*
-         * chooser.addOption("Crazy, Targetted",
-         * new DriveSupplyHeadingTrajectory(swerveSystem, PathPlanner.loadPath("Crazy",
-         * 2, 1),
-         * () -> (limelightSystem.hasTarget() ? limelightSystem.getHorizontalOffset()
-         * : swerveSystem.getGyroscopeRotation().getDegrees())));
-         */
-        /*
-         * chooser.addOption("Side 2 Side, Holonomic",
-         * new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath("Side", 2,
-         * 1)));
-         * chooser.addOption("Side 2 Side, Targetted",
-         * new DriveSupplyHeadingTrajectory(swerveSystem, PathPlanner.loadPath("Side",
-         * 2, 1),
-         * () -> (limelightSystem.hasTarget() ? limelightSystem.getHorizontalOffset()
-         * : swerveSystem.getGyroscopeRotation().getDegrees())));
-         */
-
+    public void populateAutoChooser() {
         chooser.addOption("Just shoot",
-                new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,
+                () -> new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,
                         limelightSystem, swerveSystem, hoodSystem, 1));
         chooser.addOption("two ball",
-                new TwoBall(this.swerveSystem, this.indexerSystem, this.colorSensorSystem, this.hopperSystem,
-                        this.intakeSystem, this.shooterSystem, this.limelightSystem, this.hoodSystem, startDelayTime));
+                () -> new TwoBall(this.swerveSystem, this.indexerSystem, this.colorSensorSystem, this.hopperSystem,
+                        this.intakeSystem, this.shooterSystem, this.limelightSystem, this.hoodSystem,
+                        RobotContainer.getInstance().getAutoStartDelayTime()));
         SmartDashboard.putData(chooser);
     }
 
     public Command getAutoCommand() {
-        return chooser.getSelected();
+        return chooser.getSelected().get();
     }
 }

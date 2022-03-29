@@ -22,7 +22,6 @@ import io.github.oblarg.oblog.Logger;
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
     private RobotContainer robotContainer;
-    private AutoChooser autoChooser;
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -34,8 +33,7 @@ public class Robot extends TimedRobot {
         // and put our
         // autonomous chooser on the dashboard.
         robotContainer = RobotContainer.getInstance();
-        autoChooser = AutoChooser.getInstance();
-        autoChooser.populateAutoChooser();
+        AutoChooser.getInstance().populateAutoChooser();
         robotContainer.getDriveSystem().calibrateGyroscope();
         robotContainer.getDriveSystem().zeroGyroscope();
         PowerDistribution pdh = new PowerDistribution();

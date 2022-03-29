@@ -57,17 +57,12 @@ public class AimDrivebase extends CommandBase {
             Rotation2d offset2d = Rotation2d.fromDegrees(limelightSystem.getHorizontalOffset());
             Rotation2d r2d = swerveSystem.getGyroscopeRotation().rotateBy(offset2d);
             this.controller.setGoal(r2d.getDegrees());
-            // System.out.println("Initial Target: " + this.controller.getGoal().position + "   P: " + controller.getP());
         }
     }
 
     @Override
     public void execute() {
         if (!neverSawTarget) {
-            // System.out.println("Target: " + this.controller.getGoal().position + "   P: " + controller.getP());
-            // System.out.println("Setpoint: " + this.controller.getSetpoint().position);
-
-            // System.out.println("Gyro: " + this.swerveSystem.getGyroscopeRotation().getDegrees());
             double omega = this.controller.calculate(swerveSystem.getGyroscopeRotation().getDegrees());
 
             ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0, Units.degreesToRadians(omega));
@@ -78,7 +73,6 @@ public class AimDrivebase extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         super.end(interrupted);
-        // System.out.println("Ending: " + interrupted);
     }
 
     // Returns true when the command should end.

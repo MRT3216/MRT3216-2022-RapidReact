@@ -78,7 +78,7 @@
               "Colors/Color when false": "#FF0000FF"
             }
           },
-          "0,0": {
+          "9,4": {
             "size": [
               1,
               1
@@ -88,14 +88,25 @@
               "_source0": "network_table:///limelight/stream",
               "_title": "Stream"
             }
+          },
+          "9,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Driver/Set Auto Delay",
+              "_title": "Shuffleboard/Driver/Set Auto Delay"
+            }
           }
         }
       }
     }
   ],
   "windowGeometry": {
-    "x": 428.0,
-    "y": 102.0,
+    "x": 305.0,
+    "y": 76.0,
     "width": 1596.0,
     "height": 935.0
   }

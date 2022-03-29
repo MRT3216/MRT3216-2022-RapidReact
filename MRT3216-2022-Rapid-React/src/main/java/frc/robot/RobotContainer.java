@@ -4,17 +4,34 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.*;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.OI.Gamepad;
 import frc.robot.OI.OIUtils;
 import frc.robot.commands.TeleDrive;
-import frc.robot.commands.shooter.*;
+import frc.robot.commands.shooter.AdjustHood;
+import frc.robot.commands.shooter.AimDrivebase;
+import frc.robot.commands.shooter.FireCargo;
+import frc.robot.commands.shooter.IndexCargo;
+import frc.robot.commands.shooter.RunHopper;
+import frc.robot.commands.shooter.RunIndexer;
+import frc.robot.commands.shooter.RunIntake;
+import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.settings.Constants;
+import frc.robot.settings.Constants.Auto;
 import frc.robot.settings.Constants.Drivetrain;
 import frc.robot.settings.Constants.LimeLight.CameraStream;
 import frc.robot.settings.Constants.LimeLight.LEDMode;
 import frc.robot.settings.RobotMap;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.ColorSensorSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.shooter.HoodSubsystem;
 import frc.robot.subsystems.shooter.HopperSubsystem;
 import frc.robot.subsystems.shooter.IndexerSubsystem;
@@ -97,6 +114,8 @@ public class RobotContainer {
     @Log(name = "2nd Ball", methodName = "getBall2String", rowIndex = 2, columnIndex = 1)
     @Log.BooleanBox(name = "Ball in Chute", methodName = "getBallInChute", rowIndex = 1, columnIndex = 2)
     private ShooterStateMachine shooterStateMachine;
+    private AutoChooser autoChooser;
+    private double autoStartDelayTime;
     private double translationExpo;
     private double rotationExpo;
 
@@ -106,6 +125,11 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     private RobotContainer() {
+        System.out.println(
+                "---------------------Initialize Auto Delay time: " + autoStartDelayTime + "---------------------");
+        this.autoStartDelayTime = Constants.Auto.kStartDelayTime;
+        System.out.println(
+                "---------------------Initialize Auto Delay time: " + autoStartDelayTime + "---------------------");
         this.translationExpo = Constants.OI.kTranslationExpo;
         this.rotationExpo = Constants.OI.kRotationnExpo;
 
@@ -136,6 +160,7 @@ public class RobotContainer {
         this.limelightSystem.setPipeline(0);
         this.colorSensorSystem = ColorSensorSubsystem.getInstance();
         this.shooterStateMachine = ShooterStateMachine.getInstance();
+        this.autoChooser = AutoChooser.getInstance();
     }
 
     /**
@@ -229,7 +254,7 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return AutoChooser.getInstance().getAutoCommand();
+        return this.autoChooser.getAutoCommand();
     }
 
     public static RobotContainer getInstance() {
@@ -283,6 +308,18 @@ public class RobotContainer {
     @Config.NumberSlider(name = "Sho. Eject RPM", tabName = "Tuning", defaultValue = Constants.Shooter.Flywheel.targetEjectRPM, min = 1000, max = 4000, blockIncrement = 50, rowIndex = 1, columnIndex = 3, height = 1, width = 1)
     public void setEjectRPM(double rPM) {
         this.shooterSystem.setEjectRPM(rPM);
+    }
+
+    @Config(name = "Set Auto Delay", tabName = "Driver", methodName = "setStartDelayTime", defaultValueNumeric = Auto.kStartDelayTime, methodTypes = {
+            double.class }, rowIndex = 4, columnIndex = 3)
+    public void setStartDelayTime(double startDelayTime) {
+        this.autoStartDelayTime = startDelayTime;
+        System.out.println("---------------------Set Auto Delay time: " + autoStartDelayTime + "---------------------");
+    }
+
+    public double getAutoStartDelayTime() {
+        System.out.println("---------------------Get Auto Delay time: " + autoStartDelayTime + "---------------------");
+        return this.autoStartDelayTime;
     }
 
     // @Config.NumberSlider(name = "Trans. Expo", tabName = "Tuning", defaultValue =
