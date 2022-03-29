@@ -88,25 +88,14 @@
               "_source0": "network_table:///limelight/stream",
               "_title": "Stream"
             }
-          },
-          "0,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///limelight/getpipe",
-              "_title": "limelight/getpipe"
-            }
           }
         }
       }
     }
   ],
   "windowGeometry": {
-    "x": 2677.0,
-    "y": 270.0,
+    "x": 428.0,
+    "y": 102.0,
     "width": 1596.0,
     "height": 935.0
   }
