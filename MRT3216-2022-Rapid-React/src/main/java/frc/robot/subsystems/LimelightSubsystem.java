@@ -21,6 +21,7 @@ public class LimelightSubsystem extends SubsystemBase {
 		this.limelightNT = table;
 		this.horizontalFilter = LinearFilter.movingAverage(5);
 		this.setLEDMode(LimeLight.LEDMode.OFF);
+		this.setStream(CameraStream.PiPMain);
 	}
 
 	/*
