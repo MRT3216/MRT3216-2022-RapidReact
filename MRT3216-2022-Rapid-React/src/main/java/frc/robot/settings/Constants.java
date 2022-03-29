@@ -293,7 +293,7 @@ public final class Constants {
         // Camera Constants
         public final static double kCameraHeight = 0.721; // The vertical distance from the center of the camera to the
                                                           // ground.
-        public final static double kCameraViewAngle = Units.degreesToRadians(50); // Angle (rads) of the center of POV
+        public final static double kCameraViewAngle = Units.degreesToRadians(40); // Angle (rads) of the center of POV
                                                                                   // of the camera from horizontal.
 
         public final static double kCameraOffsetFromFrame = 0.04; // The horizontal distance from the center of the

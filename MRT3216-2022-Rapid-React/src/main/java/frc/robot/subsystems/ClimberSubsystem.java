@@ -24,11 +24,11 @@ public class ClimberSubsystem extends SubsystemBase {
 
         leftMotor = new CANSparkMax(CLIMBER.LEFT_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
         rightMotor = new CANSparkMax(CLIMBER.RIGHT_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
-        leftMotor.setInverted(CLIMBER.LEFT_MOTOR_INVERTED);
-        rightMotor.setInverted(CLIMBER.RIGHT_MOTOR_INVERTED);
-
         leftMotor.restoreFactoryDefaults();
         rightMotor.restoreFactoryDefaults();
+        
+        leftMotor.setInverted(CLIMBER.LEFT_MOTOR_INVERTED);
+        rightMotor.setInverted(CLIMBER.RIGHT_MOTOR_INVERTED);
 
         leftMotor.enableVoltageCompensation(Climber.kVoltageCompSaturation);
         rightMotor.enableVoltageCompensation(Climber.kVoltageCompSaturation);
