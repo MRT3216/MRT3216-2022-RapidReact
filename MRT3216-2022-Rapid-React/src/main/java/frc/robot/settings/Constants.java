@@ -95,7 +95,7 @@ public final class Constants {
         public static final int kMaxFetchAcc = kMaxFetchVelocity / 2;
 
         public static final double kStartDelayTime = 0;
-        public static final double kDriveToShootDelay = 0.2; // seconds
+        public static final double kDriveToShootDelay = 0; // seconds
         public static final double kmaxShootTime = 100000; // seconds
     }
 

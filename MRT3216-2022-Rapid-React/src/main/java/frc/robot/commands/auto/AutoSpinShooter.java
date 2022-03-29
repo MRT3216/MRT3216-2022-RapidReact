@@ -1,11 +1,11 @@
 package frc.robot.commands.auto;
 
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.ShooterStateMachine;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
-
-import java.util.function.BooleanSupplier;
-import java.util.function.DoubleSupplier;
 
 /**
  * Spins up the shooter anticipating to shoot a specific distance until the
@@ -22,15 +22,17 @@ public class AutoSpinShooter extends CommandBase {
     public AutoSpinShooter(final ShooterSubsystem shooterSubsystem, BooleanSupplier isForward, BooleanSupplier eject) {
         addRequirements(shooterSubsystem);
         this.shooterSubsystem = shooterSubsystem;
+        this.shooterStateMachine = ShooterStateMachine.getInstance();
         this.isForward = isForward;
         this.eject = eject;
         this.targetRPM = null;
-        this.shooterStateMachine = ShooterStateMachine.getInstance();
     }
 
-    public AutoSpinShooter(final ShooterSubsystem shooterSubsystem, BooleanSupplier isForward, BooleanSupplier eject, DoubleSupplier targetRPM) {
+    public AutoSpinShooter(final ShooterSubsystem shooterSubsystem, BooleanSupplier isForward, BooleanSupplier eject,
+            DoubleSupplier targetRPM) {
         addRequirements(shooterSubsystem);
         this.shooterSubsystem = shooterSubsystem;
+        this.shooterStateMachine = ShooterStateMachine.getInstance();
         this.isForward = isForward;
         this.eject = eject;
         this.targetRPM = targetRPM;
@@ -39,10 +41,9 @@ public class AutoSpinShooter extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        if(this.targetRPM != null) {
+        if (this.targetRPM != null) {
             this.shooterSubsystem.setShootingRPM(targetRPM.getAsDouble());
         }
-
     }
 
     @Override

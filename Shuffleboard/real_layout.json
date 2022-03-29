@@ -86,7 +86,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///limelight/pipeline",
-              "_title": "limelight/pipeline"
+              "_title": "Pipeline"
             }
           },
           "0,1": {
@@ -97,7 +97,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///limelight/stream",
-              "_title": "limelight/stream"
+              "_title": "Stream"
             }
           }
         }
@@ -105,9 +105,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 55.20000076293945,
-    "y": -7.199999809265137,
-    "width": 1488.0,
-    "height": 878.4000244140625
+    "x": 2743.0,
+    "y": 292.0,
+    "width": 1596.0,
+    "height": 935.0
   }
 }

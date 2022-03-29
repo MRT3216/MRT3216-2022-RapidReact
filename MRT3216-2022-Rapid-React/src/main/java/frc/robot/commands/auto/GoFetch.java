@@ -17,15 +17,15 @@ import frc.robot.subsystems.shooter.ShooterSubsystem;
 public class GoFetch extends ParallelDeadlineGroup {
     // my sense of humor is writing a class called GoFetch lol
     public GoFetch(SwerveSubsystem swerveSystem, IndexerSubsystem indexerSystem, HopperSubsystem hopperSystem,
-                   ColorSensorSubsystem colorSensorSystem, IntakeSubsystem intakeSystem,
-                   ShooterSubsystem shooterSystem, String pathname) {
+            ColorSensorSubsystem colorSensorSystem, IntakeSubsystem intakeSystem,
+            ShooterSubsystem shooterSystem, String pathname) {
         super(
-                new DriveHolonomicTrajectory(swerveSystem, PathPlanner.loadPath(pathname, Auto.kMaxFetchVelocity,
-                        Auto.kMaxFetchAcc)),
+                new DriveHolonomicTrajectory(swerveSystem,
+                        PathPlanner.loadPath(pathname, Auto.kMaxFetchVelocity,
+                                Auto.kMaxFetchAcc)),
                 new IndexCargo(indexerSystem, () -> colorSensorSystem.isAllianceBall()),
                 new RunHopper(hopperSystem, () -> true),
                 new RunIntake(intakeSystem, () -> true),
-                new SpinShooter(shooterSystem, () -> true, () -> colorSensorSystem.isOpponentBall())
-        );
+                new SpinShooter(shooterSystem, () -> true, () -> true));
     }
 }
