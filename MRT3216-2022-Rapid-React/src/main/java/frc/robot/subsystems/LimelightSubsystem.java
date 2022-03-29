@@ -68,11 +68,6 @@ public class LimelightSubsystem extends SubsystemBase {
 		return limelightNT.getEntry("tv").getDouble(0) == 1;
 	}
 
-	/**
-	 * Returns whether the limelight has any valid targets (0 or 1)
-	 * 
-	 * @return whether the limelight has any valid targets
-	 */
 	public double getLatency() {
 		return limelightNT.getEntry("tl").getDouble(0);
 	}
@@ -177,6 +172,24 @@ public class LimelightSubsystem extends SubsystemBase {
 		} catch (Exception e) {
 			return false;
 		}
+	}
+
+	public void setStreamByInt(int mode) {
+		CameraStream newMode = CameraStream.PiPMain;
+
+		switch (mode) {
+			case 0:
+				newMode = CameraStream.Standard;
+				break;
+			case 1:
+				newMode = CameraStream.PiPMain;
+				break;
+			case 2:
+				newMode = CameraStream.PiPSecondary;
+				break;
+		}
+
+		this.setStream(newMode);
 	}
 
 	// Set snapshot:
