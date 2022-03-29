@@ -49,10 +49,8 @@ public class RobotContainer {
     // @Config(name = "Flywheel F", tabName = "Tuning", defaultValueNumeric =
     // Constants.Shooter.Flywheel.kF, methodName = "setFValue", methodTypes = {
     // double.class }, rowIndex = 0, columnIndex = 9)
-    // @Log(name = "Flywheel Velocity", tabName = "Tuning", methodName = "getRPM",
-    // rowIndex = 2, columnIndex = 8)
-    // @Log.Graph(name = "Flywheel Velocity G", tabName = "Tuning", methodName =
-    // "getRPM", width = 4, height = 3, rowIndex = 0, columnIndex = 4)
+    @Log(name = "Flywheel Velocity", tabName = "Tuning", methodName = "getRPM", rowIndex = 2, columnIndex = 8)
+    @Log.Graph(name = "Flywheel Velocity G", tabName = "Tuning", methodName = "getRPM", width = 4, height = 3, rowIndex = 0, columnIndex = 4)
     // @Log.Graph(name = "Flywheel Filter Value", tabName = "Tuning", methodName =
     // "getFilterValue", width = 4, height = 3, rowIndex = 3, columnIndex = 4)
     private ShooterSubsystem shooterSystem;
@@ -115,8 +113,8 @@ public class RobotContainer {
         // The first argument is the root container
         // The second argument is whether logging and config should be given separate
         // tabs
-        // Logger.configureLoggingAndConfig(this, false);
-        Logger.configureLogging(this);
+        Logger.configureLoggingAndConfig(this, false);
+        // Logger.configureLogging(this);
 
         // Configure the button bindings
         configureButtonBindings();
@@ -169,11 +167,7 @@ public class RobotContainer {
                 new RunIntake(this.intakeSystem, () -> true),
                 new RunHopper(this.hopperSystem, () -> true),
                 new IndexCargo(this.indexerSystem, () -> this.colorSensorSystem.isAllianceBall()),
-                new ConditionalCommand(
-                        new SpinShooter(this.shooterSystem, () -> true, () -> false),
-                        new InstantCommand(),
-                        () -> this.colorSensorSystem.isOpponentBall()
-                )));
+                new SpinShooter(this.shooterSystem, () -> true, () -> true)));
 
         // Turns the Limelight LEDs on, adjusts the hood, and then aims the drivebase if
         // a target is acquired
@@ -195,7 +189,8 @@ public class RobotContainer {
                 new SpinShooter(this.shooterSystem, () -> false, () -> false)));
 
         // Resets the Robots Odometry and Gyro values
-        controller.Y.whenPressed(() -> RobotContainer.getInstance().getDriveSystem().resetGyroAndOdometry(true), driveSystem);
+        controller.Y.whenPressed(() -> RobotContainer.getInstance().getDriveSystem().resetGyroAndOdometry(true),
+                driveSystem);
 
         controller.RightJoy.whenPressed(() -> climberSystem.invert());
         controller.LeftJoy.whenPressed(() -> climberSystem.tethered(!climberSystem.isTethered()));
@@ -205,15 +200,16 @@ public class RobotContainer {
                 }, // OnInit: do nothing
                 () -> {
                     if (climberSystem.isTethered()) {
-                        climberSystem.runMotors(controller.getRightTriggerAxis() - controller.getLeftTriggerAxis());
+                        climberSystem.runMotors(controller.getRightTriggerAxis()
+                                - controller.getLeftTriggerAxis());
                     } else {
                         climberSystem.runLeftMotor(controller.getLeftTriggerAxis());
                         climberSystem.runRightMotor(controller.getRightTriggerAxis());
                     }
                 }, // OnExecute:
-                // call
-                // run
-                // motors
+                   // call
+                   // run
+                   // motors
                 interrupted -> climberSystem.stop(), // OnEnd: stop motors
                 () -> false, // IsFinished: never finish
                 climberSystem)); // Required subsystem
@@ -268,35 +264,25 @@ public class RobotContainer {
     // this.hopperSystem.setPercentOutput(output);
     // }
 
-    // @Config.NumberSlider(name = "Ind. Shoot RPM", tabName = "Tuning",
-    // defaultValue = Constants.Shooter.Indexer.shootingRPM, min = 1000, max = 4000,
-    // blockIncrement = 50, rowIndex = 0, columnIndex = 2, height = 1, width = 1)
-    // public void setIndexerShootingRPM(double rPM) {
-    // this.indexerSystem.setShootingRPM(rPM);
-    // }
+    @Config.NumberSlider(name = "Ind. Shoot RPM", tabName = "Tuning", defaultValue = Constants.Shooter.Indexer.shootingRPM, min = 1000, max = 4000, blockIncrement = 50, rowIndex = 0, columnIndex = 2, height = 1, width = 1)
+    public void setIndexerShootingRPM(double rPM) {
+        this.indexerSystem.setShootingRPM(rPM);
+    }
 
-    // @Config.NumberSlider(name = "Ind. Index RPM", tabName = "Tuning",
-    // defaultValue = Constants.Shooter.Indexer.indexingRPM, min = 1000, max = 4000,
-    // blockIncrement = 50, rowIndex = 1, columnIndex = 2, height = 1, width = 1)
-    // public void setIndexerIndexRPM(double rPM) {
-    // this.indexerSystem.setIndexingRPM(rPM);
-    // }
+    @Config.NumberSlider(name = "Ind. Index RPM", tabName = "Tuning", defaultValue = Constants.Shooter.Indexer.indexingRPM, min = 1000, max = 4000, blockIncrement = 50, rowIndex = 1, columnIndex = 2, height = 1, width = 1)
+    public void setIndexerIndexRPM(double rPM) {
+        this.indexerSystem.setIndexingRPM(rPM);
+    }
 
-    // @Config.NumberSlider(name = "Sho. Shoot RPM", tabName = "Tuning",
-    // defaultValue = Constants.Shooter.Flywheel.targetShootingRPM, min = 1000, max
-    // = 4000, blockIncrement = 50, rowIndex = 0, columnIndex = 3, height = 1, width
-    // = 1)
-    // public void setShooterShootingRPM(double rPM) {
-    // this.shooterSystem.setShootingRPM(rPM);
-    // }
+    @Config.NumberSlider(name = "Sho. Shoot RPM", tabName = "Tuning", defaultValue = Constants.Shooter.Flywheel.targetShootingRPM, min = 1000, max = 4000, blockIncrement = 50, rowIndex = 0, columnIndex = 3, height = 1, width = 1)
+    public void setShooterShootingRPM(double rPM) {
+        this.shooterSystem.setShootingRPM(rPM);
+    }
 
-    // @Config.NumberSlider(name = "Sho. Eject RPM", tabName = "Tuning",
-    // defaultValue = Constants.Shooter.Flywheel.targetEjectRPM, min = 1000, max =
-    // 4000, blockIncrement = 50, rowIndex = 1, columnIndex = 3, height = 1, width =
-    // 1)
-    // public void setEjectRPM(double rPM) {
-    // this.shooterSystem.setEjectRPM(rPM);
-    // }
+    @Config.NumberSlider(name = "Sho. Eject RPM", tabName = "Tuning", defaultValue = Constants.Shooter.Flywheel.targetEjectRPM, min = 1000, max = 4000, blockIncrement = 50, rowIndex = 1, columnIndex = 3, height = 1, width = 1)
+    public void setEjectRPM(double rPM) {
+        this.shooterSystem.setEjectRPM(rPM);
+    }
 
     // @Config.NumberSlider(name = "Trans. Expo", tabName = "Tuning", defaultValue =
     // Constants.OI.kTranslationExpo, min = 0, max = 100, blockIncrement = 1,
