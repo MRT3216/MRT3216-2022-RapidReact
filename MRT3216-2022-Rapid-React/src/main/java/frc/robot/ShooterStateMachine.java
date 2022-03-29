@@ -15,8 +15,6 @@ public class ShooterStateMachine {
     private ShooterSubsystem shooterSystem;
     private ColorSensorSubsystem colorSystem;
     private boolean hasShot;
-    private boolean lastBallIsAllianceBall;
-    
     private double ballShotFilterThreshold;
 
     private ShooterStateMachine() {
@@ -36,25 +34,25 @@ public class ShooterStateMachine {
                 .whileActiveOnce(new InstantCommand(() -> ballIndexed(colorSystem.isAllianceBall())));
     }
 
-    private void ballShot() {
-        ball1 = ball2;
-        ball2 = Ball.NONE;
-        setBallInChute(false);
-        hasShot = true;
-        // System.out.println("Ball shot!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    public void setLastBall(Ball ball) {
+        if (ball1InChute) {
+            ball2 = ball;
+
+        } else {
+            if (ball1 != ball && ball1 != Ball.NONE) {
+                setBallInChute(true);
+            } else {
+                ball1 = ball;
+            }
+        }
     }
 
     public boolean hasShot() {
-        return this.hasShot();
+        return this.hasShot;
     }
 
     public void resetShot() {
         this.hasShot = false;
-    }
-
-    private void ballIndexed(boolean allianceBall) {
-        ball1 = allianceBall ? Ball.ALLIANCE : Ball.OPPONENT;
-        // System.out.println("Ball indexed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
 
     public void reverseEject() {
@@ -63,63 +61,34 @@ public class ShooterStateMachine {
         setBallInChute(false);
     }
 
-    public Ball getBall1() {
-        return ball1;
-    }
-
+    // Used for ShuffleBoard
     public String getBall1String() {
         return ball1.toString();
     }
 
-    public Ball getBall2() {
-        return ball2;
-    }
-
+    // Used for ShuffleBoard
     public String getBall2String() {
         return ball2.toString();
     }
 
-    /*
-    public void setBall1(Ball ball) {
-        this.ball1 = ball;
-    }
-
-    public void setBall2(Ball ball) {
-        this.ball2 = ball;
-    }
-    */
-
-    public void setLastBall(Ball ball) {
-        // System.out.println("Set Last Ball to: " + ball.toString() + "
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        if (ball1InChute) {
-            ball2 = ball;
-            // System.out.println("Set Ball 2 to: " + ball.toString() + "
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        } else {
-            if (ball1 != ball && ball1 != Ball.NONE) {
-                // ball1Changed = true;
-                setBallInChute(true);
-            } else {
-                ball1 = ball;
-            }
-        }
-        // System.out.println("Set Ball 1 to: " + ball.toString() + "
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    }
-
+    // Used for ShuffleBoard
     public boolean getBallInChute() {
         return this.ball1InChute;
     }
 
-    public void setBallInChute(boolean isBall1InChute) {
-        // System.out.println("Set Ball in chute from " + this.ball1InChute + " to " +
-        // isBall1InChute);
-        this.ball1InChute = isBall1InChute;
+    private void ballIndexed(boolean allianceBall) {
+        ball1 = allianceBall ? Ball.ALLIANCE : Ball.OPPONENT;
     }
 
-    public void setBallFilterThreshold(double ballShotFilterThreshold) {
-        this.ballShotFilterThreshold = ballShotFilterThreshold;
+    private void ballShot() {
+        ball1 = ball2;
+        ball2 = Ball.NONE;
+        setBallInChute(false);
+        hasShot = true;
+    }
+
+    private void setBallInChute(boolean isBall1InChute) {
+        this.ball1InChute = isBall1InChute;
     }
 
     public static ShooterStateMachine getInstance() {
