@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-import edu.wpi.first.wpilibj.DigitalInput;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.settings.Constants.Climber;
 import frc.robot.settings.RobotMap.ROBOT.CLIMBER;
@@ -12,21 +12,15 @@ public class ClimberSubsystem extends SubsystemBase {
     private final CANSparkMax leftMotor;
     private final CANSparkMax rightMotor;
 
-    private final DigitalInput rightSwitch;
-    private final DigitalInput leftSwitch;
-
     private boolean inverted;
     private boolean tethered;
 
     private ClimberSubsystem() {
-        leftSwitch = new DigitalInput(CLIMBER.LEFT_SWITCH);
-        rightSwitch = new DigitalInput(CLIMBER.RIGHT_SWITCH);
-
         leftMotor = new CANSparkMax(CLIMBER.LEFT_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
         rightMotor = new CANSparkMax(CLIMBER.RIGHT_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
         leftMotor.restoreFactoryDefaults();
         rightMotor.restoreFactoryDefaults();
-        
+
         leftMotor.setInverted(CLIMBER.LEFT_MOTOR_INVERTED);
         rightMotor.setInverted(CLIMBER.RIGHT_MOTOR_INVERTED);
 
