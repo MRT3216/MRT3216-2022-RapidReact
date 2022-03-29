@@ -23,9 +23,10 @@ public class ShooterStateMachine {
         this.shooterSystem = ShooterSubsystem.getInstance();
         this.colorSystem = ColorSensorSubsystem.getInstance();
         this.ballShotFilterThreshold = Constants.Shooter.Flywheel.ballShotfilterThreshold;
-        ball1 = Ball.NONE;
-        ball2 = Ball.NONE;
-        ball1InChute = false;
+        this.ball1 = Ball.NONE;
+        this.ball2 = Ball.NONE;
+        this.ball1InChute = false;
+        this.hasShot = false;
 
         new Trigger(
                 () -> shooterSystem.getFilterValue() < this.ballShotFilterThreshold)
@@ -35,7 +36,7 @@ public class ShooterStateMachine {
                 .whileActiveOnce(new InstantCommand(() -> ballIndexed(colorSystem.isAllianceBall())));
     }
 
-    public void ballShot() {
+    private void ballShot() {
         ball1 = ball2;
         ball2 = Ball.NONE;
         setBallInChute(false);
@@ -51,7 +52,7 @@ public class ShooterStateMachine {
         this.hasShot = false;
     }
 
-    public void ballIndexed(boolean allianceBall) {
+    private void ballIndexed(boolean allianceBall) {
         ball1 = allianceBall ? Ball.ALLIANCE : Ball.OPPONENT;
         // System.out.println("Ball indexed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
@@ -78,6 +79,7 @@ public class ShooterStateMachine {
         return ball2.toString();
     }
 
+    /*
     public void setBall1(Ball ball) {
         this.ball1 = ball;
     }
@@ -85,6 +87,7 @@ public class ShooterStateMachine {
     public void setBall2(Ball ball) {
         this.ball2 = ball;
     }
+    */
 
     public void setLastBall(Ball ball) {
         // System.out.println("Set Last Ball to: " + ball.toString() + "
