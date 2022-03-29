@@ -22,7 +22,8 @@ public class DriveHolonomicTrajectory extends DriveTrajectory {
 
     @Override
     public void initialize() {
-        PathPlannerState pPS = (PathPlannerState) trajectory.sample(0);
+        PathPlannerTrajectory pPT = (PathPlannerTrajectory) trajectory;
+        PathPlannerState pPS = pPT.getInitialState();
         Pose2d initialPose = new Pose2d(trajectory.getInitialPose().getTranslation(), pPS.holonomicRotation);
         swerveSubsystem.setCurrentRobotPose(initialPose);
         timer.start();
