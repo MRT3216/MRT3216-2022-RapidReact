@@ -20,8 +20,6 @@ public class LimelightSubsystem extends SubsystemBase {
 		NetworkTable table = NetworkTableInstance.getDefault().getTable(LimeLight.NTtable);
 		this.limelightNT = table;
 		this.horizontalFilter = LinearFilter.movingAverage(5);
-		// System.out.println("Trying to turn off LED with value: " +
-		// LimeLight.LEDMode.OFF.ordinal());
 		this.setLEDMode(LimeLight.LEDMode.OFF);
 	}
 
