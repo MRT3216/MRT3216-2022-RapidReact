@@ -52,8 +52,6 @@ public class HoodSubsystem extends ProfiledPIDSubsystem {
     public void useOutput(double output, TrapezoidProfile.State setpoint) {
         // Calculate the feedforward from the sepoint
         double feedforward = m_feedforward.calculate(setpoint.position, setpoint.velocity);
-        // System.out.println("Measurement: " + getMeasurement()+ " Output: " + output +
-        // " Feed-forward: " + feedforward);
         // Add the feedforward to the PID output to get the motor output
         double outputVoltage = output + feedforward;
 
@@ -85,18 +83,13 @@ public class HoodSubsystem extends ProfiledPIDSubsystem {
 
     public void setHoodAngle(double rads) {
         if (limelightSystem.hasTarget()) {
-            // System.out.println("Launch angle: " + rads);
             double goalRads = -Math.PI / 2 + rads + Hood.hoodStowedAngle;
 
             setGoal(goalRads);
-            // System.out.println("Goal radians: " + goalRads);
         }
     }
 
     public double getProjectileLaunchAngle() {
-        // System.out.println("Initial Vert: " +
-        // this.limelightSystem.getInitVerticalVelocity() + " Init Horz: " +
-        // this.limelightSystem.getInitHoriztonalVelocity());
         return Math.atan(
                 this.limelightSystem.getInitVerticalVelocity() / this.limelightSystem.getInitHoriztonalVelocity());
     }
