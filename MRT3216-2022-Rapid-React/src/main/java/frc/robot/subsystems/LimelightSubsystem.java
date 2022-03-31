@@ -22,7 +22,7 @@ public class LimelightSubsystem extends SubsystemBase {
 		NetworkTable table = NetworkTableInstance.getDefault().getTable(LimeLight.NTtable);
 		this.limelightNT = table;
 		this.horizontalFilter = LinearFilter.movingAverage(5);
-		this.setLEDMode(LimeLight.LEDMode.OFF);
+		//this.setLEDMode(LimeLight.LEDMode.OFF);
 		this.setStream(CameraStream.PiPMain);
 		this.distanceAdjustmentInMeters = Shooter.kDistanceAdjustmentInMeters;
 	}

@@ -68,7 +68,7 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledInit() {
         robotContainer.disablePIDSubsystems();
-        LimelightSubsystem.getInstance().setLEDMode(LEDMode.OFF);
+        // LimelightSubsystem.getInstance().setLEDMode(LEDMode.OFF);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        LimelightSubsystem.getInstance().setLEDMode(LEDMode.ON);
+        // LimelightSubsystem.getInstance().setLEDMode(LEDMode.ON);
         m_autonomousCommand = robotContainer.getAutonomousCommand();
         if (robotContainer.getDriveSystem() != null) {
             // schedule the autonomous command
