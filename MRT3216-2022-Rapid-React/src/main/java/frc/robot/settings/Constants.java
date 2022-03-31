@@ -22,7 +22,7 @@ public final class Constants {
 
     public static final class Drivetrain {
         // TODO: set these values
-        public static final double LEFT_FRONT_STEER_OFFSET = -Math.toRadians(19.33); 
+        public static final double LEFT_FRONT_STEER_OFFSET = -Math.toRadians(19.33);
         public static final double RIGHT_FRONT_STEER_OFFSET = -Math.toRadians(276.86);
         public static final double LEFT_REAR_STEER_OFFSET = -Math.toRadians(113.02);
         public static final double RIGHT_REAR_STEER_OFFSET = -Math.toRadians(47.62);
@@ -114,6 +114,7 @@ public final class Constants {
 
     public static final class Shooter {
         public static final double kWaitPeriod = 0;
+        public static final double kDistanceAdjustmentInMeters = 0;
 
         public static final class Flywheel {
             public static final boolean FLYWHEEL_MOTOR_INVERTED = true;

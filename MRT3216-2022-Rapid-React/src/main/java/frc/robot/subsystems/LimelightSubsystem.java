@@ -10,11 +10,13 @@ import frc.robot.settings.Constants.LimeLight.CameraMode;
 import frc.robot.settings.Constants.LimeLight.CameraStream;
 import frc.robot.settings.Constants.LimeLight.LEDMode;
 import frc.robot.settings.Constants.Projectile;
+import frc.robot.settings.Constants.Shooter;
 
 public class LimelightSubsystem extends SubsystemBase {
 	private static LimelightSubsystem instance;
 	private final NetworkTable limelightNT;
 	private final LinearFilter horizontalFilter;
+	private double distanceAdjustmentInMeters;
 
 	private LimelightSubsystem() {
 		NetworkTable table = NetworkTableInstance.getDefault().getTable(LimeLight.NTtable);
@@ -22,6 +24,7 @@ public class LimelightSubsystem extends SubsystemBase {
 		this.horizontalFilter = LinearFilter.movingAverage(5);
 		this.setLEDMode(LimeLight.LEDMode.OFF);
 		this.setStream(CameraStream.PiPMain);
+		this.distanceAdjustmentInMeters = Shooter.kDistanceAdjustmentInMeters;
 	}
 
 	/*
@@ -38,7 +41,7 @@ public class LimelightSubsystem extends SubsystemBase {
 				+ Projectile.kTargetGoalHorizontalOffest;
 
 		// The horizontal distance from the shooter to the center of the goal.
-		return robotXDistToGoal + Projectile.kShooterOffsetFromFrame;
+		return robotXDistToGoal + Projectile.kShooterOffsetFromFrame + this.distanceAdjustmentInMeters;
 	}
 
 	public double getInitHoriztonalVelocity() {
@@ -203,6 +206,10 @@ public class LimelightSubsystem extends SubsystemBase {
 		} catch (Exception e) {
 			return false;
 		}
+	}
+
+	public void setDistanceAdjustmentInMeters(double m) {
+		this.distanceAdjustmentInMeters = m;
 	}
 
 	public static LimelightSubsystem getInstance() {

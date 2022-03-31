@@ -95,7 +95,10 @@ public class RobotContainer {
     @Config(name = "Stream Mode", tabName = "Tuning", methodName = "setStreamByInt", methodTypes = {
             int.class }, rowIndex = 3, columnIndex = 2)
     @Log.BooleanBox(name = "Target Found", methodName = "hasTarget", rowIndex = 0, columnIndex = 3, width = 1, height = 1)
-    //@Log.BooleanBox(name = "Target Found", methodName = "hasTarget", rowIndex = 1, columnIndex = 3, width = 1, height = 1)
+    // @Log.BooleanBox(name = "Target Found", methodName = "hasTarget", rowIndex =
+    // 1, columnIndex = 3, width = 1, height = 1)
+    @Config.NumberSlider(name = "Dist. Adj.", tabName = "Tuning", defaultValue = Constants.Shooter.kDistanceAdjustmentInMeters, methodName = "setDistanceAdjustmentInMeters", methodTypes = {
+            double.class }, min = -2, max = 2, blockIncrement = 0.1, rowIndex = 1, columnIndex = 3)
     @Log.Dial(name = "Hor. Goal Distance", methodName = "getHorizontalGoalDistance", min = -90, max = 90, rowIndex = 0, columnIndex = 6, height = 1, width = 1)
     @Log.Dial(name = "Horizontal Offset", methodName = "getHorizontalOffset", min = -90, max = 90, rowIndex = 0, columnIndex = 4, height = 1, width = 1)
     @Log.Dial(name = "Vertical Offset", methodName = "getVerticalOffset", min = -90, max = 90, rowIndex = 0, columnIndex = 5, height = 1, width = 1)
