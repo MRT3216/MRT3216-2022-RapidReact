@@ -59,7 +59,7 @@ public class LimelightSubsystem extends SubsystemBase {
 	}
 
 	public double getInitialRPM() {
-		return 165.83 * getHorizontalGoalDistance() + 1971.2;
+		return 146 * getHorizontalGoalDistance() + 1944.9;
 	}
 
 	// ---------- getters ----------

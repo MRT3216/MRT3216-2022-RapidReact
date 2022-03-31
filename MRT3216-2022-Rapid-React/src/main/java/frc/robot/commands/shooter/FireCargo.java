@@ -29,7 +29,8 @@ public class FireCargo extends ParallelCommandGroup {
                 new RunIndexer(indexer, () -> true,
                         shooterSystem::isReadyToShoot,
                         colorSensor::isOpponentBall),
-                //new SpinShooter(shooterSystem, () -> true, () -> false, limelightSystem::getInitialRPM));
-                new SpinShooter(shooterSystem, () -> true, () -> false));
+                // TODO: To shoot with manual control, change these
+                new SpinShooter(shooterSystem, () -> true, () -> false, limelightSystem::getInitialRPM));
+                //new SpinShooter(shooterSystem, () -> true, () -> false));
     }
 }

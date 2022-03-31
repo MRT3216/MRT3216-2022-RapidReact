@@ -1,0 +1,117 @@
+{
+  "tabPane": [
+    {
+      "title": "Driver",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "3,0": {
+            "size": [
+              4,
+              4
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://limelight",
+              "_title": "limelight",
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": false,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
+            }
+          },
+          "7,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[0]",
+              "_title": "Autonomous"
+            }
+          },
+          "1,0": {
+            "size": [
+              2,
+              4
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/RobotContainer/Target Found",
+              "_title": "Target Found",
+              "Colors/Color when true": "#00FF00FF",
+              "Colors/Color when false": "#000000FF"
+            }
+          },
+          "0,0": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///FMSInfo/IsRedAlliance",
+              "_title": "FMSInfo/IsRedAlliance",
+              "Colors/Color when true": "#FF0000FF",
+              "Colors/Color when false": "#0000FFFF"
+            }
+          },
+          "7,1": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Basic FMS Info",
+              "_source0": "network_table:///FMSInfo",
+              "_title": "/FMSInfo"
+            }
+          },
+          "9,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Tuning/Auto Delay",
+              "_title": "Shuffleboard/Tuning/Auto Delay"
+            }
+          },
+          "7,2": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///Shuffleboard/Tuning/Dist. Adj.",
+              "_title": "Distance Adjustment",
+              "Slider Settings/Min": -2.0,
+              "Slider Settings/Max": 2.0,
+              "Slider Settings/Block increment": 0.1,
+              "Visuals/Display value": true
+            }
+          }
+        }
+      }
+    }
+  ],
+  "windowGeometry": {
+    "x": 56.79999923706055,
+    "y": 0.800000011920929,
+    "width": 1484.0,
+    "height": 668.7999877929688
+  }
+}

@@ -7,16 +7,29 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.OI.Gamepad;
 import frc.robot.OI.OIUtils;
 import frc.robot.commands.TeleDrive;
-import frc.robot.commands.shooter.*;
+import frc.robot.commands.shooter.AimAndFireCargo;
+import frc.robot.commands.shooter.FireCargo;
+
+import frc.robot.commands.shooter.IndexCargo;
+import frc.robot.commands.shooter.RunHopper;
+import frc.robot.commands.shooter.RunIndexer;
+import frc.robot.commands.shooter.RunIntake;
+import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.settings.Constants;
 import frc.robot.settings.Constants.Auto;
 import frc.robot.settings.Constants.Drivetrain;
 import frc.robot.settings.Constants.LimeLight.CameraStream;
+import frc.robot.settings.Constants.LimeLight.LEDMode;
 import frc.robot.settings.RobotMap;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.ColorSensorSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.shooter.HoodSubsystem;
 import frc.robot.subsystems.shooter.HopperSubsystem;
 import frc.robot.subsystems.shooter.IndexerSubsystem;
@@ -77,14 +90,14 @@ public class RobotContainer {
     private Gamepad controller;
     private ControlStick controlStick;
     @Config(name = "LED Mode", tabName = "Tuning", methodName = "setLEDModeByInt", methodTypes = {
-            int.class}, rowIndex = 3, columnIndex = 3)
+            int.class }, rowIndex = 3, columnIndex = 3)
     @Config(name = "Stream Mode", tabName = "Tuning", methodName = "setStreamByInt", methodTypes = {
-            int.class}, rowIndex = 3, columnIndex = 2)
+            int.class }, rowIndex = 3, columnIndex = 2)
     @Log.BooleanBox(name = "Target Found", methodName = "hasTarget", rowIndex = 0, columnIndex = 3, width = 1, height = 1)
     // @Log.BooleanBox(name = "Target Found", methodName = "hasTarget", rowIndex =
     // 1, columnIndex = 3, width = 1, height = 1)
     @Config.NumberSlider(name = "Dist. Adj.", tabName = "Tuning", defaultValue = Constants.Shooter.kDistanceAdjustmentInMeters, methodName = "setDistanceAdjustmentInMeters", methodTypes = {
-            double.class}, min = -2, max = 2, blockIncrement = 0.1, rowIndex = 1, columnIndex = 3)
+            double.class }, min = -2, max = 2, blockIncrement = 0.1, rowIndex = 0, columnIndex = 0)
     @Log.Dial(name = "Hor. Goal Distance", methodName = "getHorizontalGoalDistance", min = -90, max = 90, rowIndex = 0, columnIndex = 6, height = 1, width = 1)
     @Log.Dial(name = "Horizontal Offset", methodName = "getHorizontalOffset", min = -90, max = 90, rowIndex = 0, columnIndex = 4, height = 1, width = 1)
     @Log.Dial(name = "Vertical Offset", methodName = "getVerticalOffset", min = -90, max = 90, rowIndex = 0, columnIndex = 5, height = 1, width = 1)
@@ -173,9 +186,14 @@ public class RobotContainer {
 
         // Fires cargo (assumes all the aiming has already been completed)
         controller.LB.whileHeld(
-                new AimAndFireCargo(this.shooterSystem, this.indexerSystem, this.hopperSystem, this.colorSensorSystem, this.limelightSystem,
-                        this.driveSystem, this.hoodSystem)
-        );
+                new ParallelCommandGroup(
+                        new StartEndCommand(
+                                () -> limelightSystem.setLEDMode(LEDMode.ON),
+                                () -> limelightSystem.setLEDMode(LEDMode.OFF)),
+                        new AimAndFireCargo(this.shooterSystem, this.indexerSystem, this.hopperSystem,
+                                this.colorSensorSystem,
+                                this.limelightSystem,
+                                this.driveSystem, this.hoodSystem)));
 
         // Runs the intake, hopper, and indexer
         // The indexer and shooter will vary behaviour depending on whether an alliance
@@ -188,8 +206,9 @@ public class RobotContainer {
 
         // Turns the Limelight LEDs on, adjusts the hood, and then aims the drivebase if
         // a target is acquired
-        controller.A.whenHeld(new FireCargo(this.shooterSystem, this.indexerSystem, this.hopperSystem, this.colorSensorSystem,
-                this.limelightSystem));
+        controller.A.whenHeld(
+                new FireCargo(this.shooterSystem, this.indexerSystem, this.hopperSystem, this.colorSensorSystem,
+                        this.limelightSystem));
 
         // This is to run things in reverse to remove balls
         controller.X.whileHeld(new ParallelCommandGroup(
@@ -216,9 +235,9 @@ public class RobotContainer {
                         climberSystem.runRightMotor(controller.getRightTriggerAxis());
                     }
                 }, // OnExecute:
-                // call
-                // run
-                // motors
+                   // call
+                   // run
+                   // motors
                 interrupted -> climberSystem.stop(), // OnEnd: stop motors
                 () -> false, // IsFinished: never finish
                 climberSystem)); // Required subsystem
@@ -228,16 +247,13 @@ public class RobotContainer {
                         new RunIntake(this.intakeSystem, () -> true),
                         new RunHopper(this.hopperSystem, () -> true),
                         new IndexCargo(this.indexerSystem, () -> this.colorSensorSystem.isAllianceBall()),
-                        new SpinShooter(this.shooterSystem, () -> true, () -> true))
-        );
+                        new SpinShooter(this.shooterSystem, () -> true, () -> true)));
 
         controlStick.button2.whenHeld(
                 new ParallelCommandGroup(
                         new RunHopper(this.hopperSystem, () -> false),
                         new RunIndexer(this.indexerSystem, () -> false, () -> true, () -> false),
-                        new SpinShooter(this.shooterSystem, () -> false, () -> false))
-        );
-
+                        new SpinShooter(this.shooterSystem, () -> false, () -> false)));
 
     }
 
@@ -290,32 +306,41 @@ public class RobotContainer {
     // this.hopperSystem.setPercentOutput(output);
     // }
 
-
     // control stick
     /*
-    Fender shot: 3
-    Hangar Shot: 4
+     * Fender shot: 3
+     * Hangar Shot: 4
      */
 
-    @Config.NumberSlider(name = "Ind. Shoot RPM", tabName = "Tuning", defaultValue = Constants.Shooter.Indexer.shootingRPM, min = 1000, max = 4000, blockIncrement = 50, rowIndex = 0, columnIndex = 2, height = 1, width = 1)
-    public void setIndexerShootingRPM(double rPM) {
-        this.indexerSystem.setShootingRPM(rPM);
-    }
+    // @Config.NumberSlider(name = "Ind. Shoot RPM", tabName = "Tuning",
+    // defaultValue = Constants.Shooter.Indexer.shootingRPM, min = 1000, max = 4000,
+    // blockIncrement = 50, rowIndex = 0, columnIndex = 2, height = 1, width = 1)
+    // public void setIndexerShootingRPM(double rPM) {
+    // this.indexerSystem.setShootingRPM(rPM);
+    // }
 
-    @Config.NumberSlider(name = "Ind. Index RPM", tabName = "Tuning", defaultValue = Constants.Shooter.Indexer.indexingRPM, min = 1000, max = 4000, blockIncrement = 50, rowIndex = 1, columnIndex = 2, height = 1, width = 1)
-    public void setIndexerIndexRPM(double rPM) {
-        this.indexerSystem.setIndexingRPM(rPM);
-    }
+    // @Config.NumberSlider(name = "Ind. Index RPM", tabName = "Tuning",
+    // defaultValue = Constants.Shooter.Indexer.indexingRPM, min = 1000, max = 4000,
+    // blockIncrement = 50, rowIndex = 1, columnIndex = 2, height = 1, width = 1)
+    // public void setIndexerIndexRPM(double rPM) {
+    // this.indexerSystem.setIndexingRPM(rPM);
+    // }
 
-    @Config.NumberSlider(name = "Sho. Shoot RPM", tabName = "Tuning", defaultValue = Constants.Shooter.Flywheel.targetShootingRPM, min = 1000, max = 4000, blockIncrement = 50, rowIndex = 0, columnIndex = 3, height = 1, width = 1)
-    public void setShooterShootingRPM(double rPM) {
-        this.shooterSystem.setShootingRPM(rPM);
-    }
+    // @Config.NumberSlider(name = "Sho. Shoot RPM", tabName = "Tuning",
+    // defaultValue = Constants.Shooter.Flywheel.targetShootingRPM, min = 1000, max
+    // = 4000, blockIncrement = 50, rowIndex = 0, columnIndex = 3, height = 1, width
+    // = 1)
+    // public void setShooterShootingRPM(double rPM) {
+    // this.shooterSystem.setShootingRPM(rPM);
+    // }
 
-    @Config.NumberSlider(name = "Sho. Eject RPM", tabName = "Tuning", defaultValue = Constants.Shooter.Flywheel.targetEjectRPM, min = 1000, max = 4000, blockIncrement = 50, rowIndex = 1, columnIndex = 3, height = 1, width = 1)
-    public void setEjectRPM(double rPM) {
-        this.shooterSystem.setEjectRPM(rPM);
-    }
+    // @Config.NumberSlider(name = "Sho. Eject RPM", tabName = "Tuning",
+    // defaultValue = Constants.Shooter.Flywheel.targetEjectRPM, min = 1000, max =
+    // 4000, blockIncrement = 50, rowIndex = 1, columnIndex = 3, height = 1, width =
+    // 1)
+    // public void setEjectRPM(double rPM) {
+    // this.shooterSystem.setEjectRPM(rPM);
+    // }
 
     @Config(name = "Auto Delay", tabName = "Tuning", methodName = "setStartDelayTime", defaultValueNumeric = Auto.kStartDelayTime, methodTypes = {
             double.class }, rowIndex = 4, columnIndex = 3)
