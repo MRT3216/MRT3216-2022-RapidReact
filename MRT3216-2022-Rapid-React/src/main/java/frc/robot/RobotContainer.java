@@ -8,28 +8,19 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import frc.robot.OI.ControlStick;
 import frc.robot.OI.Gamepad;
 import frc.robot.OI.OIUtils;
 import frc.robot.commands.TeleDrive;
-import frc.robot.commands.shooter.AimAndFireCargo;
-import frc.robot.commands.shooter.FireCargo;
-
-import frc.robot.commands.shooter.IndexCargo;
-import frc.robot.commands.shooter.RunHopper;
-import frc.robot.commands.shooter.RunIndexer;
-import frc.robot.commands.shooter.RunIntake;
-import frc.robot.commands.shooter.SpinShooter;
+import frc.robot.commands.shooter.*;
 import frc.robot.settings.Constants;
 import frc.robot.settings.Constants.Auto;
 import frc.robot.settings.Constants.Drivetrain;
 import frc.robot.settings.Constants.LimeLight.CameraStream;
 import frc.robot.settings.Constants.LimeLight.LEDMode;
 import frc.robot.settings.RobotMap;
-import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.ColorSensorSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
-import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.*;
 import frc.robot.subsystems.shooter.HoodSubsystem;
 import frc.robot.subsystems.shooter.HopperSubsystem;
 import frc.robot.subsystems.shooter.IndexerSubsystem;
@@ -220,8 +211,11 @@ public class RobotContainer {
         controller.Y.whenPressed(() -> RobotContainer.getInstance().getDriveSystem().resetGyroAndOdometry(true),
                 driveSystem);
 
-        controller.RightJoy.whenPressed(() -> climberSystem.invert());
-        controller.LeftJoy.whenPressed(() -> climberSystem.tethered(!climberSystem.isTethered()));
+        Button dpadDownButton = new Button(() -> controller.getPOV() == 180);
+        Button dpadUpButton = new Button(() -> controller.getPOV() == 0);
+
+        dpadDownButton.whenPressed(() -> climberSystem.invert());
+        dpadUpButton.whenPressed(() -> climberSystem.tethered(!climberSystem.isTethered()));
 
         climberSystem.setDefaultCommand(new FunctionalCommand(
                 () -> {
