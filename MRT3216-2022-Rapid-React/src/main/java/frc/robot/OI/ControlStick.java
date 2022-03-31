@@ -30,23 +30,27 @@ public class ControlStick extends Joystick {
     public static final int BUTTON_11 = 11;
     public static final int BUTTON_12 = 12;
 
-    /** Axis Mapping for a single joystick ************************************/
+    /**
+     * Axis Mapping for a single joystick
+     ************************************/
     public static final int JOYSTICK_Y_AXIS = 1;
     public static final int JOYSTICK_THROTTLE_AXIS = 3;
 
-    /** Button Declarations ***************************************************/
-    JoystickButton Trigger = new JoystickButton(this, BUTTON_TRIGGER);
-    JoystickButton button2 = new JoystickButton(this, BUTTON_2);
-    JoystickButton button3 = new JoystickButton(this, BUTTON_3);
-    JoystickButton button4 = new JoystickButton(this, BUTTON_4);
-    JoystickButton button5 = new JoystickButton(this, BUTTON_5);
-    JoystickButton button6 = new JoystickButton(this, BUTTON_6);
-    JoystickButton button7 = new JoystickButton(this, BUTTON_7);
-    JoystickButton button8 = new JoystickButton(this, BUTTON_8);
-    JoystickButton button9 = new JoystickButton(this, BUTTON_9);
-    JoystickButton button10 = new JoystickButton(this, BUTTON_10);
-    JoystickButton button11 = new JoystickButton(this, BUTTON_11);
-    JoystickButton button12 = new JoystickButton(this, BUTTON_12);
+    /**
+     * Button Declarations
+     ***************************************************/
+    public JoystickButton Trigger = new JoystickButton(this, BUTTON_TRIGGER);
+    public JoystickButton button2 = new JoystickButton(this, BUTTON_2);
+    public JoystickButton button3 = new JoystickButton(this, BUTTON_3);
+    public JoystickButton button4 = new JoystickButton(this, BUTTON_4);
+    public JoystickButton button5 = new JoystickButton(this, BUTTON_5);
+    public JoystickButton button6 = new JoystickButton(this, BUTTON_6);
+    public JoystickButton button7 = new JoystickButton(this, BUTTON_7);
+    public JoystickButton button8 = new JoystickButton(this, BUTTON_8);
+    public JoystickButton button9 = new JoystickButton(this, BUTTON_9);
+    public JoystickButton button10 = new JoystickButton(this, BUTTON_10);
+    public JoystickButton button11 = new JoystickButton(this, BUTTON_11);
+    public JoystickButton button12 = new JoystickButton(this, BUTTON_12);
 
     public ControlStick(int port) {
         super(port);
