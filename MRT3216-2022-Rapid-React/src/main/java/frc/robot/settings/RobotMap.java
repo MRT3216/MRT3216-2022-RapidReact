@@ -68,5 +68,6 @@ public final class RobotMap {
 
     public final static class DRIVE_STATION {
         public static final int USB_XBOX_CONTROLLER = 0;
+        public static final int USB_JOYSTICK = 1;
     }
 }

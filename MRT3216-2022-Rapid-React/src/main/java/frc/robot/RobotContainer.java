@@ -4,34 +4,18 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.OI.Gamepad;
 import frc.robot.OI.OIUtils;
 import frc.robot.commands.TeleDrive;
-import frc.robot.commands.shooter.AdjustHood;
-import frc.robot.commands.shooter.AimDrivebase;
-import frc.robot.commands.shooter.FireCargo;
-import frc.robot.commands.shooter.IndexCargo;
-import frc.robot.commands.shooter.RunHopper;
-import frc.robot.commands.shooter.RunIndexer;
-import frc.robot.commands.shooter.RunIntake;
-import frc.robot.commands.shooter.SpinShooter;
+import frc.robot.commands.shooter.*;
 import frc.robot.settings.Constants;
 import frc.robot.settings.Constants.Auto;
 import frc.robot.settings.Constants.Drivetrain;
 import frc.robot.settings.Constants.LimeLight.CameraStream;
 import frc.robot.settings.Constants.LimeLight.LEDMode;
 import frc.robot.settings.RobotMap;
-import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.ColorSensorSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
-import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.*;
 import frc.robot.subsystems.shooter.HoodSubsystem;
 import frc.robot.subsystems.shooter.HopperSubsystem;
 import frc.robot.subsystems.shooter.IndexerSubsystem;
@@ -90,15 +74,16 @@ public class RobotContainer {
     private HopperSubsystem hopperSystem;
     private ClimberSubsystem climberSystem;
     private Gamepad controller;
+    private ControlStick controlStick;
     @Config(name = "LED Mode", tabName = "Tuning", methodName = "setLEDModeByInt", methodTypes = {
-            int.class }, rowIndex = 3, columnIndex = 3)
+            int.class}, rowIndex = 3, columnIndex = 3)
     @Config(name = "Stream Mode", tabName = "Tuning", methodName = "setStreamByInt", methodTypes = {
-            int.class }, rowIndex = 3, columnIndex = 2)
+            int.class}, rowIndex = 3, columnIndex = 2)
     @Log.BooleanBox(name = "Target Found", methodName = "hasTarget", rowIndex = 0, columnIndex = 3, width = 1, height = 1)
     // @Log.BooleanBox(name = "Target Found", methodName = "hasTarget", rowIndex =
     // 1, columnIndex = 3, width = 1, height = 1)
     @Config.NumberSlider(name = "Dist. Adj.", tabName = "Tuning", defaultValue = Constants.Shooter.kDistanceAdjustmentInMeters, methodName = "setDistanceAdjustmentInMeters", methodTypes = {
-            double.class }, min = -2, max = 2, blockIncrement = 0.1, rowIndex = 1, columnIndex = 3)
+            double.class}, min = -2, max = 2, blockIncrement = 0.1, rowIndex = 1, columnIndex = 3)
     @Log.Dial(name = "Hor. Goal Distance", methodName = "getHorizontalGoalDistance", min = -90, max = 90, rowIndex = 0, columnIndex = 6, height = 1, width = 1)
     @Log.Dial(name = "Horizontal Offset", methodName = "getHorizontalOffset", min = -90, max = 90, rowIndex = 0, columnIndex = 4, height = 1, width = 1)
     @Log.Dial(name = "Vertical Offset", methodName = "getVerticalOffset", min = -90, max = 90, rowIndex = 0, columnIndex = 5, height = 1, width = 1)
@@ -157,6 +142,7 @@ public class RobotContainer {
         this.climberSystem = ClimberSubsystem.getInstance();
         this.shooterSystem = ShooterSubsystem.getInstance();
         this.controller = new Gamepad(RobotMap.DRIVE_STATION.USB_XBOX_CONTROLLER);
+        this.controlStick = new ControlStick(RobotMap.DRIVE_STATION.USB_JOYSTICK);
         this.limelightSystem = LimelightSubsystem.getInstance();
         this.limelightSystem.setStream(CameraStream.PiPSecondary);
         this.limelightSystem.setPipeline(0);
@@ -235,12 +221,31 @@ public class RobotContainer {
                         climberSystem.runRightMotor(controller.getRightTriggerAxis());
                     }
                 }, // OnExecute:
-                   // call
-                   // run
-                   // motors
+                // call
+                // run
+                // motors
                 interrupted -> climberSystem.stop(), // OnEnd: stop motors
                 () -> false, // IsFinished: never finish
                 climberSystem)); // Required subsystem
+
+        controlStick.Trigger.whenHeld(
+                new ParallelCommandGroup(
+                        new RunIntake(this.intakeSystem, () -> true),
+                        new RunHopper(this.hopperSystem, () -> true),
+                        new IndexCargo(this.indexerSystem, () -> this.colorSensorSystem.isAllianceBall()),
+                        new SpinShooter(this.shooterSystem, () -> true, () -> true))
+        );
+
+        controlStick.button2.whenHeld(
+                new ParallelCommandGroup(
+                        new RunHopper(this.hopperSystem, () -> false),
+                        new RunIndexer(this.indexerSystem, () -> false, () -> true, () -> false),
+                        new SpinShooter(this.shooterSystem, () -> false, () -> false))
+        );
+
+        //todo: make fender / hangar shots work
+
+
     }
 
     public void disablePIDSubsystems() {
@@ -291,6 +296,13 @@ public class RobotContainer {
     // public void setPercentOutput(double output) {
     // this.hopperSystem.setPercentOutput(output);
     // }
+
+
+    // control stick
+    /*
+    Fender shot: 3
+    Hangar Shot: 4
+     */
 
     @Config.NumberSlider(name = "Ind. Shoot RPM", tabName = "Tuning", defaultValue = Constants.Shooter.Indexer.shootingRPM, min = 1000, max = 4000, blockIncrement = 50, rowIndex = 0, columnIndex = 2, height = 1, width = 1)
     public void setIndexerShootingRPM(double rPM) {
