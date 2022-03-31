@@ -14,15 +14,15 @@ import frc.robot.subsystems.shooter.HopperSubsystem;
 import frc.robot.subsystems.shooter.IndexerSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 
-public class TwoBall extends SequentialCommandGroup {
-    public TwoBall(SwerveSubsystem swerveSystem, IndexerSubsystem indexerSystem,
-            ColorSensorSubsystem colorSensorSystem,
-            HopperSubsystem hopperSystem, IntakeSubsystem intakeSystem, ShooterSubsystem shooterSystem,
-            LimelightSubsystem limelightSystem, HoodSubsystem hoodSystem, Double startDelayTime) {
+public class HangerTwoBall extends SequentialCommandGroup {
+    public HangerTwoBall(SwerveSubsystem swerveSystem, IndexerSubsystem indexerSystem,
+                         ColorSensorSubsystem colorSensorSystem,
+                         HopperSubsystem hopperSystem, IntakeSubsystem intakeSystem, ShooterSubsystem shooterSystem,
+                         LimelightSubsystem limelightSystem, HoodSubsystem hoodSystem, Double startDelayTime) {
         super(
                 new WaitCommand(startDelayTime),
                 new GoFetch(swerveSystem, indexerSystem, hopperSystem, colorSensorSystem, intakeSystem,
-                        shooterSystem, "2Ball1.1"),
+                        shooterSystem, "2Ball2.1"),
                 new WaitCommand(Constants.Auto.kDriveToShootDelay),
                 new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,
                         limelightSystem, swerveSystem, hoodSystem, 2));

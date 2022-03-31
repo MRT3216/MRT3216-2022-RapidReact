@@ -4,13 +4,6 @@
 
 package frc.robot;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Dictionary;
-import java.util.Hashtable;
-import java.util.function.Supplier;
-
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -19,7 +12,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.auto.AutoAimAndShoot;
-import frc.robot.commands.auto.autoProcedures.TwoBall;
+import frc.robot.commands.auto.autoProcedures.HPTwoBall;
+import frc.robot.commands.auto.autoProcedures.HangerTwoBall;
 import frc.robot.settings.Constants.Directories;
 import frc.robot.subsystems.ColorSensorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -29,6 +23,13 @@ import frc.robot.subsystems.shooter.HoodSubsystem;
 import frc.robot.subsystems.shooter.HopperSubsystem;
 import frc.robot.subsystems.shooter.IndexerSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.function.Supplier;
 
 /** Add your docs here. */
 public class AutoChooser {
@@ -86,8 +87,12 @@ public class AutoChooser {
         chooser.addOption("Just shoot",
                 () -> new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,
                         limelightSystem, swerveSystem, hoodSystem, 1));
-        chooser.addOption("two ball",
-                () -> new TwoBall(this.swerveSystem, this.indexerSystem, this.colorSensorSystem, this.hopperSystem,
+        chooser.addOption("HPtwo ball",
+                () -> new HPTwoBall(this.swerveSystem, this.indexerSystem, this.colorSensorSystem, this.hopperSystem,
+                        this.intakeSystem, this.shooterSystem, this.limelightSystem, this.hoodSystem,
+                        RobotContainer.getInstance().getAutoStartDelayTime()));
+        chooser.addOption("Hanger two ball",
+                () -> new HangerTwoBall(this.swerveSystem, this.indexerSystem, this.colorSensorSystem, this.hopperSystem,
                         this.intakeSystem, this.shooterSystem, this.limelightSystem, this.hoodSystem,
                         RobotContainer.getInstance().getAutoStartDelayTime()));
         SmartDashboard.putData(chooser);
