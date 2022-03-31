@@ -4,7 +4,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.*;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.OI.Gamepad;
 import frc.robot.OI.OIUtils;
 import frc.robot.commands.TeleDrive;
@@ -13,7 +15,6 @@ import frc.robot.settings.Constants;
 import frc.robot.settings.Constants.Auto;
 import frc.robot.settings.Constants.Drivetrain;
 import frc.robot.settings.Constants.LimeLight.CameraStream;
-import frc.robot.settings.Constants.LimeLight.LEDMode;
 import frc.robot.settings.RobotMap;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.shooter.HoodSubsystem;
@@ -172,8 +173,9 @@ public class RobotContainer {
 
         // Fires cargo (assumes all the aiming has already been completed)
         controller.LB.whileHeld(
-                new FireCargo(this.shooterSystem, this.indexerSystem, this.hopperSystem,
-                        this.colorSensorSystem, this.limelightSystem));
+                new AimAndFireCargo(this.shooterSystem, this.indexerSystem, this.hopperSystem, this.colorSensorSystem, this.limelightSystem,
+                        this.driveSystem, this.hoodSystem)
+        );
 
         // Runs the intake, hopper, and indexer
         // The indexer and shooter will vary behaviour depending on whether an alliance
@@ -186,15 +188,8 @@ public class RobotContainer {
 
         // Turns the Limelight LEDs on, adjusts the hood, and then aims the drivebase if
         // a target is acquired
-        controller.A.whenHeld(new ParallelCommandGroup(
-                new StartEndCommand(
-                        () -> limelightSystem.setLEDMode(LEDMode.ON),
-                        () -> limelightSystem.setLEDMode(LEDMode.OFF)),
-                new AdjustHood(hoodSystem),
-                new ConditionalCommand(
-                        new AimDrivebase(driveSystem, limelightSystem),
-                        new InstantCommand(),
-                        limelightSystem::hasTarget)));
+        controller.A.whenHeld(new FireCargo(this.shooterSystem, this.indexerSystem, this.hopperSystem, this.colorSensorSystem,
+                this.limelightSystem));
 
         // This is to run things in reverse to remove balls
         controller.X.whileHeld(new ParallelCommandGroup(
@@ -242,8 +237,6 @@ public class RobotContainer {
                         new RunIndexer(this.indexerSystem, () -> false, () -> true, () -> false),
                         new SpinShooter(this.shooterSystem, () -> false, () -> false))
         );
-
-        //todo: make fender / hangar shots work
 
 
     }
