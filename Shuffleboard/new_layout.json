@@ -43,7 +43,7 @@
             "content": {
               "_type": "Boolean Box",
               "_source0": "network_table:///FMSInfo/IsRedAlliance",
-              "_title": "FMSInfo/IsRedAlliance",
+              "_title": "Alliance",
               "Colors/Color when true": "#FF0000FF",
               "Colors/Color when false": "#0000FFFF"
             }
@@ -56,7 +56,7 @@
             "content": {
               "_type": "Basic FMS Info",
               "_source0": "network_table:///FMSInfo",
-              "_title": "/FMSInfo"
+              "_title": "FMSInfo"
             }
           },
           "9,0": {
@@ -67,7 +67,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///Shuffleboard/Tuning/Auto Delay",
-              "_title": "Shuffleboard/Tuning/Auto Delay"
+              "_title": "Auto Delay"
             }
           },
           "7,2": {
@@ -109,9 +109,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 56.0,
-    "y": 0.800000011920929,
-    "width": 1484.0,
-    "height": 668.7999877929688
+    "x": 55.20000076293945,
+    "y": -7.199999809265137,
+    "width": 1488.0,
+    "height": 878.4000244140625
   }
 }
