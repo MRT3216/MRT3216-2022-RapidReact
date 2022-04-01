@@ -122,8 +122,8 @@ public final class Constants {
             public static final double ballShotfilterThreshold = -250;
             public static final double ballShotDebounceTime = 0.5;
 
-            public static final double targetShootingRPM = 2800;
-            public static final double acceptableShootingRPM = 2750;
+            public static final double targetShootingRPM = 2345;
+            public static final double acceptableShootingRPM = 2300;
             public static final double targetEjectRPM = 1500;
             public static final double acceptableEjectRPM = 1450;
 
