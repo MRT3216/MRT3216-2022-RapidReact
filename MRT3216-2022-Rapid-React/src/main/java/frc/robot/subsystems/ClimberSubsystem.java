@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.settings.Constants.Climber;
 import frc.robot.settings.RobotMap.ROBOT.CLIMBER;
@@ -29,6 +28,9 @@ public class ClimberSubsystem extends SubsystemBase {
 
         leftMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
         rightMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+
+        tethered = true;
+        inverted = false;
 
         this.stop();
     }
