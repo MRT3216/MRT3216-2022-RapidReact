@@ -88,7 +88,7 @@ public class AutoChooser {
         chooser.addOption("Just shoot",
                 () -> new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,
                         limelightSystem, swerveSystem, hoodSystem, 1));
-        chooser.addOption("HPtwo ball",
+        chooser.addOption("Human two ball",
                 () -> new HPTwoBall(this.swerveSystem, this.indexerSystem, this.colorSensorSystem, this.hopperSystem,
                         this.intakeSystem, this.shooterSystem, this.limelightSystem, this.hoodSystem,
                         RobotContainer.getInstance().getAutoStartDelayTime()));
