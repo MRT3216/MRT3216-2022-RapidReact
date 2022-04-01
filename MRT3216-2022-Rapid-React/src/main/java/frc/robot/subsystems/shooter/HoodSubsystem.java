@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 import frc.robot.settings.Constants.Shooter.Hood;
@@ -82,16 +83,19 @@ public class HoodSubsystem extends ProfiledPIDSubsystem {
     }
 
     public void setHoodAngle(double rads) {
-        if (limelightSystem.hasTarget()) {
-            double goalRads = -Math.PI / 2 + rads + Hood.hoodStowedAngle;
+        double goalRads = -Math.PI / 2 + rads + Hood.hoodStowedAngle;
 
-            setGoal(goalRads);
-        }
+        setGoal(goalRads);
     }
 
     public double getProjectileLaunchAngle() {
-        return Math.atan(
-                this.limelightSystem.getInitVerticalVelocity() / this.limelightSystem.getInitHoriztonalVelocity());
+        if (limelightSystem.hasTarget()) {
+            return Math.atan(
+                    this.limelightSystem.getInitVerticalVelocity() / this.limelightSystem.getInitHoriztonalVelocity());
+        } else {
+            // Angle to shoot from 9 feet (~ 3 meters)
+            return -.94;
+        }
     }
 
     public boolean atGoal() {
