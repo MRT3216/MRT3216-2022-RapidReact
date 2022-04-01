@@ -340,7 +340,7 @@ public class RobotContainer {
         // }
 
         @Config(name = "Auto Delay", tabName = "Tuning", methodName = "setStartDelayTime", defaultValueNumeric = Auto.kStartDelayTime, methodTypes = {
-                        double.class }, rowIndex = 4, columnIndex = 3)
+                        double.class }, rowIndex = 1, columnIndex = 1)
         public void setStartDelayTime(double startDelayTime) {
                 this.autoStartDelayTime = startDelayTime;
         }
