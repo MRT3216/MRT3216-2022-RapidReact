@@ -5,21 +5,30 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.OI.Gamepad;
 import frc.robot.OI.OIUtils;
 import frc.robot.commands.TeleDrive;
-import frc.robot.commands.shooter.*;
+import frc.robot.commands.shooter.AdjustHood;
+import frc.robot.commands.shooter.AimDrivebase;
+import frc.robot.commands.shooter.FireCargo;
+import frc.robot.commands.shooter.IndexCargo;
+import frc.robot.commands.shooter.RunHopper;
+import frc.robot.commands.shooter.RunIndexer;
+import frc.robot.commands.shooter.RunIntake;
+import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.settings.Constants;
 import frc.robot.settings.Constants.Auto;
 import frc.robot.settings.Constants.Drivetrain;
-import frc.robot.settings.Constants.LimeLight.CameraStream;
-import frc.robot.settings.Constants.LimeLight.LEDMode;
 import frc.robot.settings.RobotMap;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.ColorSensorSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.shooter.HoodSubsystem;
 import frc.robot.subsystems.shooter.HopperSubsystem;
 import frc.robot.subsystems.shooter.IndexerSubsystem;
@@ -55,8 +64,10 @@ public class RobotContainer {
     // @Config(name = "Flywheel F", tabName = "Tuning", defaultValueNumeric =
     // Constants.Shooter.Flywheel.kF, methodName = "setFValue", methodTypes = {
     // double.class }, rowIndex = 0, columnIndex = 9)
-    @Log(name = "Flywheel Velocity", tabName = "Tuning", methodName = "getRPM", rowIndex = 2, columnIndex = 8)
-    @Log.Graph(name = "Flywheel Velocity G", tabName = "Tuning", methodName = "getRPM", width = 4, height = 3, rowIndex = 0, columnIndex = 4)
+    // @Log(name = "Flywheel Velocity", tabName = "Tuning", methodName = "getRPM",
+    // rowIndex = 2, columnIndex = 8)
+    // @Log.Graph(name = "Flywheel Velocity G", tabName = "Tuning", methodName =
+    // "getRPM", width = 4, height = 3, rowIndex = 0, columnIndex = 4)
     // @Log.Graph(name = "Flywheel Filter Value", tabName = "Tuning", methodName =
     // "getFilterValue", width = 4, height = 3, rowIndex = 3, columnIndex = 4)
     private ShooterSubsystem shooterSystem;
@@ -79,22 +90,31 @@ public class RobotContainer {
     private ClimberSubsystem climberSystem;
     private Gamepad controller;
     @Config(name = "LED Mode", tabName = "Tuning", methodName = "setLEDModeByInt", methodTypes = {
-            int.class}, rowIndex = 3, columnIndex = 3)
-    @Config(name = "Stream Mode", tabName = "Tuning", methodName = "setStreamByInt", methodTypes = {
-            int.class}, rowIndex = 3, columnIndex = 2)
+            int.class }, rowIndex = 1, columnIndex = 0)
+    // @Config(name = "Stream Mode", tabName = "Tuning", methodName =
+    // "setStreamByInt", methodTypes = {
+    // int.class }, rowIndex = 3, columnIndex = 2)
     @Log.BooleanBox(name = "Target Found", methodName = "hasTarget", rowIndex = 0, columnIndex = 3, width = 1, height = 1)
     // @Log.BooleanBox(name = "Target Found", methodName = "hasTarget", rowIndex =
     // 1, columnIndex = 3, width = 1, height = 1)
     @Config.NumberSlider(name = "Dist. Adj.", tabName = "Tuning", defaultValue = Constants.Shooter.kDistanceAdjustmentInMeters, methodName = "setDistanceAdjustmentInMeters", methodTypes = {
-            double.class}, min = -2, max = 2, blockIncrement = 0.1, rowIndex = 0, columnIndex = 0)
-    @Log.Dial(name = "Hor. Goal Distance", methodName = "getHorizontalGoalDistance", min = -90, max = 90, rowIndex = 0, columnIndex = 6, height = 1, width = 1)
-    @Log.Dial(name = "Horizontal Offset", methodName = "getHorizontalOffset", min = -90, max = 90, rowIndex = 0, columnIndex = 4, height = 1, width = 1)
-    @Log.Dial(name = "Vertical Offset", methodName = "getVerticalOffset", min = -90, max = 90, rowIndex = 0, columnIndex = 5, height = 1, width = 1)
+            double.class }, min = -2, max = 2, blockIncrement = 0.1, rowIndex = 0, columnIndex = 0)
+    // @Log.Dial(name = "Hor. Goal Distance", methodName =
+    // "getHorizontalGoalDistance", min = -90, max = 90, rowIndex = 0, columnIndex =
+    // 6, height = 1, width = 1)
+    // @Log.Dial(name = "Horizontal Offset", methodName = "getHorizontalOffset", min
+    // = -90, max = 90, rowIndex = 0, columnIndex = 4, height = 1, width = 1)
+    // @Log.Dial(name = "Vertical Offset", methodName = "getVerticalOffset", min =
+    // -90, max = 90, rowIndex = 0, columnIndex = 5, height = 1, width = 1)
     private LimelightSubsystem limelightSystem;
-    @Log.BooleanBox(name = "Red Detected", methodName = "isRed", rowIndex = 0, columnIndex = 0)
-    @Log.BooleanBox(name = "Blue Detected", methodName = "isBlue", rowIndex = 0, columnIndex = 1)
-    @Log.BooleanBox(name = "Alliance Ball", methodName = "isAllianceBall", rowIndex = 1, columnIndex = 0)
-    @Log.BooleanBox(name = "Opponent Ball", methodName = "isOpponentBall", rowIndex = 1, columnIndex = 1)
+    // @Log.BooleanBox(name = "Red Detected", methodName = "isRed", rowIndex = 0,
+    // columnIndex = 0)
+    // @Log.BooleanBox(name = "Blue Detected", methodName = "isBlue", rowIndex = 0,
+    // columnIndex = 1)
+    // @Log.BooleanBox(name = "Alliance Ball", methodName = "isAllianceBall",
+    // rowIndex = 1, columnIndex = 0)
+    // @Log.BooleanBox(name = "Opponent Ball", methodName = "isOpponentBall",
+    // rowIndex = 1, columnIndex = 1)
     private ColorSensorSubsystem colorSensorSystem;
     // @Log(name = "Hood Position", tabName = "Tuning", methodName =
     // "getMeasurement", rowIndex = 3, columnIndex = 2)
@@ -104,9 +124,12 @@ public class RobotContainer {
     // Constants.Shooter.Hood.hoodForwardLimit, max =
     // Constants.Shooter.Hood.hoodReverseLimit, rowIndex = 3, columnIndex = 0)
     private HoodSubsystem hoodSystem;
-    @Log(name = "1st Ball", methodName = "getBall1String", rowIndex = 2, columnIndex = 0)
-    @Log(name = "2nd Ball", methodName = "getBall2String", rowIndex = 2, columnIndex = 1)
-    @Log.BooleanBox(name = "Ball in Chute", methodName = "getBallInChute", rowIndex = 1, columnIndex = 2)
+    // @Log(name = "1st Ball", methodName = "getBall1String", rowIndex = 2,
+    // columnIndex = 0)
+    // @Log(name = "2nd Ball", methodName = "getBall2String", rowIndex = 2,
+    // columnIndex = 1)
+    // @Log.BooleanBox(name = "Ball in Chute", methodName = "getBallInChute",
+    // rowIndex = 1, columnIndex = 2)
     private ShooterStateMachine shooterStateMachine;
     private AutoChooser autoChooser;
     private double autoStartDelayTime;
@@ -146,8 +169,8 @@ public class RobotContainer {
         this.shooterSystem = ShooterSubsystem.getInstance();
         this.controller = new Gamepad(RobotMap.DRIVE_STATION.USB_XBOX_CONTROLLER);
         this.limelightSystem = LimelightSubsystem.getInstance();
-        this.limelightSystem.setStream(CameraStream.PiPSecondary);
-        this.limelightSystem.setPipeline(0);
+        // this.limelightSystem.setStream(CameraStream.PiPSecondary);
+        // this.limelightSystem.setPipeline(0);
         this.colorSensorSystem = ColorSensorSubsystem.getInstance();
         this.shooterStateMachine = ShooterStateMachine.getInstance();
         this.autoChooser = AutoChooser.getInstance();
@@ -174,14 +197,8 @@ public class RobotContainer {
 
         // Fires cargo (assumes all the aiming has already been completed)
         controller.LB.whileHeld(
-                new ParallelCommandGroup(
-                        new StartEndCommand(
-                                () -> limelightSystem.setLEDMode(LEDMode.ON),
-                                () -> limelightSystem.setLEDMode(LEDMode.OFF)),
-                        new AimAndFireCargo(this.shooterSystem, this.indexerSystem, this.hopperSystem,
-                                this.colorSensorSystem,
-                                this.limelightSystem,
-                                this.driveSystem, this.hoodSystem)));
+                new FireCargo(this.shooterSystem, this.indexerSystem, this.hopperSystem,
+                        this.colorSensorSystem, this.limelightSystem));
 
         // Runs the intake, hopper, and indexer
         // The indexer and shooter will vary behaviour depending on whether an alliance
@@ -194,9 +211,15 @@ public class RobotContainer {
 
         // Turns the Limelight LEDs on, adjusts the hood, and then aims the drivebase if
         // a target is acquired
-        controller.A.whenHeld(
-                new FireCargo(this.shooterSystem, this.indexerSystem, this.hopperSystem, this.colorSensorSystem,
-                        this.limelightSystem));
+        controller.A.whenHeld(new ParallelCommandGroup(
+                // new StartEndCommand(
+                // () -> limelightSystem.setLEDMode(LEDMode.ON),
+                // () -> limelightSystem.setLEDMode(LEDMode.OFF)),
+                new AdjustHood(hoodSystem),
+                new ConditionalCommand(
+                        new AimDrivebase(driveSystem, limelightSystem),
+                        new InstantCommand(),
+                        limelightSystem::hasTarget)));
 
         // This is to run things in reverse to remove balls
         controller.X.whileHeld(new ParallelCommandGroup(
@@ -208,11 +231,8 @@ public class RobotContainer {
         controller.Y.whenPressed(() -> RobotContainer.getInstance().getDriveSystem().resetGyroAndOdometry(true),
                 driveSystem);
 
-        Button dpadDownButton = new Button(() -> controller.getPOV() == 180);
-        Button dpadUpButton = new Button(() -> controller.getPOV() == 0);
-
-        dpadDownButton.whenPressed(() -> climberSystem.invert());
-        dpadUpButton.whenPressed(() -> climberSystem.tethered(!climberSystem.isTethered()));
+        controller.RightJoy.whenPressed(() -> climberSystem.invert());
+        controller.LeftJoy.whenPressed(() -> climberSystem.tethered(!climberSystem.isTethered()));
 
         climberSystem.setDefaultCommand(new FunctionalCommand(
                 () -> {
@@ -226,14 +246,12 @@ public class RobotContainer {
                         climberSystem.runRightMotor(controller.getRightTriggerAxis());
                     }
                 }, // OnExecute:
-                // call
-                // run
-                // motors
+                   // call
+                   // run
+                   // motors
                 interrupted -> climberSystem.stop(), // OnEnd: stop motors
                 () -> false, // IsFinished: never finish
                 climberSystem)); // Required subsystem
-
-
     }
 
     public void disablePIDSubsystems() {
@@ -322,7 +340,7 @@ public class RobotContainer {
     // }
 
     @Config(name = "Auto Delay", tabName = "Tuning", methodName = "setStartDelayTime", defaultValueNumeric = Auto.kStartDelayTime, methodTypes = {
-            double.class}, rowIndex = 4, columnIndex = 3)
+            double.class }, rowIndex = 1, columnIndex = 1)
     public void setStartDelayTime(double startDelayTime) {
         this.autoStartDelayTime = startDelayTime;
     }
