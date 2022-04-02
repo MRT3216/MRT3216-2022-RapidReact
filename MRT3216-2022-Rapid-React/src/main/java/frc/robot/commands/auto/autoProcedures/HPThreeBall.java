@@ -1,9 +1,6 @@
 package frc.robot.commands.auto.autoProcedures;
 
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.commands.auto.AutoAimAndShoot;
 import frc.robot.commands.auto.GoFetch;
 import frc.robot.commands.shooter.RunIntake;
@@ -28,9 +25,8 @@ public class HPThreeBall extends ParallelCommandGroup {
                             swerveSystem.zeroGyroscope();
                         }, // OnInit: zero gyro
                         () -> {
-                            swerveSystem.zeroGyroscope();
                         }, // OnExecute: do nothing
-                        interrupted -> swerveSystem.zeroGyroscope(), // OnEnd: stop motors
+                        interrupted -> new InstantCommand(), // OnEnd: stop motors
                         () -> true // IsFinished: never finish
                 ),
                 new SequentialCommandGroup(
