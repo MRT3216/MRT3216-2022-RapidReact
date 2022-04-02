@@ -1,5 +1,6 @@
 package frc.robot.commands.auto.autoProcedures;
 
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -22,6 +23,16 @@ public class HangerTwoBall extends ParallelCommandGroup {
                          HopperSubsystem hopperSystem, IntakeSubsystem intakeSystem, ShooterSubsystem shooterSystem,
                          LimelightSubsystem limelightSystem, HoodSubsystem hoodSystem, Double startDelayTime) {
         super(
+                new FunctionalCommand(
+                        () -> {
+                            swerveSystem.zeroGyroscope();
+                        }, // OnInit: zero gyro
+                        () -> {
+                            swerveSystem.zeroGyroscope();
+                        }, // OnExecute: do nothing
+                        interrupted -> swerveSystem.zeroGyroscope(), // OnEnd: stop motors
+                        () -> true // IsFinished: never finish
+                ),
                 new SequentialCommandGroup(
                         new WaitCommand(startDelayTime),
                         new GoFetch(swerveSystem, indexerSystem, hopperSystem, colorSensorSystem, intakeSystem,
