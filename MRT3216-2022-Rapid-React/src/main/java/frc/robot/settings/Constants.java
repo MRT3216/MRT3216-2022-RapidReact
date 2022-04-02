@@ -108,7 +108,7 @@ public final class Constants {
     public static final class Intake {
         public static final boolean INTAKE_MOTOR_INVERTED = false;
         public final static double kVoltageCompSaturation = 10;
-        public static final double kForwardIntakeSpeed = 0.7;
+        public static final double kForwardIntakeSpeed = 0.6;
         public static final double kReverseIntakeSpeed = 0.3;
     }
 
