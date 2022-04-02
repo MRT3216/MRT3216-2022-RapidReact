@@ -96,12 +96,40 @@
               "_title": "limelight",
               "Crosshair/Show crosshair": true,
               "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": true,
+              "Controls/Show controls": false,
               "Controls/Rotation": "NONE",
               "compression": -1.0,
               "fps": -1,
               "imageWidth": -1,
               "imageHeight": -1
+            }
+          },
+          "0,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/RobotContainer/Gyro Con.",
+              "_title": "Gyro Con.",
+              "Colors/Color when true": "#008000FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "7,3": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///Shuffleboard/Tuning/F Intake Speed",
+              "_title": "F Intake Speed",
+              "Slider Settings/Min": 0.5,
+              "Slider Settings/Max": 1.0,
+              "Slider Settings/Block increment": 0.05,
+              "Visuals/Display value": true
             }
           }
         }
@@ -109,9 +137,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 55.20000076293945,
-    "y": -7.199999809265137,
-    "width": 1488.0,
-    "height": 878.4000244140625
+    "x": 51.20000076293945,
+    "y": 0.0,
+    "width": 1489.5999755859375,
+    "height": 696.0
   }
 }

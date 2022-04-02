@@ -80,14 +80,14 @@ public class AimDrivebase extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        System.out.println("Ending! Interrupted? " + interrupted);
+        System.out.println("Ending! Interrupted? " + interrupted + "   Finished? " + isFinished());
         super.end(interrupted);
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        System.out.println("Finishing!!!!!!!!!!!!!!!!!!!!!!");
+        // System.out.println("Finishing!!!!!!!!!!!!!!!!!!!!!!");
         return controller.atGoal() || neverSawTarget;
     }
 }

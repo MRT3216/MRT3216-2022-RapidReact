@@ -47,9 +47,6 @@ public class AutoAimDrivebase extends CommandBase {
         this.controller.enableContinuousInput(-180, 180);
         controller.setTolerance(Auto.kMaxTurnRateErrorAuto, Auto.kMaxTurnRateErrorAuto);
 
-        this.controller.setP(swerveSystem.getThetaGains().kP);
-        this.controller.setI(swerveSystem.getThetaGains().kI);
-        this.controller.setD(swerveSystem.getThetaGains().kD);
         this.controller.reset(swerveSystem.getGyroscopeRotation().getDegrees());
         if (limelightSystem.hasTarget()) {
             this.neverSawTarget = false;

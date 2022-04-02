@@ -50,7 +50,7 @@ public class RobotContainer {
     // region Fields
 
     private static RobotContainer instance;
-    @Log.BooleanBox(name = "navX Connected?", methodName = "navXIsConnected", rowIndex = 1, columnIndex = 3, width = 1, height = 1)
+    @Log.BooleanBox(name = "Gyro Con.", methodName = "navXIsConnected", rowIndex = 1, columnIndex = 3, width = 1, height = 1)
     private SwerveSubsystem driveSystem;
     private IntakeSubsystem intakeSystem;
     // @Config(name = "Flywheel P", tabName = "Tuning", defaultValueNumeric =
@@ -280,7 +280,7 @@ public class RobotContainer {
         return driveSystem;
     }
 
-    @Config.NumberSlider(name = "F Intake Speed", tabName = "Tuning", defaultValue = Constants.Intake.kForwardIntakeSpeed, min = 0, max = 1, blockIncrement = 0.05, rowIndex = 0, columnIndex = 0, height = 1, width = 1)
+    @Config.NumberSlider(name = "F Intake Speed", tabName = "Tuning", defaultValue = Constants.Intake.kForwardIntakeSpeed, min = 0, max = 1, blockIncrement = 0.05, rowIndex = 3, columnIndex = 0, height = 1, width = 2)
     public void setForwardPercentOutput(double output) {
         this.intakeSystem.setForwardPercentOutput(output);
     }
