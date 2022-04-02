@@ -23,7 +23,6 @@ public class HPTwoBall extends ParallelCommandGroup {
                      LimelightSubsystem limelightSystem, HoodSubsystem hoodSystem, Double startDelayTime) {
         super(
                 new SequentialCommandGroup(
-
                         new WaitCommand(startDelayTime),
                         new GoFetch(swerveSystem, indexerSystem, hopperSystem, colorSensorSystem, intakeSystem,
                                 shooterSystem, "2Ball1.1"),

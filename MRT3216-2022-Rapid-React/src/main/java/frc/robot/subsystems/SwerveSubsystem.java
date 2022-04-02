@@ -4,29 +4,9 @@
 
 package frc.robot.subsystems;
 
-import static frc.robot.settings.Constants.Drivetrain.LEFT_FRONT_STEER_OFFSET;
-import static frc.robot.settings.Constants.Drivetrain.LEFT_REAR_STEER_OFFSET;
-import static frc.robot.settings.Constants.Drivetrain.RIGHT_FRONT_STEER_OFFSET;
-import static frc.robot.settings.Constants.Drivetrain.RIGHT_REAR_STEER_OFFSET;
-import static frc.robot.settings.Constants.Drivetrain.TRACKWIDTH_METERS;
-import static frc.robot.settings.Constants.Drivetrain.WHEELBASE_METERS;
-import static frc.robot.settings.RobotMap.ROBOT.DRIVETRAIN.LEFT_FRONT_ANGLE;
-import static frc.robot.settings.RobotMap.ROBOT.DRIVETRAIN.LEFT_FRONT_CANCODER;
-import static frc.robot.settings.RobotMap.ROBOT.DRIVETRAIN.LEFT_FRONT_DRIVE;
-import static frc.robot.settings.RobotMap.ROBOT.DRIVETRAIN.LEFT_REAR_ANGLE;
-import static frc.robot.settings.RobotMap.ROBOT.DRIVETRAIN.LEFT_REAR_CANCODER;
-import static frc.robot.settings.RobotMap.ROBOT.DRIVETRAIN.LEFT_REAR_DRIVE;
-import static frc.robot.settings.RobotMap.ROBOT.DRIVETRAIN.RIGHT_FRONT_ANGLE;
-import static frc.robot.settings.RobotMap.ROBOT.DRIVETRAIN.RIGHT_FRONT_CANCODER;
-import static frc.robot.settings.RobotMap.ROBOT.DRIVETRAIN.RIGHT_FRONT_DRIVE;
-import static frc.robot.settings.RobotMap.ROBOT.DRIVETRAIN.RIGHT_REAR_ANGLE;
-import static frc.robot.settings.RobotMap.ROBOT.DRIVETRAIN.RIGHT_REAR_CANCODER;
-import static frc.robot.settings.RobotMap.ROBOT.DRIVETRAIN.RIGHT_REAR_DRIVE;
-
 import com.kauailabs.navx.frc.AHRS;
 import com.swervedrivespecialties.swervelib.Mk3SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SwerveModule;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -39,6 +19,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.settings.Constants.Auto;
 import frc.robot.settings.Constants.Drivetrain;
 import frc.robot.settings.Gains;
+
+import static frc.robot.settings.Constants.Drivetrain.*;
+import static frc.robot.settings.RobotMap.ROBOT.DRIVETRAIN.*;
 
 public class SwerveSubsystem extends SubsystemBase {
     private static SwerveSubsystem instance;
@@ -185,6 +168,10 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public SwerveModuleState getState(SwerveModule module) {
         return new SwerveModuleState(module.getDriveVelocity(), new Rotation2d(module.getSteerAngle()));
+    }
+
+    public boolean gyroConnected() {
+        return this.m_navx.isConnected();
     }
 
     public Gains getThetaGains() {
