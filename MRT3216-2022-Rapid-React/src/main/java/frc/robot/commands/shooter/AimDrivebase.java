@@ -36,12 +36,16 @@ public class AimDrivebase extends CommandBase {
 
     @Override
     public void initialize() {
-        this.controller = new ProfiledPIDController(swerveSystem.getThetaGains().kP, swerveSystem.getThetaGains().kI,
-                swerveSystem.getThetaGains().kD, // Theta controller
+        this.controller = new ProfiledPIDController(
+                // Theta controller
+                swerveSystem.getThetaGains().kP,
+                swerveSystem.getThetaGains().kI,
+                swerveSystem.getThetaGains().kD,
                 new TrapezoidProfile.Constraints(
                         Units.radiansToDegrees(Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND),
-                        Units.radiansToDegrees(Drivetrain.MAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_PER_SECOND))); // Max
-                                                                                                                     // angular
+                        // Max angular
+                        Units.radiansToDegrees(Drivetrain.MAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_PER_SECOND)));
+                        
         // acceleration
         this.controller.enableContinuousInput(-180, 180);
         controller.setTolerance(Auto.kMaxTurnError, Auto.kMaxTurnRateError);
