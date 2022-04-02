@@ -42,6 +42,7 @@ public class FiveBall extends ParallelCommandGroup {
                                 new WaitCommand(Constants.Auto.kDriveToShootDelay),
                                 new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem, limelightSystem,
                                         swerveSystem, hoodSystem, 2),
+
                                 new GoFetch(swerveSystem, indexerSystem, hopperSystem, colorSensorSystem, intakeSystem,
                                         shooterSystem, "5Ball1.3"),
                                 new WaitCommand(Constants.Auto.kDriveToShootDelay),
