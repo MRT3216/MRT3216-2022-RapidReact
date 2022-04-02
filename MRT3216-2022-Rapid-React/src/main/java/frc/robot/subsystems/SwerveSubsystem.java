@@ -200,6 +200,10 @@ public class SwerveSubsystem extends SubsystemBase {
         }
     }
 
+    public boolean navXIsConnected(){
+        return m_navx.isConnected();
+    }
+
     // region Logging
 
     // @Log.Gyro(name = "Robot Angle", rowIndex = 0, columnIndex = 3)

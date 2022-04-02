@@ -50,6 +50,7 @@ public class RobotContainer {
     // region Fields
 
     private static RobotContainer instance;
+    @Log.BooleanBox(name = "navX Connected?", methodName = "navXIsConnected", rowIndex = 1, columnIndex = 3, width = 1, height = 1)
     private SwerveSubsystem driveSystem;
     private IntakeSubsystem intakeSystem;
     // @Config(name = "Flywheel P", tabName = "Tuning", defaultValueNumeric =
