@@ -4,7 +4,6 @@ import com.pathplanner.lib.PathPlanner;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import frc.robot.commands.shooter.IndexCargo;
 import frc.robot.commands.shooter.RunHopper;
-import frc.robot.commands.shooter.RunIntake;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.settings.Constants.Auto;
 import frc.robot.subsystems.ColorSensorSubsystem;
@@ -25,7 +24,6 @@ public class GoFetch extends ParallelDeadlineGroup {
                                 Auto.kMaxFetchAcc)),
                 new IndexCargo(indexerSystem, () -> colorSensorSystem.isAllianceBall()),
                 new RunHopper(hopperSystem, () -> true),
-                new RunIntake(intakeSystem, () -> true),
                 new SpinShooter(shooterSystem, () -> true, () -> true));
     }
 }

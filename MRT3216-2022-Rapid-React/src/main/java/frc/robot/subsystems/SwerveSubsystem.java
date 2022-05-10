@@ -187,6 +187,10 @@ public class SwerveSubsystem extends SubsystemBase {
         return new SwerveModuleState(module.getDriveVelocity(), new Rotation2d(module.getSteerAngle()));
     }
 
+    public boolean gyroConnected() {
+        return this.m_navx.isConnected();
+    }
+
     public Gains getThetaGains() {
         return this.thetaGains;
     }
@@ -198,6 +202,10 @@ public class SwerveSubsystem extends SubsystemBase {
             this.zeroGyroscope();
             _input = false;
         }
+    }
+
+    public boolean navXIsConnected() {
+        return m_navx.isConnected();
     }
 
     // region Logging

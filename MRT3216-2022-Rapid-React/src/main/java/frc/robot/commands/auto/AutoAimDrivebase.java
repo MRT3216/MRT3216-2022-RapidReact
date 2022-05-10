@@ -19,8 +19,8 @@ import frc.robot.subsystems.SwerveSubsystem;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutoAimDrivebase extends CommandBase {
-    private final SwerveSubsystem swerveSystem;
-    private final LimelightSubsystem limelightSystem;
+    private SwerveSubsystem swerveSystem;
+    private LimelightSubsystem limelightSystem;
     private ProfiledPIDController controller;
     private boolean neverSawTarget = true;
 
@@ -47,9 +47,6 @@ public class AutoAimDrivebase extends CommandBase {
         this.controller.enableContinuousInput(-180, 180);
         controller.setTolerance(Auto.kMaxTurnRateErrorAuto, Auto.kMaxTurnRateErrorAuto);
 
-        this.controller.setP(swerveSystem.getThetaGains().kP);
-        this.controller.setI(swerveSystem.getThetaGains().kI);
-        this.controller.setD(swerveSystem.getThetaGains().kD);
         this.controller.reset(swerveSystem.getGyroscopeRotation().getDegrees());
         if (limelightSystem.hasTarget()) {
             this.neverSawTarget = false;

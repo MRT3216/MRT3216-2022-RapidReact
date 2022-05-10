@@ -10,8 +10,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.auto.AutoAimAndShoot;
+import frc.robot.commands.auto.autoProcedures.FiveBall;
 import frc.robot.commands.auto.autoProcedures.HPThreeBall;
 import frc.robot.commands.auto.autoProcedures.HPTwoBall;
 import frc.robot.commands.auto.autoProcedures.HangerTwoBall;
@@ -86,20 +88,49 @@ public class AutoChooser {
 
     public void populateAutoChooser() {
         chooser.addOption("Just shoot",
-                () -> new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,
-                        limelightSystem, swerveSystem, hoodSystem, 1));
+                () -> new ConditionalCommand(
+                        new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,
+                                limelightSystem, swerveSystem, hoodSystem, 1),
+                        new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,
+                                limelightSystem, swerveSystem, hoodSystem, 1),
+                        () -> swerveSystem.gyroConnected()
+                ));
         chooser.addOption("Human two ball",
-                () -> new HPTwoBall(this.swerveSystem, this.indexerSystem, this.colorSensorSystem, this.hopperSystem,
-                        this.intakeSystem, this.shooterSystem, this.limelightSystem, this.hoodSystem,
-                        RobotContainer.getInstance().getAutoStartDelayTime()));
+                () -> new ConditionalCommand(
+                        new HPTwoBall(this.swerveSystem, this.indexerSystem, this.colorSensorSystem, this.hopperSystem,
+                                this.intakeSystem, this.shooterSystem, this.limelightSystem, this.hoodSystem,
+                                RobotContainer.getInstance().getAutoStartDelayTime()),
+                        new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,
+                                limelightSystem, swerveSystem, hoodSystem, 1),
+                        () -> swerveSystem.gyroConnected()
+                ));
         chooser.addOption("Hanger two ball",
-                () -> new HangerTwoBall(this.swerveSystem, this.indexerSystem, this.colorSensorSystem, this.hopperSystem,
-                        this.intakeSystem, this.shooterSystem, this.limelightSystem, this.hoodSystem,
-                        RobotContainer.getInstance().getAutoStartDelayTime()));
+                () -> new ConditionalCommand(
+                        new HangerTwoBall(this.swerveSystem, this.indexerSystem, this.colorSensorSystem, this.hopperSystem,
+                                this.intakeSystem, this.shooterSystem, this.limelightSystem, this.hoodSystem,
+                                RobotContainer.getInstance().getAutoStartDelayTime()),
+                        new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,
+                                limelightSystem, swerveSystem, hoodSystem, 1),
+                        () -> swerveSystem.gyroConnected()
+                ));
         chooser.addOption("Human three ball",
-                () -> new HPThreeBall(this.swerveSystem, this.indexerSystem, this.colorSensorSystem, this.hopperSystem,
+                () -> new ConditionalCommand(
+                        new HPThreeBall(this.swerveSystem, this.indexerSystem, this.colorSensorSystem, this.hopperSystem,
+                                this.intakeSystem, this.shooterSystem, this.limelightSystem, this.hoodSystem,
+                                RobotContainer.getInstance().getAutoStartDelayTime()),
+                        new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,
+                                limelightSystem, swerveSystem, hoodSystem, 1),
+                        () -> swerveSystem.gyroConnected()
+                ));
+        chooser.addOption("Five ball",
+        () -> new ConditionalCommand(
+                new FiveBall(this.swerveSystem, this.indexerSystem, this.colorSensorSystem, this.hopperSystem,
                         this.intakeSystem, this.shooterSystem, this.limelightSystem, this.hoodSystem,
-                        RobotContainer.getInstance().getAutoStartDelayTime()));
+                        RobotContainer.getInstance().getAutoStartDelayTime()),
+                new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,
+                        limelightSystem, swerveSystem, hoodSystem, 1),
+                () -> swerveSystem.gyroConnected()
+        ));
 
         SmartDashboard.putData(chooser);
     }

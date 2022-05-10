@@ -50,6 +50,7 @@ public class RobotContainer {
     // region Fields
 
     private static RobotContainer instance;
+    @Log.BooleanBox(name = "Gyro Con.", methodName = "navXIsConnected", rowIndex = 1, columnIndex = 3, width = 1, height = 1)
     private SwerveSubsystem driveSystem;
     private IntakeSubsystem intakeSystem;
     // @Config(name = "Flywheel P", tabName = "Tuning", defaultValueNumeric =
@@ -245,10 +246,7 @@ public class RobotContainer {
                         climberSystem.runLeftMotor(controller.getLeftTriggerAxis());
                         climberSystem.runRightMotor(controller.getRightTriggerAxis());
                     }
-                }, // OnExecute:
-                   // call
-                   // run
-                   // motors
+                }, // OnExecute: call run motors
                 interrupted -> climberSystem.stop(), // OnEnd: stop motors
                 () -> false, // IsFinished: never finish
                 climberSystem)); // Required subsystem
@@ -282,12 +280,10 @@ public class RobotContainer {
         return driveSystem;
     }
 
-    // @Config.NumberSlider(name = "F Intake Speed", tabName = "Tuning",
-    // defaultValue = Constants.Intake.kForwardIntakeSpeed, min = 0, max = 1,
-    // blockIncrement = 0.05, rowIndex = 0, columnIndex = 0, height = 1, width = 1)
-    // public void setForwardPercentOutput(double output) {
-    // this.intakeSystem.setForwardPercentOutput(output);
-    // }
+    @Config.NumberSlider(name = "F Intake Speed", tabName = "Tuning", defaultValue = Constants.Intake.kForwardIntakeSpeed, min = 0, max = 1, blockIncrement = 0.05, rowIndex = 3, columnIndex = 0, height = 1, width = 2)
+    public void setForwardPercentOutput(double output) {
+        this.intakeSystem.setForwardPercentOutput(output);
+    }
 
     // @Config.NumberSlider(name = "R Intake Speed", tabName = "Tuning",
     // defaultValue = Constants.Intake.kReverseIntakeSpeed, min = 0, max = 1,

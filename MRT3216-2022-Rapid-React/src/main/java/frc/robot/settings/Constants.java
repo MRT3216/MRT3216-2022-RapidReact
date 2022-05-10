@@ -76,7 +76,7 @@ public final class Constants {
         // Derivative gain
         public static final double kPositionD = 0;
         // Proportional gain
-        public static final double kThetaP = 10;
+        public static final double kThetaP = 20;
         // Integral gain
         public static final double kThetaI = 0;
         // Derivative gain
@@ -85,7 +85,7 @@ public final class Constants {
         public static final Gains kAutoPositionGains = new Gains(kPositionP, kPositionI, kThetaD);
         public static final Gains kAutoThetaGains = new Gains(kThetaP, kThetaI, kThetaD);
 
-        public static final double kMaxTurnError = 1; // degrees
+        public static final double kMaxTurnError = .1; // degrees
         public static final double kMaxTurnRateError = 1; // Degrees per second
 
         public static final double kMaxTurnErrorAuto = 5;
@@ -108,7 +108,7 @@ public final class Constants {
     public static final class Intake {
         public static final boolean INTAKE_MOTOR_INVERTED = false;
         public final static double kVoltageCompSaturation = 10;
-        public static final double kForwardIntakeSpeed = 0.7;
+        public static final double kForwardIntakeSpeed = 0.65;
         public static final double kReverseIntakeSpeed = 0.3;
     }
 

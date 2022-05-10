@@ -36,34 +36,43 @@ public class AimDrivebase extends CommandBase {
 
     @Override
     public void initialize() {
-        this.controller = new ProfiledPIDController(swerveSystem.getThetaGains().kP, swerveSystem.getThetaGains().kI,
-                swerveSystem.getThetaGains().kD, // Theta
-                // controller
+        System.out.println("INITIALIZING AIM DRIVE BASE COMMAND !!!!!!!!!");
+        this.controller = new ProfiledPIDController(
+                // Theta controller
+                swerveSystem.getThetaGains().kP,
+                swerveSystem.getThetaGains().kI,
+                swerveSystem.getThetaGains().kD,
                 new TrapezoidProfile.Constraints(
                         Units.radiansToDegrees(Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND),
-                        Units.radiansToDegrees(Drivetrain.MAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_PER_SECOND))); // Max
-                                                                                                                     // angular
+                        // Max angular
+                        Units.radiansToDegrees(Drivetrain.MAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_PER_SECOND)));
+
         // acceleration
         this.controller.enableContinuousInput(-180, 180);
         controller.setTolerance(Auto.kMaxTurnError, Auto.kMaxTurnRateError);
 
-        this.controller.setP(swerveSystem.getThetaGains().kP);
-        this.controller.setI(swerveSystem.getThetaGains().kI);
-        this.controller.setD(swerveSystem.getThetaGains().kD);
+        // this.controller.setP(swerveSystem.getThetaGains().kP);
+        // this.controller.setI(swerveSystem.getThetaGains().kI);
+        // this.controller.setD(swerveSystem.getThetaGains().kD);
         this.controller.reset(swerveSystem.getGyroscopeRotation().getDegrees());
         if (limelightSystem.hasTarget()) {
             this.neverSawTarget = false;
             Rotation2d offset2d = Rotation2d.fromDegrees(limelightSystem.getHorizontalOffset());
             Rotation2d r2d = swerveSystem.getGyroscopeRotation().rotateBy(offset2d);
             this.controller.setGoal(r2d.getDegrees());
+            System.out.println("Initial Target: " + this.controller.getGoal().position);
         }
     }
 
     @Override
     public void execute() {
         if (!neverSawTarget) {
-            double omega = this.controller.calculate(swerveSystem.getGyroscopeRotation().getDegrees());
+            System.out.println("Target: " + this.controller.getGoal().position);
+            System.out.println("Setpoint: " + this.controller.getSetpoint().position);
+            System.out.println("Gyro: " + this.swerveSystem.getGyroscopeRotation().getDegrees());
 
+            double omega = this.controller.calculate(swerveSystem.getGyroscopeRotation().getDegrees());
+            System.out.println("Omega: " + omega);
             ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0, Units.degreesToRadians(omega));
             swerveSystem.drive(chassisSpeeds);
         }
@@ -71,12 +80,14 @@ public class AimDrivebase extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        System.out.println("Ending! Interrupted? " + interrupted + "   Finished? " + isFinished());
         super.end(interrupted);
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
+        // System.out.println("Finishing!!!!!!!!!!!!!!!!!!!!!!");
         return controller.atGoal() || neverSawTarget;
     }
 }
