@@ -7,8 +7,11 @@
 
 package frc.robot.settings;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.CANSparkMaxLowLevel;
-import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Filesystem;
 
@@ -22,10 +25,12 @@ public final class Constants {
 
     public static final class Drivetrain {
         // TODO: set these values
-        public static final double LEFT_FRONT_STEER_OFFSET = -Math.toRadians(19.33);
-        public static final double RIGHT_FRONT_STEER_OFFSET = -Math.toRadians(276.86);
-        public static final double LEFT_REAR_STEER_OFFSET = -Math.toRadians(113.02);
-        public static final double RIGHT_REAR_STEER_OFFSET = -Math.toRadians(47.62);
+        public static final Rotation2d LEFT_FRONT_STEER_OFFSET = Rotation2d.fromDegrees(19.33);
+        public static final Rotation2d RIGHT_FRONT_STEER_OFFSET = Rotation2d.fromDegrees(276.86);
+        public static final Rotation2d LEFT_REAR_STEER_OFFSET = Rotation2d.fromDegrees(113.02);
+        public static final Rotation2d RIGHT_REAR_STEER_OFFSET = Rotation2d.fromDegrees(47.62);
+
+
 
         public static final double WHEELBASE_METERS = 0.5461;
         public static final double TRACKWIDTH_METERS = 0.5588;
@@ -51,9 +56,6 @@ public final class Constants {
          * This is a measure of how fast the robot should be able to drive in a straight
          * line.
          */
-        public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0
-                * SdsModuleConfigurations.MK3_STANDARD.getDriveReduction()
-                * SdsModuleConfigurations.MK3_STANDARD.getWheelDiameter() * Math.PI;
 
         /**
          * The maximum angular velocity of the robot in radians per second.
@@ -62,10 +64,69 @@ public final class Constants {
          */
         // Here we calculate the theoretical maximum angular velocity. You can also
         // replace this with a measured amount.
-        public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = MAX_VELOCITY_METERS_PER_SECOND
-                / Math.hypot(TRACKWIDTH_METERS / 2.0, WHEELBASE_METERS / 2.0);
 
         public static final double MAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_PER_SECOND = Math.PI;
+        public static final boolean INVERT_GYRO = false;
+        // this sets the swerve module on a given robot
+        public static final Configurations.COTSFalconSwerveConstants CHOSEN_MODULE =
+                Configurations.COTSFalconSwerveConstants.SDSMK3(Configurations.COTSFalconSwerveConstants.driveGearRatios.SDSMK3_Standard);
+
+        /*Drive Motor Characterization Vals
+        * Divide SYSID values by 12 to convert from volts to percentage for CTRE
+        * */
+        public static final double driveKS = (0.32/12); //TODO: tune this value to our robot
+        public static final double driveKV = (1.51/12); //TODO: tune this value to our robot
+        public static final double driveKA = (0.27/12);//TODO: tune this value to our robot
+
+        /**meters per second*/
+        public static final double maxSpeed = 4.5; //TODO: Tune this value to our robot
+        /**radians per second*/
+        public static final double maxAngularVelocity = 10.0; //TODO: tune this value to our robot
+        public static final double wheelCircumference = CHOSEN_MODULE.wheelCircumference;
+        public static final double driveGearRatio = CHOSEN_MODULE.driveGearRatio;
+        public static final double angleGearRatio = CHOSEN_MODULE.angleGearRatio;
+        public static final boolean angleMotorInvert = CHOSEN_MODULE.angleMotorInvert;
+        public static final boolean driveMotorInvert = CHOSEN_MODULE.driveMotorInvert;
+        public static final NeutralMode angleNeutralMode = NeutralMode.Coast;
+        public static final NeutralMode driveNeutralMode = NeutralMode.Brake;
+
+        //this should not be changed
+        public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(
+                new Translation2d(WHEELBASE_METERS / 2.0,TRACKWIDTH_METERS / 2.0),
+                new Translation2d(WHEELBASE_METERS / 2.0, -TRACKWIDTH_METERS / 2.0),
+                new Translation2d(-WHEELBASE_METERS / 2.0, TRACKWIDTH_METERS / 2.0),
+                new Translation2d(-WHEELBASE_METERS / 2.0, -TRACKWIDTH_METERS / 2.0)
+
+        );
+
+        public static final boolean angleEnableCurrentLimit = true;
+        public static final int angleContinuousCurrentLimit = 25;
+        public static final int anglePeakCurrentLimit = 40;
+        public static final double anglePeakCurrentDuration = 0.1;
+
+        /* drive motor PID values */
+        //TODO: we will need to input the correct vals for our bot
+        public static final double driveKP = 0.05;
+        public static final double driveKI = 0.0;
+        public static final double driveKD = 0.0;
+        public static final double driveKF = 0.0;
+
+        public static final double angleKP = CHOSEN_MODULE.angleKP;
+        public static final double angleKI = CHOSEN_MODULE.angleKI;
+        public static final double angleKD = CHOSEN_MODULE.angleKD;
+        public static final double angleKF = CHOSEN_MODULE.angleKF;
+
+        public static final boolean driveEnableCurrentLimit = true;
+        public static final int driveContinuousCurrentLimit = 35;
+        public static final int drivePeakCurrentLimit = 60;
+        public static final double drivePeakCurrentDuration = 0.1;
+
+        // these values are used by the drive falcon to ramp in open loop and closed loop driving.
+        // This helps reduce tread wear
+        public static final double openLoopRamp = 0.25;
+        public static final double closedLoopRamp = 0.0;
+        public static final boolean canCoderInvert = CHOSEN_MODULE.canCoderInvert;
+
     }
 
     public static final class Auto {
@@ -281,6 +342,7 @@ public final class Constants {
 
     public static final class Sensors {
         public static final double ColorRange = 150;
+        public static final boolean invertGyro = false; //TODO: check this
 
     }
 

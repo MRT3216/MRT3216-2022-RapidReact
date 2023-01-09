@@ -7,6 +7,7 @@
 
 package frc.robot.settings;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.SerialPort;
 
 /**
  * Add your docs here.
@@ -63,6 +64,7 @@ public final class RobotMap {
 
         public static class SENSORS {
             public static final I2C.Port COLOR_SENSOR = I2C.Port.kMXP;
+            public static final SerialPort.Port NAVX = SerialPort.Port.kUSB1;
         }
     }
 
