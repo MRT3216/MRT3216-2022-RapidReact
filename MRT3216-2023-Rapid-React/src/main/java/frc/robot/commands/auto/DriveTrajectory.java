@@ -13,6 +13,8 @@ import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import frc.robot.settings.Constants;
 import frc.robot.settings.Constants.Auto;
 import frc.robot.settings.Constants.Drivetrain;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -55,10 +57,28 @@ public abstract class DriveTrajectory extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        var goal = trajectory.sample(timer.get());
-        var adjustedSpeeds = controller.calculate(swerveSubsystem.getCurrentRobotPose(), goal, getHeading(goal));
+        var thetaController =
+                new ProfiledPIDController(
+                        Constants.Auto.kPThetaController,
+                        0,
+                        0,
+                        Constants.Auto.kThetaControllerConstraints);
+        thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-        swerveSubsystem.drive(adjustedSpeeds);
+        SwerveControllerCommand swerveControllerCommand =
+                new SwerveControllerCommand(
+                        trajectory,
+                        swerveSubsystem::getPose,
+                        Constants.Drivetrain.swerveKinematics,
+                        new PIDController(Constants.Auto.kPXController, 0, 0),
+                        new PIDController(Constants.Auto.kPYController, 0, 0),
+                        thetaController,
+                        swerveSubsystem::setModuleStates,
+                        swerveSubsystem);
+
+//        var adjustedSpeeds = controller.calculate(swerveSubsystem.getCurrentRobotPose(), goal, getHeading(goal));
+//
+//        swerveSubsystem.drive(adjustedSpeeds);
     }
 
     // Override this method to implement custom path following.
@@ -70,7 +90,6 @@ public abstract class DriveTrajectory extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         timer.stop();
-        swerveSubsystem.stop();
     }
 
     // Returns true when the command should end.

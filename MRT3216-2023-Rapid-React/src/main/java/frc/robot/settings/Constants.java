@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Filesystem;
 
@@ -126,6 +127,9 @@ public final class Constants {
         public static final double openLoopRamp = 0.25;
         public static final double closedLoopRamp = 0.0;
         public static final boolean canCoderInvert = CHOSEN_MODULE.canCoderInvert;
+        public static final double MAX_VELOCITY_METERS_PER_SECOND = 0; //TODO: set this value
+        public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = 0; //TODO: set this value
+
 
     }
 
@@ -158,6 +162,15 @@ public final class Constants {
         public static final double kStartDelayTime = 0;
         public static final double kDriveToShootDelay = 0; // seconds
         public static final double kMaxShootTime = 2; // seconds
+        public static final double kPThetaController = 1;
+        public static final double kMaxAngularSpeedRadiansPerSecond = 0; //TODO: set this val
+        public static final double kMaxAngularSpeedRadiansPerSecondSquared = 0; //TODO: set this val
+        public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
+                new TrapezoidProfile.Constraints(
+                        kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+        public static final double kPXController = 1; //TODO: check these vals
+        public static final double kPYController = 1; //TODO: check these vals
+
     }
 
     public static final class OI {

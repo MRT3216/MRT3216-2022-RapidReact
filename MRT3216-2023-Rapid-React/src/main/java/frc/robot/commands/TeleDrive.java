@@ -2,8 +2,11 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.settings.Constants;
 import frc.robot.subsystems.SwerveSubsystem;
 
 /**
@@ -17,6 +20,9 @@ public class TeleDrive extends CommandBase {
     private DoubleSupplier translationXSupplier;
     private DoubleSupplier translationYSupplier;
     private DoubleSupplier rotationSupplier;
+    private SlewRateLimiter translationLimiter = new SlewRateLimiter(3.0);
+    private SlewRateLimiter strafeLimiter = new SlewRateLimiter(3.0);
+    private SlewRateLimiter rotationLimiter = new SlewRateLimiter(3.0);
 
     /**
      * Creates a new DefaultDrive.
@@ -33,14 +39,18 @@ public class TeleDrive extends CommandBase {
         this.translationXSupplier = translationXSupplier;
         this.translationYSupplier = translationYSupplier;
         this.rotationSupplier = rotationSupplier;
-
         addRequirements(swerveSubsystem);
     }
 
     @Override
     public void execute() {
-        swerveSubsystem.drive(ChassisSpeeds.fromFieldRelativeSpeeds(this.translationXSupplier.getAsDouble(),
-                this.translationYSupplier.getAsDouble(), this.rotationSupplier.getAsDouble(),
-                this.swerveSubsystem.getGyroscopeRotation()));
+//        swerveSubsystem.drive(ChassisSpeeds.fromFieldRelativeSpeeds(this.translationXSupplier.getAsDouble(),
+//                this.translationYSupplier.getAsDouble(), this.rotationSupplier.getAsDouble(),
+//                this.swerveSubsystem.getGyroscopeRotation()));
+        double translationVal = translationLimiter.calculate(translationYSupplier.getAsDouble());
+        double strafeVal = strafeLimiter.calculate(translationXSupplier.getAsDouble());
+        double rotationVal = rotationLimiter.calculate(rotationSupplier.getAsDouble());
+
+
     }
 }

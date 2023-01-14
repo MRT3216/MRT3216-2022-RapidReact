@@ -74,7 +74,7 @@ public class AimDrivebase extends CommandBase {
             double omega = this.controller.calculate(swerveSystem.getGyroscopeRotation().getDegrees());
             System.out.println("Omega: " + omega);
             ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0, Units.degreesToRadians(omega));
-            swerveSystem.drive(chassisSpeeds);
+            //swerveSystem.drive(chassisSpeeds); //TODO: figure this out lol
         }
     }
 

@@ -61,9 +61,9 @@ public class AutoAimDrivebase extends CommandBase {
     @Override
     public void execute() {
         if (!neverSawTarget) {
-            double omega = this.controller.calculate(swerveSystem.getGyroscopeRotation().getDegrees());
-            ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0, Units.degreesToRadians(omega));
-            swerveSystem.drive(chassisSpeeds);
+//            double omega = this.controller.calculate(swerveSystem.getGyroscopeRotation().getDegrees());
+//            ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0, Units.degreesToRadians(omega));
+//            swerveSystem.drive(chassisSpeeds); //TODO: fix this
         }
     }
 

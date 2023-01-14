@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.settings.Gains;
 import frc.robot.settings.RobotMap;
 
 public class SwerveSubsystem extends SubsystemBase {
@@ -23,7 +24,9 @@ public class SwerveSubsystem extends SubsystemBase {
     public SwerveModule[] swerveModules;
     public AHRS gyro;
 
-    SwerveSubsystem instance;
+    static SwerveSubsystem instance;
+
+    private Gains thetaGains;
 
     private SwerveSubsystem() {
         gyro = new AHRS(RobotMap.ROBOT.SENSORS.NAVX);
@@ -63,7 +66,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
         };
 
-        swerveOdometry = new SwerveDriveOdometry(Constants.Drivetrain.swerveKinematics, getYaw(), getModulePositions());
+        swerveOdometry = new SwerveDriveOdometry(Constants.Drivetrain.swerveKinematics, getYaw(), getSwervePositions());
+        this.thetaGains = Constants.Auto.kAutoThetaGains;
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
@@ -101,7 +105,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     public void resetOdometry(Pose2d pose) {
-        swerveOdometry.resetPosition(getYaw(), getModulePositions(), pose);
+        swerveOdometry.resetPosition(getYaw(), getSwervePositions(), pose);
     }
 
     public SwerveModuleState[] getModuleStates(){
@@ -112,13 +116,13 @@ public class SwerveSubsystem extends SubsystemBase {
         return states;
     }
 
-    public SwerveModulePosition[] getModulePositions(){
+/*    public SwerveModulePosition[] getModulePositions(){
         SwerveModulePosition[] positions = new SwerveModulePosition[4];
         for(SwerveModule mod : swerveModules){
             positions[mod.moduleNumber] = mod.getPosition();
         }
         return positions;
-    }
+    }*/
 
     public void zeroGyro(){
         gyro.zeroYaw();
@@ -130,7 +134,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic(){
-        swerveOdometry.update(getYaw(), getModulePositions());
+        swerveOdometry.update(getYaw(), getSwervePositions());
 
         for(SwerveModule mod : swerveModules){
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
@@ -139,10 +143,53 @@ public class SwerveSubsystem extends SubsystemBase {
         }
     }
 
-    public SwerveSubsystem getInstance() {
+    public static SwerveSubsystem getInstance() {
         if (instance==null) {
             instance = new SwerveSubsystem();
         }
         return instance;
+    }
+
+    public void resetGyroAndOdometry(boolean _input) {
+        if (_input) {
+            this.gyro.reset();
+            _input = false;
+        }
+    }
+
+    public boolean gyroConnected() {
+        return this.gyro.isConnected();
+    }
+
+    public void calibrateGyroscope() {
+        this.gyro.calibrate();
+    }
+
+    public void zeroGyroscope() {
+        this.gyro.zeroYaw();
+        this.swerveOdometry.resetPosition(gyro.getRotation2d(), this.getSwervePositions(), new Pose2d());
+
+    }
+
+    public SwerveModulePosition[] getSwervePositions() {
+        return new SwerveModulePosition[]{this.swerveModules[0].getPosition(),this.swerveModules[1].getPosition(),this.swerveModules[2].getPosition(),this.swerveModules[3].getPosition()};
+    }
+
+    public Gains getThetaGains() {
+        return this.thetaGains;
+    }
+
+    public void setCurrentRobotPose(Pose2d pose) {
+        this.swerveOdometry.resetPosition(this.gyro.getRotation2d(), this.getSwervePositions(),pose);
+    }
+
+    public Pose2d getCurrentRobotPose() {
+        return this.swerveOdometry.getPoseMeters();
+    }
+
+    public Rotation2d getGyroscopeRotation() {
+        // // We have to invert the angle of the NavX so that rotating the robot
+        // counter-clockwise makes the angle increase.
+        return Rotation2d.fromDegrees(-gyro.getYaw());
     }
 }
