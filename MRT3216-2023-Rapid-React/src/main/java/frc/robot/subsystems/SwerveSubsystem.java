@@ -157,9 +157,10 @@ public class SwerveSubsystem extends SubsystemBase {
         }
     }
 
-    public boolean gyroConnected() {
-        return this.gyro.isConnected();
+    public boolean navXIsConnected() {
+        return gyro.isConnected();
     }
+
 
     public void calibrateGyroscope() {
         this.gyro.calibrate();

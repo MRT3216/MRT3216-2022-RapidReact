@@ -93,7 +93,7 @@ public class AutoChooser {
                                 limelightSystem, swerveSystem, hoodSystem, 1),
                         new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,
                                 limelightSystem, swerveSystem, hoodSystem, 1),
-                        () -> swerveSystem.gyroConnected()
+                        () -> swerveSystem.navXIsConnected()
                 ));
         chooser.addOption("Human two ball",
                 () -> new ConditionalCommand(
@@ -102,7 +102,7 @@ public class AutoChooser {
                                 RobotContainer.getInstance().getAutoStartDelayTime()),
                         new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,
                                 limelightSystem, swerveSystem, hoodSystem, 1),
-                        () -> swerveSystem.gyroConnected()
+                        () -> swerveSystem.navXIsConnected()
                 ));
         chooser.addOption("Hanger two ball",
                 () -> new ConditionalCommand(
@@ -111,7 +111,7 @@ public class AutoChooser {
                                 RobotContainer.getInstance().getAutoStartDelayTime()),
                         new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,
                                 limelightSystem, swerveSystem, hoodSystem, 1),
-                        () -> swerveSystem.gyroConnected()
+                        () -> swerveSystem.navXIsConnected()
                 ));
         chooser.addOption("Human three ball",
                 () -> new ConditionalCommand(
@@ -120,7 +120,7 @@ public class AutoChooser {
                                 RobotContainer.getInstance().getAutoStartDelayTime()),
                         new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,
                                 limelightSystem, swerveSystem, hoodSystem, 1),
-                        () -> swerveSystem.gyroConnected()
+                        () -> swerveSystem.navXIsConnected()
                 ));
         chooser.addOption("Five ball",
         () -> new ConditionalCommand(
@@ -129,7 +129,7 @@ public class AutoChooser {
                         RobotContainer.getInstance().getAutoStartDelayTime()),
                 new AutoAimAndShoot(shooterSystem, indexerSystem, hopperSystem, colorSensorSystem,
                         limelightSystem, swerveSystem, hoodSystem, 1),
-                () -> swerveSystem.gyroConnected()
+                () -> swerveSystem.navXIsConnected()
         ));
 
         SmartDashboard.putData(chooser);
